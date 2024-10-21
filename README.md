@@ -2,8 +2,8 @@
 
 ![Capturable](art/header.png)
 
-🚀A Jetpack Compose utility library for converting Composable content into Bitmap image 🖼️.  
-_Made with ❤️ for Android Developers and Composers_ 
+🚀 Compose utility library for converting Composable content into ImageBitmap 🖼️.  
+_Made with ❤️ for Compose Multiplatform Developers_ 
 
 [![Build](https://github.com/PatilShreyas/Capturable/actions/workflows/build.yml/badge.svg)](https://github.com/PatilShreyas/Capturable/actions/workflows/build.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/dev.shreyaspatil/capturable)](https://search.maven.org/artifact/dev.shreyaspatil/capturable)
@@ -17,7 +17,7 @@ In the previous View system, drawing Bitmap Image from `View` was very straightf
 You can check [/composeApp](/composeApp) directory which includes example application for demonstration. 
 
 <details>
-<summary>How To Run?</summary>
+<summary>How To Test sample?</summary>
 
 ### Android
 To run the application on android device/emulator:  
@@ -30,10 +30,10 @@ Run the desktop application: `./gradlew :composeApp:run`
 To run the application on iPhone device/simulator:
 - Open `iosApp/iosApp.xcproject` in Xcode and run standard configuration
 
-### JS Browser (Experimental)
+### JS Browser
 Run the browser application: `./gradlew :composeApp:jsBrowserDevelopmentRun --continue`
 
-### Wasm Browser (Alpha)
+### Wasm Browser
 Run the browser application: `./gradlew :composeApp:wasmJsBrowserDevelopmentRun --continue`
 </details>
 
@@ -43,10 +43,10 @@ In `lib.versions.toml`  include this dependency version catalog
 
 ```toml
 [versions]
-capturable = "3.0.0"
+capturable = "1.0.0"
 
 [libraries]
-capturable = { module = "dev.shreyaspatil:capturable", version.ref= "capturable" }
+capturable = { module = "io.github.jmseb3:capturable", version.ref= "capturable" }
 ```
 
 ```kotlin
@@ -59,7 +59,7 @@ or In `build.gradle` of app module, include this dependency
 
 ```gradle
 dependencies {
-    implementation "dev.shreyaspatil:capturable:3.0.0"
+    implementation "io.github.jmseb3:capturable:1.0.0"
 }
 ```
 
