@@ -16,7 +16,8 @@ plugins {
 }
 
 group = "io.github.jmseb3"
-version = "1.0.0-SNAPSHOT"
+//version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 ext["signing.keyId"] = null
 ext["signing.password"] = null
@@ -203,8 +204,8 @@ publishing {
 
             licenses {
                 license {
-                    name.set("Apache License 2.0")
-                    url.set("http://www.apache.org/licenses/LICENSE-2.0")
+                    name.set("MIT License")
+                    url.set("https://opensource.org/licenses/MIT")
                 }
             }
             developers {
