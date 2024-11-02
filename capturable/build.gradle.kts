@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.compose.ExperimentalComposeLibrary
@@ -13,6 +14,8 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.maven.publish)
 }
+
+version = "1.0.0"
 
 kotlin {
     androidTarget {
