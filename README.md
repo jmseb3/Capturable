@@ -5,7 +5,8 @@
 🚀 Compose utility library for converting Composable content into ImageBitmap 🖼️.  
 _Made with ❤️ for Compose Multiplatform Developers_ 
 
-[![Build](https://github.com/PatilShreyas/Capturable/actions/workflows/build.yml/badge.svg)](https://github.com/PatilShreyas/Capturable/actions/workflows/build.yml)
+Thank to @
+
 [![Maven Central](https://img.shields.io/maven-central/v/dev.shreyaspatil/capturable)](https://search.maven.org/artifact/dev.shreyaspatil/capturable)
 
 ## 💡Introduction 
