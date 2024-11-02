@@ -216,8 +216,8 @@ publishing {
                 }
             }
             scm {
-                url.set("https://github.com/jmseb3/helLogin.git")
-                connection.set("git@github.com:jmseb3/helLogin.git")
+                url.set("https://github.com/jmseb3/Capturable.git")
+                connection.set("git@github.com:jmseb3/Capturable.git")
             }
         }
     }

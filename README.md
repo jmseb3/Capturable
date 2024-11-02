@@ -59,17 +59,17 @@ or In `build.gradle` of app module, include this dependency
 
 ```gradle
 dependencies {
-    implementation "io.github.jmseb3:capturable:1.0.0"
+    implementation("io.github.jmseb3:capturable:1.0.0")
 }
 ```
 
-_You can find latest version and changelogs in the [releases](https://github.com/PatilShreyas/Capturable/releases)_.
+_You can find latest version and changelogs in the [releases](https://github.com/jmseb3/Capturable/releases)_.
 
 ### Usage
 
 #### 1. Setup the controller
 
-To be able to capture Composable content, you need instance of [`CaptureController`](https://patilshreyas.github.io/Capturable/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/index.html) by which you can decide when to capture the content. You can get the instance as follow.
+To be able to capture Composable content, you need instance of [`CaptureController`](./docs/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/index.html) by which you can decide when to capture the content. You can get the instance as follow.
 
 ```kotlin
 @Composable
@@ -78,7 +78,7 @@ fun TicketScreen() {
 }
 ```
 
-_[`rememberCaptureController()`](https://patilshreyas.github.io/Capturable/capturable/dev.shreyaspatil.capturable.controller/remember-capture-controller.html) is a Composable function._
+_[`rememberCaptureController()`](./docs/capturable/dev.shreyaspatil.capturable.controller/remember-capture-controller.html) is a Composable function._
 
 #### 2. Add the content
 
@@ -99,7 +99,7 @@ fun TicketScreen() {
 
 #### 3. Capture the content
 
-To capture the content, use [`CaptureController#captureAsync()`](https://patilshreyas.github.io/Capturable/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/captureAsync.html) as follows. 
+To capture the content, use [`CaptureController#captureAsync()`](./docs/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/capture-async.html) as follows. 
 
 ```kotlin
 // Example: Capture the content when button is clicked
@@ -121,26 +121,18 @@ Button(onClick = {
 On calling this method, request for capturing the content will be sent and `ImageBitmap` will be 
 returned asynchronously. _This method is safe to be called from Main thread._
 
-## 📄 API Documentation
-
-[**Visit the API documentation of this library**](https://patilshreyas.github.io/Capturable) to get more information in detail.
-
----
 
 ## 🙋‍♂️ Contribute 
 
 Read [contribution guidelines](CONTRIBUTING.md) for more information regarding contribution.
 
-## 💬 Discuss? 
-
-Have any questions, doubts or want to present your opinions, views? You're always welcome. You can [start discussions](https://github.com/PatilShreyas/Capturable/discussions).
 
 ## 📝 License
 
 ```
 MIT License
 
-Copyright (c) 2022 Shreyas Patil
+Copyright (c) 2024 WonDDak
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
