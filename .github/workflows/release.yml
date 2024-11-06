@@ -24,11 +24,6 @@ jobs:
       - name: Grant Permission to Execute Gradle
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build
-
       - name: Publish Library
         run: |
           echo "Publishing library🚀"
