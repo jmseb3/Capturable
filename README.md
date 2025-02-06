@@ -18,20 +18,39 @@ In the previous View system, drawing Bitmap Image from `View` was very straightf
 You can check [/composeApp](/composeApp) directory which includes example application for demonstration. 
 
 ### Preview
-- Android  
-![image](https://github.com/user-attachments/assets/de83cf54-b789-4acb-89c6-08134a434690)
 
-- iOS  
-![image](https://github.com/user-attachments/assets/25aa49ae-3019-496c-8515-fb4d6f19c2a0)
+<details>
+<summary>Android</summary>
+<img src="https://github.com/user-attachments/assets/de83cf54-b789-4acb-89c6-08134a434690" alt="Android Screenshot" width="500"/>
+</details>
 
-- Desktop  
-![image](https://github.com/user-attachments/assets/ca8040ae-e22f-4a1f-8d07-14da4685aa83)
+<details>
+<summary>iOS</summary>
+<img src="https://github.com/user-attachments/assets/25aa49ae-3019-496c-8515-fb4d6f19c2a0" alt="Android Screenshot" width="500"/>
+</details>
 
-- JS  
-![image](https://github.com/user-attachments/assets/0ce4ce6c-417b-4689-9539-107c31750e2f)
+<details>
+<summary>Desktop</summary>
 
-- WASM  
-![image](https://github.com/user-attachments/assets/a3f1d21b-f53f-4b8d-8dc0-77f00fc794e2)
+![Desktop](https://github.com/user-attachments/assets/ca8040ae-e22f-4a1f-8d07-14da4685aa83)
+
+</details>
+
+<details>
+<summary>JS</summary>
+
+![JS](https://github.com/user-attachments/assets/0ce4ce6c-417b-4689-9539-107c31750e2f)
+
+</details>
+
+<details>
+<summary>WASM</summary>
+
+![WASM](https://github.com/user-attachments/assets/a3f1d21b-f53f-4b8d-8dc0-77f00fc794e2)
+
+</details>
+
+---
 
 <details>
 <summary>How To Test sample?</summary>
@@ -54,6 +73,8 @@ Run the browser application: `./gradlew :composeApp:jsBrowserDevelopmentRun --co
 Run the browser application: `./gradlew :composeApp:wasmJsBrowserDevelopmentRun --continue`
 </details>
 
+---
+
 ### Gradle setup
 
 In `lib.versions.toml`  include this dependency version catalog
@@ -63,7 +84,7 @@ In `lib.versions.toml`  include this dependency version catalog
 capturable = "1.0.0"
 
 [libraries]
-capturable = { module = "io.github.jmseb3:capturable", version.ref= "capturable" }
+capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
 ```
 
 ```kotlin
