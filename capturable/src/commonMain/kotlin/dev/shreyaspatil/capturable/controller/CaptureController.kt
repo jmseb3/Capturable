@@ -33,6 +33,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * Controller for capturing [Composable] content.
@@ -50,7 +51,7 @@ class CaptureController(internal val graphicsLayer: GraphicsLayer) {
      */
     @Suppress("ktlint")
     private val _captureRequests = Channel<CaptureRequest>(capacity = Channel.UNLIMITED)
-    internal val captureRequests = _captureRequests.consumeAsFlow()
+    internal val captureRequests = _captureRequests.receiveAsFlow()
 
     /**
      * Creates and requests for a Bitmap capture with specified [config] and returns
