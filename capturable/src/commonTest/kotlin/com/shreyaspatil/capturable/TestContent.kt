@@ -32,8 +32,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.shreyaspatil.capturable.capturable
-import dev.shreyaspatil.capturable.controller.CaptureController
+import dev.wonddak.capturable.capturable
+import dev.wonddak.capturable.controller.CaptureController
 import kotlin.math.ceil
 
 @OptIn(ExperimentalComposeUiApi::class)

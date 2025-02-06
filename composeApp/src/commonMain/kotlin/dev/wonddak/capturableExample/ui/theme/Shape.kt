@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2024 Shreyas Patil
+* Copyright (c) 2022 Shreyas Patil
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,14 @@
 * SOFTWARE.
 *
 */
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.ComposeViewport
-import dev.wonddak.capturableExample.App
-import kotlinx.browser.document
-import kotlinx.browser.window
-import org.jetbrains.skiko.wasm.onWasmReady
+package dev.wonddak.capturableExample.ui.theme
 
-@OptIn(ExperimentalComposeUiApi::class)
-fun main() {
-    window.onload = {
-        onWasmReady {
-            val body = document.body ?: return@onWasmReady
-            ComposeViewport(body) {
-                App()
-            }
-        }
-    }
-}
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
+import androidx.compose.ui.unit.dp
+
+val Shapes = Shapes(
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(4.dp),
+    large = RoundedCornerShape(0.dp)
+)

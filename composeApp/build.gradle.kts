@@ -8,7 +8,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(17)
     androidTarget {}
 
     jvm()
@@ -88,13 +88,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
     }
-    namespace = "dev.shreyaspatil.capturableExample"
+    namespace = "dev.wonddak.capturableExample"
 }
 
 compose.desktop {

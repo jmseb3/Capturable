@@ -22,21 +22,7 @@
 * SOFTWARE.
 *
 */
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.ComposeViewport
-import dev.wonddak.capturableExample.App
-import kotlinx.browser.document
-import kotlinx.browser.window
-import org.jetbrains.skiko.wasm.onWasmReady
+package dev.wonddak.capturableExample
 
-@OptIn(ExperimentalComposeUiApi::class)
-fun main() {
-    window.onload = {
-        onWasmReady {
-            val body = document.body ?: return@onWasmReady
-            ComposeViewport(body) {
-                App()
-            }
-        }
-    }
-}
+actual val maxFrame: Float
+    get() = 0.2f

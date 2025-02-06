@@ -1,11 +1,11 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
-$dokka.location:dev.shreyaspatil.capturable.controller////PointingToDeclaration/capturable/dev.shreyaspatil.capturable.controller/index.html
-$dokka.location:dev.shreyaspatil.capturable.controller//rememberCaptureController/#/PointingToDeclaration/capturable/dev.shreyaspatil.capturable.controller/remember-capture-controller.html
-$dokka.location:dev.shreyaspatil.capturable.controller/CaptureController///PointingToDeclaration/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/index.html
-$dokka.location:dev.shreyaspatil.capturable.controller/CaptureController/CaptureController/#androidx.compose.ui.graphics.layer.GraphicsLayer/PointingToDeclaration/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/-capture-controller.html
-$dokka.location:dev.shreyaspatil.capturable.controller/CaptureController/captureAsync/#/PointingToDeclaration/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/capture-async.html
-$dokka.location:dev.shreyaspatil.capturable////PointingToDeclaration/capturable/dev.shreyaspatil.capturable/index.html
-$dokka.location:dev.shreyaspatil.capturable//capturable/androidx.compose.ui.Modifier#dev.shreyaspatil.capturable.controller.CaptureController/PointingToDeclaration/capturable/dev.shreyaspatil.capturable/capturable.html
-dev.shreyaspatil.capturable
-dev.shreyaspatil.capturable.controller
+$dokka.location:dev.wonddak.capturable.controller////PointingToDeclaration/capturable/dev.wonddak.capturable.controller/index.html
+$dokka.location:dev.wonddak.capturable.controller//rememberCaptureController/#/PointingToDeclaration/capturable/dev.wonddak.capturable.controller/remember-capture-controller.html
+$dokka.location:dev.wonddak.capturable.controller/CaptureController///PointingToDeclaration/capturable/dev.wonddak.capturable.controller/-capture-controller/index.html
+$dokka.location:dev.wonddak.capturable.controller/CaptureController/CaptureController/#androidx.compose.ui.graphics.layer.GraphicsLayer/PointingToDeclaration/capturable/dev.wonddak.capturable.controller/-capture-controller/-capture-controller.html
+$dokka.location:dev.wonddak.capturable.controller/CaptureController/captureAsync/#/PointingToDeclaration/capturable/dev.wonddak.capturable.controller/-capture-controller/capture-async.html
+$dokka.location:dev.wonddak.capturable////PointingToDeclaration/capturable/dev.wonddak.capturable/index.html
+$dokka.location:dev.wonddak.capturable//capturable/androidx.compose.ui.Modifier#dev.wonddak.capturable.controller.CaptureController/PointingToDeclaration/capturable/dev.wonddak.capturable/capturable.html
+dev.wonddak.capturable
+dev.wonddak.capturable.controller

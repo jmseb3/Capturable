@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import dev.shreyaspatil.capturableExample.App
+import dev.wonddak.capturableExample.App
 import java.awt.Dimension
 
 fun main() = application {

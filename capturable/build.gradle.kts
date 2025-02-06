@@ -119,7 +119,7 @@ android {
             isReturnDefaultValues = true
         }
     }
-    namespace = "dev.shreyaspatil.capturable"
+    namespace = "dev.wonddak.capturable"
 }
 
 dependencies {
