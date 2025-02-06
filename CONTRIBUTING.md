@@ -15,5 +15,5 @@ If you want to discuss on something then feel free to present your opinions, vie
 
 - New code addition/deletion should not break existing flow of a system.
 - All tests should be passed.
-- Verify `./gradlew build` is passing before raising a PR.
-- Reformat code with Spotless `./gradlew spotlessApply` before raising a PR.
+- Verify `./gradlew capturable:build` is passing before raising a PR.
+- Reformat code with Spotless `./gradlew capturable:spotlessApply` before raising a PR.

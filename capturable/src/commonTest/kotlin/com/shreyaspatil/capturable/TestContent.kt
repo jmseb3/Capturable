@@ -2,6 +2,7 @@
 * MIT License
 *
 * Copyright (c) 2024 Shreyas Patil
+* Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -53,6 +54,4 @@ internal val contentWidth = 200.dp
 /**
  * Converts float value to the integer value by rounding up to ceiling.
  */
-fun Float.roundToInt(): Int {
-    return ceil(this).toInt()
-}
+fun Float.roundToInt(): Int = ceil(this).toInt()

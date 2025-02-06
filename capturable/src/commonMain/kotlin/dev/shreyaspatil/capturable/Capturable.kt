@@ -2,6 +2,7 @@
 * MIT License
 *
 * Copyright (c) 2022 Shreyas Patil
+* Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -69,19 +70,15 @@ import kotlinx.coroutines.launch
  * @param controller A [CaptureController] which gives control to capture the Composable content.
  */
 @ExperimentalComposeUiApi
-fun Modifier.capturable(controller: CaptureController): Modifier {
-    return this then CapturableModifierNodeElement(controller)
-}
+fun Modifier.capturable(controller: CaptureController): Modifier =
+    this then CapturableModifierNodeElement(controller)
 
 /**
  * Modifier implementation of Capturable
  */
-private data class CapturableModifierNodeElement(
-    private val controller: CaptureController
-) : ModifierNodeElement<CapturableModifierNode>() {
-    override fun create(): CapturableModifierNode {
-        return CapturableModifierNode(controller)
-    }
+private data class CapturableModifierNodeElement(private val controller: CaptureController) :
+    ModifierNodeElement<CapturableModifierNode>() {
+    override fun create(): CapturableModifierNode = CapturableModifierNode(controller)
 
     override fun update(node: CapturableModifierNode) {
         node.updateController(controller)
@@ -102,9 +99,9 @@ private data class CapturableModifierNodeElement(
  * @param controller A [CaptureController] which gives control to capture the Composable content.
  */
 @Suppress("unused")
-private class CapturableModifierNode(
-    controller: CaptureController
-) : Modifier.Node(), DrawModifierNode {
+private class CapturableModifierNode(controller: CaptureController) :
+    Modifier.Node(),
+    DrawModifierNode {
 
     /**
      * State to hold the current [CaptureController] instance.
