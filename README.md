@@ -170,6 +170,7 @@ Read [contribution guidelines](CONTRIBUTING.md) for more information regarding c
 ```
 MIT License
 
+Copyright (c) 2022 Shreyas Patil
 Copyright (c) 2024 WonDDak
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
