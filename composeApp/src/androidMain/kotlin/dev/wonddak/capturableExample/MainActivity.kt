@@ -31,7 +31,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import dev.wonddak.capturable.util.captureAsyncAndShare
+import dev.wonddak.capturable.captureAsyncAndShare
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

@@ -23,7 +23,7 @@
 * SOFTWARE.
 *
 */
-package dev.wonddak.capturable.util
+package dev.wonddak.capturable
 
 import android.content.ClipData
 import android.content.Context
