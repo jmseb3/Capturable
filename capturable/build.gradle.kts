@@ -129,17 +129,18 @@ dependencies {
     debugImplementation(libs.test.core)
 }
 
-tasks.dokkaHtml.configure {
-    outputDirectory.set(rootProject.mkdir("docs"))
 
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(rootProject.mkdir("docs"))
+    }
     dokkaSourceSets {
         named("commonMain") {
             displayName.set("Common")
-            noAndroidSdkLink.set(false)
+//            noAndroidSdkLink.set(false)
         }
     }
 }
-
 
 mavenPublishing {
     configure(
