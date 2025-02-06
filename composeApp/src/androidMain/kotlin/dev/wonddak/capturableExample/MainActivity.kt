@@ -2,6 +2,7 @@
 * MIT License
 *
 * Copyright (c) 2024 Shreyas Patil
+* Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +29,31 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import dev.wonddak.capturable.util.captureAsyncAndShare
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            App()
+            App(
+                otherContent = { scope, captureController ->
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                captureController.captureAsyncAndShare(
+                                    context = this@MainActivity,
+                                )
+                            }
+                        }
+                    ) {
+                        Text("Share Ticket Image")
+                    }
+                }
+            )
         }
     }
 }
