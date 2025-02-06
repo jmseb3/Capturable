@@ -25,7 +25,14 @@
 */
 package dev.wonddak.capturableExample
 
+import android.app.PendingIntent
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
+import android.service.chooser.ChooserAction
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -35,6 +42,10 @@ import dev.wonddak.capturable.captureAsyncAndShare
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    private val context : Context by lazy {
+        this
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -45,7 +56,7 @@ class MainActivity : ComponentActivity() {
                         onClick = {
                             scope.launch {
                                 captureController.captureAsyncAndShare(
-                                    context = this@MainActivity,
+                                    context = context
                                 )
                             }
                         }

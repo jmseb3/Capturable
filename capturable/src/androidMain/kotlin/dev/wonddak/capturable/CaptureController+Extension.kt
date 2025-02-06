@@ -48,18 +48,28 @@ import kotlinx.coroutines.withContext
  * also see [CaptureController.captureAsync]
  *
  * @param[context] Context
- * @param[authority] Need For get [Uri]
+ * @param[authority]
+ *
+ * Need For get content[Uri]
+ *
  * default value : (com.your.package).fileprovider
+ *
+ * @param[addOptionChooseIntent]
+ *
+ *   add option if need for [Intent.createChooser]
+ *
+ *  [Custom Actions](https://developer.android.com/training/sharing/send#custom-actions) / [Custom Target](https://developer.android.com/training/sharing/send#adding-custom-targets) / [Excluding Component](https://developer.android.com/training/sharing/send#excluding-specific-targets-by-component)
  *
  *
  * @param[deleteOnExit] clear temp file when exit app
  */
 suspend fun CaptureController.captureAsyncAndShare(
     context: Context,
+    addOptionChooseIntent : (chooseIntent : Intent) -> Unit = {},
     authority: String = context.packageName + ".fileprovider",
     deleteOnExit:Boolean = true,
 ) {
-    val bitmap: ImageBitmap = this@captureAsyncAndShare.captureAsync().await()
+    val bitmap: ImageBitmap = this.captureAsync().await()
     val uri = withContext(Dispatchers.IO) {
         // Convert to AndroidBitmap
         val androidBitmap = bitmap.asAndroidBitmap()
@@ -85,21 +95,27 @@ suspend fun CaptureController.captureAsyncAndShare(
     }
 
     // make intent share
-    val intentShareFile = Intent(Intent.ACTION_SEND)
+    val intentShareImageSend = Intent(Intent.ACTION_SEND)
 
     val mimeType = "image/png"
-    intentShareFile.setType(mimeType)
+    intentShareImageSend.setType(mimeType)
 
     //make clipDate for preview
-    intentShareFile.clipData = ClipData(
+    intentShareImageSend.clipData = ClipData(
         "",
         arrayOf(mimeType),
         ClipData.Item(uri)
     )
 
-    intentShareFile.putExtra(Intent.EXTRA_STREAM, uri)
-    intentShareFile.setFlags(
+    intentShareImageSend.putExtra(Intent.EXTRA_STREAM, uri)
+    intentShareImageSend.setFlags(
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
     )
-    context.startActivity(Intent.createChooser(intentShareFile, "123"))
+
+    //Any User Option if need custom...
+
+    val chooseIntent = Intent.createChooser(intentShareImageSend, null)
+    addOptionChooseIntent(chooseIntent)
+
+    context.startActivity(chooseIntent)
 }
