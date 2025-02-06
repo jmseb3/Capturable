@@ -2,6 +2,7 @@
 * MIT License
 *
 * Copyright (c) 2024 Shreyas Patil
+* Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +28,4 @@ package dev.wonddak.capturableExample
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIViewController
 
-fun mainViewController(): UIViewController {
-    return ComposeUIViewController { App() }
-}
+fun mainViewController(): UIViewController = ComposeUIViewController { App() }

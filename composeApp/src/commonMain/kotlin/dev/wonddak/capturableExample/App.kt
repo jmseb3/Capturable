@@ -2,6 +2,7 @@
 * MIT License
 *
 * Copyright (c) 2022 Shreyas Patil
+* Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -61,18 +62,22 @@ import capturable.composeapp.generated.resources.Res
 import capturable.composeapp.generated.resources.ic_baseline_check_circle_24
 import capturable.composeapp.generated.resources.ic_baseline_qr_code_24
 import dev.wonddak.capturable.capturable
+import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.controller.rememberCaptureController
 import dev.wonddak.capturableExample.ui.theme.CapturableExampleTheme
 import dev.wonddak.capturableExample.ui.theme.LightGray
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun App() {
+internal fun App(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
     CapturableExampleTheme {
-        TicketScreen()
+        TicketScreen(
+            otherContent = otherContent
+        )
     }
 }
 
@@ -81,7 +86,7 @@ expect val maxFrame: Float
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TicketScreen() {
+fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
     val captureController = rememberCaptureController()
     val uiScope = rememberCoroutineScope()
 
@@ -110,6 +115,8 @@ fun TicketScreen() {
         ) {
             Text("Preview Ticket Image")
         }
+
+        otherContent?.invoke(uiScope, captureController)
 
         // When Ticket's Bitmap image is captured, show preview in dialog
         ticketBitmap?.let { bitmap ->
