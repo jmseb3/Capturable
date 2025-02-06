@@ -65,9 +65,9 @@ import kotlinx.coroutines.withContext
  */
 suspend fun CaptureController.captureAsyncAndShare(
     context: Context,
-    addOptionChooseIntent : (chooseIntent : Intent) -> Unit = {},
+    addOptionChooseIntent: (chooseIntent: Intent) -> Unit = {},
     authority: String = context.packageName + ".fileprovider",
-    deleteOnExit:Boolean = true,
+    deleteOnExit: Boolean = true,
 ) {
     val bitmap: ImageBitmap = this.captureAsync().await()
     val uri = withContext(Dispatchers.IO) {
