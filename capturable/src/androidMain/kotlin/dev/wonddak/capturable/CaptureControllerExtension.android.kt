@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2025 Shreyas Patil
+* Copyright (c) 2022 Shreyas Patil
 * Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -44,9 +44,7 @@ import kotlinx.coroutines.withContext
 /**
  * share Type of Android
  */
-sealed class ShareType(
-    val suffix: String
-) {
+sealed class ShareType(val suffix: String) {
 
     /**
      * share type PNG
@@ -97,7 +95,7 @@ suspend fun CaptureController.captureAsyncAndShare(
     shareType: ShareType = ShareType.PNG(100),
     addOptionChooseIntent: (chooseIntent: Intent) -> Unit = {},
     authority: String = context.packageName + ".fileprovider",
-    deleteOnExit: Boolean = true,
+    deleteOnExit: Boolean = true
 ) {
     val bitmap: ImageBitmap = this.captureAsync().await()
     val uri = withContext(Dispatchers.IO) {
@@ -129,7 +127,7 @@ suspend fun CaptureController.captureAsyncAndShare(
         outputStream.flush()
 
         if (deleteOnExit) {
-            //delete cache file on exit
+            // delete cache file on exit
             tempSharedImage.deleteOnExit()
         }
         // Return Uri
@@ -146,7 +144,7 @@ suspend fun CaptureController.captureAsyncAndShare(
     val mimeType = shareType.mimeType
     intentShareImageSend.setType(mimeType)
 
-    //make clipDate for preview
+    // make clipDate for preview
     intentShareImageSend.clipData = ClipData(
         "",
         arrayOf(mimeType),
@@ -158,7 +156,7 @@ suspend fun CaptureController.captureAsyncAndShare(
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
     )
 
-    //Any User Option if need custom...
+    // Any User Option if need custom...
 
     val chooseIntent = Intent.createChooser(intentShareImageSend, null)
     addOptionChooseIntent(chooseIntent)

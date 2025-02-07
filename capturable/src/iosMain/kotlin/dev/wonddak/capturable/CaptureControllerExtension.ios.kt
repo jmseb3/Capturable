@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2025 Shreyas Patil
+* Copyright (c) 2022 Shreyas Patil
 * Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -53,13 +53,10 @@ import platform.UIKit.UIViewController
 import platform.UIKit.popoverPresentationController
 import platform.darwin.NSObject
 
-
 /**
  * share Type of iOS
  */
-sealed class ShareType(
-    val suffix: String
-) {
+sealed class ShareType(val suffix: String) {
 
     /**
      * share type PNG
@@ -72,7 +69,6 @@ sealed class ShareType(
      * @param quality compress quality(0 ~ 100)
      */
     data class JPEG(val quality: Int) : ShareType("jpeg")
-
 }
 
 /**
@@ -104,6 +100,7 @@ sealed class ShareType(
  *
  * The topViewController where [UIActivityViewController] will be presented.
  * By default, it retrieves the top rootViewController.
+ *
  */
 @OptIn(ExperimentalForeignApi::class)
 suspend fun CaptureController.captureAsyncAndShare(
@@ -111,7 +108,8 @@ suspend fun CaptureController.captureAsyncAndShare(
     metaTitle: String = "Share Captured Image",
     shareType: ShareType = ShareType.PNG(100),
     addOptionUIActivityViewController: (UIActivityViewController) -> Unit = {},
-    topViewController: UIViewController? = UIApplication.sharedApplication.keyWindow?.rootViewController
+    topViewController: UIViewController? =
+        UIApplication.sharedApplication.keyWindow?.rootViewController
 ) {
     val bitmap: ImageBitmap = this.captureAsync().await()
     val imageData: NSData = bitmap.toNSData(shareType) ?: return
@@ -131,7 +129,7 @@ suspend fun CaptureController.captureAsyncAndShare(
     )
 
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        //ipad need sourceView for show
+        // ipad need sourceView for show
         shareVC.popoverPresentationController?.sourceView = topViewController?.view
         val size = UIScreen.mainScreen.bounds.useContents { size }
         shareVC.popoverPresentationController?.sourceRect = CGRectMake(
@@ -149,7 +147,6 @@ suspend fun CaptureController.captureAsyncAndShare(
         completion = null
     )
 }
-
 
 /**
  * Convert ImageBitmap to NSData
@@ -177,26 +174,24 @@ internal fun ImageBitmap.toNSData(format: ShareType): NSData? {
     }
 }
 
-
-internal class SingleImageProvider(
-    private val imageUrl: NSURL,
-    private val metaTitle: String
-) : NSObject(), UIActivityItemSourceProtocol {
+internal class SingleImageProvider(private val imageUrl: NSURL, private val metaTitle: String) :
+    NSObject(),
+    UIActivityItemSourceProtocol {
 
     @ObjCSignatureOverride
     override fun activityViewController(
         activityViewController: UIActivityViewController,
         itemForActivityType: UIActivityType?
-    ): Any? {
-        return imageUrl
-    }
+    ): Any? = imageUrl
 
-    override fun activityViewControllerPlaceholderItem(activityViewController: UIActivityViewController): Any {
-        return imageUrl
-    }
+    override fun activityViewControllerPlaceholderItem(
+        activityViewController: UIActivityViewController
+    ): Any = imageUrl
 
     @ExperimentalForeignApi
-    override fun activityViewControllerLinkMetadata(activityViewController: UIActivityViewController): objcnames.classes.LPLinkMetadata? {
+    override fun activityViewControllerLinkMetadata(
+        activityViewController: UIActivityViewController
+    ): objcnames.classes.LPLinkMetadata? {
         val metadata = LPLinkMetadata()
         metadata.title = metaTitle
         metadata.originalURL = imageUrl

@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2024 Shreyas Patil
+* Copyright (c) 2022 Shreyas Patil
 * Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,14 +25,8 @@
 */
 package dev.wonddak.capturableExample
 
-import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.graphics.drawable.Icon
-import android.os.Build
 import android.os.Bundle
-import android.service.chooser.ChooserAction
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -43,7 +37,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val context : Context by lazy {
+    private val context: Context by lazy {
         this
     }
     override fun onCreate(savedInstanceState: Bundle?) {
