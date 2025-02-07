@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       versionName:
-        description: 'Version Name'
+        description: 'Version Name(vX.Y.Z)'
         required: true
 
 jobs:
