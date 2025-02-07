@@ -131,12 +131,17 @@ dependencies {
 
 dokka {
     dokkaPublications.html {
-        outputDirectory.set(rootProject.mkdir("docs"))
+        outputDirectory.set(rootProject.mkdir("build/dokka"))
     }
     dokkaSourceSets {
         named("commonMain") {
             displayName.set("Common")
-//            noAndroidSdkLink.set(false)
+        }
+        named("androidMain") {
+            displayName.set("Android")
+        }
+        named("iosX64Main") {
+            displayName.set("iOS")
         }
     }
 }
