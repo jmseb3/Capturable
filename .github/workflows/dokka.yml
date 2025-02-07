@@ -1,9 +1,7 @@
 name: Generate and Deploy Dokka
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 permissions:
   contents: write
