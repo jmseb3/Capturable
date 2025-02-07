@@ -66,7 +66,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "dev.shreyaspatil.capturableExample"
+        applicationId = "dev.wonddak.capturableExample"
         minSdk = 21
         targetSdk = 35
         versionCode = 1

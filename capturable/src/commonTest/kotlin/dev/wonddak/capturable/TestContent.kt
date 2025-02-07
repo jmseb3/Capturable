@@ -23,21 +23,34 @@
 * SOFTWARE.
 *
 */
+package dev.wonddak.capturable
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.ComposeViewport
-import dev.wonddak.capturableExample.App
-import kotlinx.browser.document
-import kotlinx.browser.window
-import org.jetbrains.skiko.wasm.onWasmReady
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import dev.wonddak.capturable.controller.CaptureController
+import kotlin.math.ceil
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun main() {
-    window.onload = {
-        onWasmReady {
-            val body = document.body ?: return@onWasmReady
-            ComposeViewport(body) {
-                App()
-            }
-        }
+@Composable
+internal fun TestContent(captureController: CaptureController) {
+    Box(
+        Modifier
+            .size(contentWidth, contentHeight)
+            .capturable(captureController)
+    ) {
+        Text("Hello! Inside Capturable")
     }
 }
+
+internal val contentHeight = 100.dp
+internal val contentWidth = 200.dp
+
+/**
+ * Converts float value to the integer value by rounding up to ceiling.
+ */
+fun Float.roundToInt(): Int = ceil(this).toInt()

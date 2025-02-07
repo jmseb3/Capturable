@@ -1,7 +1,8 @@
 /*
 * MIT License
 *
-* Copyright (c) 2024 Shreyas Patil
+* Copyright (c) 2022 Shreyas Patil
+* Copyright (c) 2024 Wonddak
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +25,28 @@
 */
 package dev.wonddak.capturableExample
 
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.ui.window.ComposeUIViewController
+import dev.wonddak.capturable.captureAsyncAndShare
+import kotlinx.coroutines.launch
 import platform.UIKit.UIViewController
 
-fun mainViewController(): UIViewController {
-    return ComposeUIViewController { App() }
+fun mainViewController(): UIViewController = ComposeUIViewController {
+    App(
+        otherContent = { scope, captureController ->
+            Button(
+                onClick = {
+                    scope.launch {
+                        captureController.captureAsyncAndShare(
+                            addOptionUIActivityViewController = { shareVc ->
+                            }
+                        )
+                    }
+                }
+            ) {
+                Text("Share Ticket Image")
+            }
+        }
+    )
 }
