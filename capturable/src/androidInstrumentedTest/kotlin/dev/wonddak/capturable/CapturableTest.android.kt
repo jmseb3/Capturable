@@ -27,10 +27,6 @@ package dev.wonddak.capturable
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.shreyaspatil.capturable.TestContent
-import com.shreyaspatil.capturable.contentHeight
-import com.shreyaspatil.capturable.contentWidth
-import com.shreyaspatil.capturable.roundToInt
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.controller.rememberCaptureController
 import kotlinx.coroutines.CompletableDeferred

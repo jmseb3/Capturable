@@ -28,7 +28,7 @@ package dev.wonddak.capturableExample
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.window.ComposeUIViewController
-import com.wonddak.capturable.captureAsyncAndShare
+import dev.wonddak.capturable.captureAsyncAndShare
 import kotlinx.coroutines.launch
 import platform.UIKit.UIViewController
 

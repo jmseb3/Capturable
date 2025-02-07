@@ -23,7 +23,7 @@
 * SOFTWARE.
 *
 */
-package com.wonddak.capturable
+package dev.wonddak.capturable
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asSkiaBitmap
