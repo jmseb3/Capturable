@@ -50,13 +50,13 @@ sealed class ShareType(
 
     /**
      * share type PNG
-     * @param quality compress quality
+     * @param quality compress quality(0 ~ 100)
      */
     data class PNG(val quality: Int) : ShareType("png")
 
     /**
      * share type JPEG
-     * @param quality compress quality
+     * @param quality compress quality(0 ~ 100)
      */
     data class JPEG(val quality: Int) : ShareType("jpeg")
 
@@ -82,14 +82,12 @@ sealed class ShareType(
  * @param[authority]
  *
  * Need For get content[Uri]
- *
  * default value : (com.your.package).fileprovider
  *
  * @param[addOptionChooseIntent]
  *
- *   add option if need for [Intent.createChooser]
- *
- *  [Custom Actions](https://developer.android.com/training/sharing/send#custom-actions) / [Custom Target](https://developer.android.com/training/sharing/send#adding-custom-targets) / [Excluding Component](https://developer.android.com/training/sharing/send#excluding-specific-targets-by-component)
+ * add option if need for [Intent.createChooser]
+ * [Custom Actions](https://developer.android.com/training/sharing/send#custom-actions) / [Custom Target](https://developer.android.com/training/sharing/send#adding-custom-targets) / [Excluding Component](https://developer.android.com/training/sharing/send#excluding-specific-targets-by-component)
  *
  *
  * @param[deleteOnExit] clear temp file when exit app
