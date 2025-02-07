@@ -14,8 +14,6 @@ plugins {
     alias(libs.plugins.maven.publish)
 }
 
-version = "1.0.0"
-
 kotlin {
     androidTarget {
         compilations.all {
@@ -34,6 +32,7 @@ kotlin {
 
     jvm()
 
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         browser()
     }
@@ -72,6 +71,10 @@ kotlin {
         androidUnitTest.dependencies {
             implementation(libs.junit.android)
             implementation(libs.mockk)
+        }
+
+        iosMain.dependencies {
+
         }
 
         jvmTest.dependencies {
@@ -134,17 +137,20 @@ dependencies {
 
 
 dokka {
+    moduleName.set("Caputerable")
+
     dokkaPublications.html {
         outputDirectory.set(rootProject.mkdir("build/dokka"))
     }
+
     dokkaSourceSets {
-        named("commonMain") {
+        this.commonMain {
             displayName.set("Common")
         }
         named("androidMain") {
             displayName.set("Android")
         }
-        named("iosX64Main") {
+        named("iosMain") {
             displayName.set("iOS")
         }
     }
@@ -153,7 +159,7 @@ dokka {
 mavenPublishing {
     configure(
         KotlinMultiplatform(
-            javadocJar = JavadocJar.Dokka("dokkaHtml"),
+            javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
             sourcesJar = true
         )
     )
