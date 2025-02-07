@@ -31,9 +31,11 @@ import dev.wonddak.capturable.controller.CaptureController
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCSignatureOverride
 import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.useContents
 import kotlinx.cinterop.usePinned
 import org.jetbrains.skia.Data
 import org.jetbrains.skia.Image
+import platform.CoreGraphics.CGRectMake
 import platform.Foundation.NSData
 import platform.Foundation.NSItemProvider
 import platform.Foundation.NSURL
@@ -44,7 +46,11 @@ import platform.UIKit.UIActivityItemSourceProtocol
 import platform.UIKit.UIActivityType
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
+import platform.UIKit.UIDevice
+import platform.UIKit.UIScreen
+import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.UIKit.UIViewController
+import platform.UIKit.popoverPresentationController
 import platform.darwin.NSObject
 
 
@@ -99,6 +105,7 @@ sealed class ShareType(
  * The topViewController where [UIActivityViewController] will be presented.
  * By default, it retrieves the top rootViewController.
  */
+@OptIn(ExperimentalForeignApi::class)
 suspend fun CaptureController.captureAsyncAndShare(
     fileName: String = "capture_shared",
     metaTitle: String = "Share Captured Image",
@@ -123,6 +130,17 @@ suspend fun CaptureController.captureAsyncAndShare(
         applicationActivities = null
     )
 
+    if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        //ipad need sourceView for show
+        shareVC.popoverPresentationController?.sourceView = topViewController?.view
+        val size = UIScreen.mainScreen.bounds.useContents { size }
+        shareVC.popoverPresentationController?.sourceRect = CGRectMake(
+            x = size.width / 2.1,
+            y = size.height / 2.3,
+            width = 200.0,
+            height = 200.0
+        )
+    }
     addOptionUIActivityViewController(shareVC)
 
     topViewController?.presentViewController(
