@@ -159,6 +159,8 @@ Button(onClick = {
 On calling this method, request for capturing the content will be sent and `ImageBitmap` will be 
 returned asynchronously. _This method is safe to be called from Main thread._
 
+### Android & iOS
+The Platform have `captureAsyncAndShare` and `captureAsyncAndSave`
 
 ## 🙋‍♂️ Contribute 
 
