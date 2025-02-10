@@ -33,7 +33,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import androidx.annotation.RequiresPermission
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.core.content.FileProvider
 import dev.wonddak.capturable.controller.CaptureController
@@ -69,11 +68,7 @@ sealed class ImageType(val suffix: String) {
     /**
      * @return make file name with suffix
      */
-    internal fun makeFileName(
-        name: String
-    ): String {
-        return "$name.$suffix"
-    }
+    internal fun makeFileName(name: String): String = "$name.$suffix"
 }
 
 /**
@@ -158,7 +153,9 @@ suspend fun CaptureController.captureAsyncAndShare(
 
     // make clipDate for preview
     intentShareImageSend.clipData = ClipData(
-        "", arrayOf(mimeType), ClipData.Item(uri)
+        "",
+        arrayOf(mimeType),
+        ClipData.Item(uri)
     )
 
     intentShareImageSend.putExtra(Intent.EXTRA_STREAM, uri)
@@ -173,7 +170,6 @@ suspend fun CaptureController.captureAsyncAndShare(
 
     context.startActivity(chooseIntent)
 }
-
 
 /**
  * Capture and save Image
@@ -227,7 +223,7 @@ suspend fun CaptureController.captureAsyncAndSave(
     contentResolver: ContentResolver,
     type: ImageType,
     fileName: String,
-    addContentValues: (contentValues: ContentValues) -> Unit = {},
+    addContentValues: (contentValues: ContentValues) -> Unit = {}
 ) = runCatching {
     val bitmap: ImageBitmap = this.captureAsync().await()
 

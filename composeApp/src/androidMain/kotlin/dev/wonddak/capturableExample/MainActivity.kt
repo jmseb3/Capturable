@@ -27,7 +27,6 @@ package dev.wonddak.capturableExample
 
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -43,9 +42,9 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-
-    }
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -53,7 +52,7 @@ class MainActivity : ComponentActivity() {
             permissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         setContent {
-           AndroidMainContent()
+            AndroidMainContent()
         }
     }
 }

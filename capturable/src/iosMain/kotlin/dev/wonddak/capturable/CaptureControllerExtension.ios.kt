@@ -74,11 +74,7 @@ sealed class ImageType(val suffix: String) {
     /**
      * @return make file name with suffix
      */
-    internal fun makeFileName(
-        name: String
-    ): String {
-        return "$name.$suffix"
-    }
+    internal fun makeFileName(name: String): String = "$name.$suffix"
 }
 
 /**
@@ -177,7 +173,6 @@ suspend fun CaptureController.captureAsyncAndShare(
     )
 }
 
-
 internal class SingleImageProvider(private val imageUrl: NSURL, private val metaTitle: String) :
     NSObject(),
     UIActivityItemSourceProtocol {
@@ -247,7 +242,7 @@ internal class SingleImageProvider(private val imageUrl: NSURL, private val meta
  */
 suspend fun CaptureController.captureAsyncAndSave(
     fileName: String = "capture_shared",
-    type: ImageType = ImageType.PNG(100),
+    type: ImageType = ImageType.PNG(100)
 ) = runCatching {
     val bitmap: ImageBitmap = this.captureAsync().await()
     val imageData: NSData = bitmap.toNSData(type) ?: return@runCatching
@@ -261,7 +256,7 @@ suspend fun CaptureController.captureAsyncAndSave(
 
     PHPhotoLibrary.requestAuthorization { status ->
         when (status) {
-            PHAuthorizationStatusAuthorized , PHAuthorizationStatusRestricted-> {
+            PHAuthorizationStatusAuthorized, PHAuthorizationStatusRestricted -> {
                 PHPhotoLibrary.sharedPhotoLibrary().performChanges(
                     changeBlock = {
                         PHAssetChangeRequest.creationRequestForAssetFromImageAtFileURL(tempUrl)
@@ -270,7 +265,9 @@ suspend fun CaptureController.captureAsyncAndSave(
                         if (success) {
                             print("Image saved successfully!")
                         } else {
-                            print("Error saving image: ${error?.localizedDescription() ?: "Unknown error"}")
+                            print(
+                                "Error saving image: ${error?.localizedDescription() ?: "Unknown error"}"
+                            )
                         }
                     }
                 )

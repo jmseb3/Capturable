@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.1-s2 - 2025-02-10
+
+[f3bfbf6](f3bfbf68945151cad77c0c8bb71f837490e968d4)...[61ec33d](61ec33d999e49632cde23b3633c9539507b91f8a)
+
+### 🚀 Features
+
+- Add New Extension for ImageBitmap ([3046bfe](3046bfe9cf8440817dc657bfc765cc7a33bf45a1))
+- *(android)* - Add captureAsyncAndSave ([5440f75](5440f75c0bafd883d84ec234e1f367669f96ead1))
+- *(ios)* - Add captureAsyncAndSave ([61ec33d](61ec33d999e49632cde23b3633c9539507b91f8a))
+
+### 📚 Documentation
+
+- Add comments to captureAsyncAndShare function logic ([97a0433](97a04338e83da5947e418e08b034e489f1634e0b))
+
 ## 1.0.1-s1 - 2025-02-07
 
 [ddffac1](ddffac1c90315376d2716283b807cd0891a318c7)...[f3bfbf6](f3bfbf68945151cad77c0c8bb71f837490e968d4)
