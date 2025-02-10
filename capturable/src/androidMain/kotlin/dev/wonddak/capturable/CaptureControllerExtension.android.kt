@@ -28,35 +28,33 @@ package dev.wonddak.capturable
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.content.FileProvider
 import dev.wonddak.capturable.controller.CaptureController
+import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * share Type of Android
+ * Image Type of Android
  */
-sealed class ShareType(val suffix: String) {
+sealed class ImageType(val suffix: String) {
 
     /**
      * share type PNG
      * @param quality compress quality(0 ~ 100)
      */
-    data class PNG(val quality: Int) : ShareType("png")
+    data class PNG(val quality: Int) : ImageType("png")
 
     /**
      * share type JPEG
      * @param quality compress quality(0 ~ 100)
      */
-    data class JPEG(val quality: Int) : ShareType("jpeg")
+    data class JPEG(val quality: Int) : ImageType("jpeg")
 
     /**
      * File mimeType
@@ -95,9 +93,9 @@ sealed class ShareType(val suffix: String) {
  *  }) { ... }
  * ```
  * @param[context] Context
- * @param[shareType]
+ * @param[type]
  *
- * Share Type PNG or JPEG [ShareType]
+ * Share Type PNG or JPEG [ImageType]
  *
  * @param[authority]
  *
@@ -114,40 +112,19 @@ sealed class ShareType(val suffix: String) {
  */
 suspend fun CaptureController.captureAsyncAndShare(
     context: Context,
-    shareType: ShareType = ShareType.PNG(100),
+    type: ImageType = ImageType.PNG(100),
     addOptionChooseIntent: (chooseIntent: Intent) -> Unit = {},
     authority: String = context.packageName + ".fileprovider",
     deleteOnExit: Boolean = true
 ) {
     val bitmap: ImageBitmap = this.captureAsync().await()
     val uri = withContext(Dispatchers.IO) {
-        // Convert to AndroidBitmap
-        val androidBitmap = bitmap.asAndroidBitmap()
-
         // Make TempFile
-        val tempSharedImage = File.createTempFile("capturable", "." + shareType.suffix)
+        val tempSharedImage = File.createTempFile("capturable", "." + type.suffix)
 
-        // Save To PNG or JPEG
-        val outputStream = FileOutputStream(tempSharedImage)
-        when (shareType) {
-            is ShareType.PNG -> {
-                androidBitmap.compress(
-                    Bitmap.CompressFormat.PNG,
-                    min(shareType.quality, 100),
-                    outputStream
-                )
-            }
-
-            is ShareType.JPEG -> {
-                androidBitmap.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    min(shareType.quality, 100),
-                    outputStream
-                )
-            }
+        BufferedOutputStream(FileOutputStream(tempSharedImage)).use { outputStream ->
+            outputStream.write(bitmap.toByteArray(type))
         }
-        outputStream.flush()
-
         if (deleteOnExit) {
             // delete cache file on exit
             tempSharedImage.deleteOnExit()
@@ -163,7 +140,7 @@ suspend fun CaptureController.captureAsyncAndShare(
     // make intent share
     val intentShareImageSend = Intent(Intent.ACTION_SEND)
 
-    val mimeType = shareType.mimeType
+    val mimeType = type.mimeType
     intentShareImageSend.setType(mimeType)
 
     // make clipDate for preview

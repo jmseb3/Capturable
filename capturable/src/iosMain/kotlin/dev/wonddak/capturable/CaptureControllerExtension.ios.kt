@@ -26,20 +26,14 @@
 package dev.wonddak.capturable
 
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asSkiaBitmap
 import dev.wonddak.capturable.controller.CaptureController
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCSignatureOverride
-import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.useContents
-import kotlinx.cinterop.usePinned
-import org.jetbrains.skia.Data
-import org.jetbrains.skia.Image
 import platform.CoreGraphics.CGRectMake
 import platform.Foundation.NSData
 import platform.Foundation.NSItemProvider
 import platform.Foundation.NSURL
-import platform.Foundation.dataWithBytes
 import platform.Foundation.writeToURL
 import platform.LinkPresentation.LPLinkMetadata
 import platform.UIKit.UIActivityItemSourceProtocol
@@ -52,23 +46,24 @@ import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.UIKit.UIViewController
 import platform.UIKit.popoverPresentationController
 import platform.darwin.NSObject
+import toNSData
 
 /**
  * share Type of iOS
  */
-sealed class ShareType(val suffix: String) {
+sealed class ImageType(val suffix: String) {
 
     /**
      * share type PNG
      * @param quality compress quality(0 ~ 100)
      */
-    data class PNG(val quality: Int) : ShareType("png")
+    data class PNG(val quality: Int) : ImageType("png")
 
     /**
      * share type JPEG
      * @param quality compress quality(0 ~ 100)
      */
-    data class JPEG(val quality: Int) : ShareType("jpeg")
+    data class JPEG(val quality: Int) : ImageType("jpeg")
 }
 
 /**
@@ -109,7 +104,7 @@ sealed class ShareType(val suffix: String) {
  *
  * @param[shareType]
  *
- * Share Type PNG or JPEG [ShareType]
+ * Share Type PNG or JPEG [ImageType]
  *
  * @param[addOptionUIActivityViewController]
  *
@@ -125,7 +120,7 @@ sealed class ShareType(val suffix: String) {
 suspend fun CaptureController.captureAsyncAndShare(
     fileName: String = "capture_shared",
     metaTitle: String = "Share Captured Image",
-    shareType: ShareType = ShareType.PNG(100),
+    shareType: ImageType = ImageType.PNG(100),
     addOptionUIActivityViewController: (UIActivityViewController) -> Unit = {},
     topViewController: UIViewController? =
         UIApplication.sharedApplication.keyWindow?.rootViewController
@@ -167,31 +162,6 @@ suspend fun CaptureController.captureAsyncAndShare(
     )
 }
 
-/**
- * Convert ImageBitmap to NSData
- */
-@OptIn(ExperimentalForeignApi::class)
-internal fun ImageBitmap.toNSData(format: ShareType): NSData? {
-    val skiaBitmap = this.asSkiaBitmap() // ImageBitmap → Skia Bitmap
-    val skiaImage = Image.makeFromBitmap(skiaBitmap) // Skia Bitmap → Skia Image
-    val encodedData: Data? = when (format) {
-        is ShareType.PNG -> skiaImage.encodeToData(
-            format = org.jetbrains.skia.EncodedImageFormat.PNG,
-            quality = format.quality
-        )
-
-        is ShareType.JPEG -> skiaImage.encodeToData(
-            format = org.jetbrains.skia.EncodedImageFormat.JPEG,
-            quality = format.quality
-        )
-    }
-    if (encodedData == null) return null
-
-    val byteArray = encodedData.bytes
-    return byteArray.usePinned { pinned ->
-        NSData.dataWithBytes(pinned.addressOf(0), byteArray.size.toULong())
-    }
-}
 
 internal class SingleImageProvider(private val imageUrl: NSURL, private val metaTitle: String) :
     NSObject(),
