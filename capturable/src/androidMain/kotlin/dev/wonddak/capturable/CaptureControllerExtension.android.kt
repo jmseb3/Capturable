@@ -26,10 +26,14 @@
 package dev.wonddak.capturable
 
 import android.content.ClipData
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
+import androidx.annotation.RequiresPermission
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.core.content.FileProvider
 import dev.wonddak.capturable.controller.CaptureController
@@ -61,6 +65,15 @@ sealed class ImageType(val suffix: String) {
      */
     internal val mimeType: String
         get() = "image/$suffix"
+
+    /**
+     * @return make file name with suffix
+     */
+    internal fun makeFileName(
+        name: String
+    ): String {
+        return "$name.$suffix"
+    }
 }
 
 /**
@@ -116,7 +129,7 @@ suspend fun CaptureController.captureAsyncAndShare(
     addOptionChooseIntent: (chooseIntent: Intent) -> Unit = {},
     authority: String = context.packageName + ".fileprovider",
     deleteOnExit: Boolean = true
-) {
+) = runCatching {
     val bitmap: ImageBitmap = this.captureAsync().await()
     val uri = withContext(Dispatchers.IO) {
         // Make TempFile
@@ -145,9 +158,7 @@ suspend fun CaptureController.captureAsyncAndShare(
 
     // make clipDate for preview
     intentShareImageSend.clipData = ClipData(
-        "",
-        arrayOf(mimeType),
-        ClipData.Item(uri)
+        "", arrayOf(mimeType), ClipData.Item(uri)
     )
 
     intentShareImageSend.putExtra(Intent.EXTRA_STREAM, uri)
@@ -161,4 +172,89 @@ suspend fun CaptureController.captureAsyncAndShare(
     addOptionChooseIntent(chooseIntent)
 
     context.startActivity(chooseIntent)
+}
+
+
+/**
+ * Capture and save Image
+ *
+ * capture and save Image use [MediaStore]
+ *
+ * need permission [android.Manifest.permission.WRITE_EXTERNAL_STORAGE] if SDK < Q
+ *
+ * also see [CaptureController.captureAsync]
+ *
+ * Example usage:
+ *
+ * ```
+ *  val captureController = rememberCaptureController()
+ *  val uiScope = rememberCoroutineScope()
+ *  val context = LocalContext.current
+ *
+ *  // The content to be captured in to Bitmap
+ *  Column(
+ *      modifier = Modifier.capturable(captureController),
+ *  ) {
+ *      // Composable content
+ *  }
+ *  Button(
+ *      onClick = {
+ *          scope.launch {
+ *              captureController.captureAsyncAndSave(
+ *                  contentResolver = context.contentResolver,
+ *                  fileName = "Ticket",
+ *                  type = ImageType.PNG(100)
+ *               )
+ *          }
+ *  }) { ... }
+ * ```
+ * @param[contentResolver] ContentResolver
+ * @param[type]
+ *
+ * Share Type PNG or JPEG [ImageType]
+ *
+ * @param[fileName]
+ *
+ * Do not add an extension with a dot ('.'), the appropriate extension will be automatically applied based on the [ImageType].
+ *
+ *
+ * @param[addContentValues]
+ *
+ * add option if need for [contentValues]
+ *
+ */
+suspend fun CaptureController.captureAsyncAndSave(
+    contentResolver: ContentResolver,
+    type: ImageType,
+    fileName: String,
+    addContentValues: (contentValues: ContentValues) -> Unit = {},
+) = runCatching {
+    val bitmap: ImageBitmap = this.captureAsync().await()
+
+    val values = ContentValues().apply {
+        this.put(MediaStore.Images.Media.DISPLAY_NAME, type.makeFileName(fileName))
+        this.put(MediaStore.Images.Media.MIME_TYPE, type.mimeType)
+
+        // add addContentValues if you need
+        addContentValues(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            this.put(MediaStore.Images.Media.IS_PENDING, 1)
+        }
+    }
+
+    contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)?.let { uri ->
+        contentResolver.openFileDescriptor(uri, "w", null).use { parcelFileDescriptor ->
+            parcelFileDescriptor?.fileDescriptor?.let { fileDescriptor ->
+                FileOutputStream(fileDescriptor).use { outputStream ->
+                    outputStream.write(bitmap.toByteArray(type))
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.clear()
+            values.put(MediaStore.Images.Media.IS_PENDING, 0)
+            contentResolver.update(uri, values, null, null)
+        }
+    }
 }

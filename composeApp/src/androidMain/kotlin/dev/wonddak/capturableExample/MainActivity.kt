@@ -25,40 +25,69 @@
 */
 package dev.wonddak.capturableExample
 
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import dev.wonddak.capturable.ImageType
+import dev.wonddak.capturable.captureAsyncAndSave
 import dev.wonddak.capturable.captureAsyncAndShare
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val context: Context by lazy {
-        this
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            permissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
         setContent {
-            App(
-                otherContent = { scope, captureController ->
-                    Button(
-                        onClick = {
-                            scope.launch {
-                                captureController.captureAsyncAndShare(
-                                    context = context
-                                )
-                            }
-                        }
-                    ) {
-                        Text("Share Ticket Image")
-                    }
-                }
-            )
+           AndroidMainContent()
         }
     }
+}
+
+@Composable
+fun AndroidMainContent() {
+    val context = LocalContext.current
+    App(
+        otherContent = { scope, captureController ->
+            Button(
+                onClick = {
+                    scope.launch {
+                        captureController.captureAsyncAndShare(
+                            context = context
+                        )
+                    }
+                }
+            ) {
+                Text("Share Ticket")
+            }
+
+            Button(
+                onClick = {
+                    scope.launch {
+                        captureController.captureAsyncAndSave(
+                            contentResolver = context.contentResolver,
+                            fileName = "Ticket",
+                            type = ImageType.PNG(100)
+                        )
+                    }
+                }
+            ) {
+                Text("Save Ticket")
+            }
+        }
+    )
 }

@@ -73,7 +73,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun App(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
+internal fun App(
+    otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null
+) {
     CapturableExampleTheme {
         TicketScreen(
             otherContent = otherContent
@@ -86,7 +88,9 @@ expect val maxFrame: Float
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
+fun TicketScreen(
+    otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null
+) {
     val captureController = rememberCaptureController()
     val uiScope = rememberCoroutineScope()
 
