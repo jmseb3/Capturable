@@ -36,6 +36,12 @@ import platform.Foundation.NSItemProvider
 import platform.Foundation.NSURL
 import platform.Foundation.writeToURL
 import platform.LinkPresentation.LPLinkMetadata
+import platform.Photos.PHAssetChangeRequest
+import platform.Photos.PHAuthorizationStatusAuthorized
+import platform.Photos.PHAuthorizationStatusDenied
+import platform.Photos.PHAuthorizationStatusNotDetermined
+import platform.Photos.PHAuthorizationStatusRestricted
+import platform.Photos.PHPhotoLibrary
 import platform.UIKit.UIActivityItemSourceProtocol
 import platform.UIKit.UIActivityType
 import platform.UIKit.UIActivityViewController
@@ -64,6 +70,15 @@ sealed class ImageType(val suffix: String) {
      * @param quality compress quality(0 ~ 100)
      */
     data class JPEG(val quality: Int) : ImageType("jpeg")
+
+    /**
+     * @return make file name with suffix
+     */
+    internal fun makeFileName(
+        name: String
+    ): String {
+        return "$name.$suffix"
+    }
 }
 
 /**
@@ -102,7 +117,7 @@ sealed class ImageType(val suffix: String) {
  * title of UIActivityViewController meta
  * default value : "Share Captured Image"
  *
- * @param[shareType]
+ * @param[type]
  *
  * Share Type PNG or JPEG [ImageType]
  *
@@ -120,17 +135,17 @@ sealed class ImageType(val suffix: String) {
 suspend fun CaptureController.captureAsyncAndShare(
     fileName: String = "capture_shared",
     metaTitle: String = "Share Captured Image",
-    shareType: ImageType = ImageType.PNG(100),
+    type: ImageType = ImageType.PNG(100),
     addOptionUIActivityViewController: (UIActivityViewController) -> Unit = {},
     topViewController: UIViewController? =
         UIApplication.sharedApplication.keyWindow?.rootViewController
-) {
+) = runCatching {
     val bitmap: ImageBitmap = this.captureAsync().await()
-    val imageData: NSData = bitmap.toNSData(shareType) ?: return
+    val imageData: NSData = bitmap.toNSData(type) ?: return@runCatching
 
     // Create a temporary file URL
     val tempDir = platform.Foundation.NSTemporaryDirectory()
-    val tempUrl = NSURL.fileURLWithPath("$tempDir/$fileName." + shareType.suffix)
+    val tempUrl = NSURL.fileURLWithPath("$tempDir/" + type.makeFileName(fileName))
 
     // Write the PNG data to the temporary file
     imageData.writeToURL(tempUrl, true)
@@ -186,5 +201,88 @@ internal class SingleImageProvider(private val imageUrl: NSURL, private val meta
         metadata.originalURL = imageUrl
         metadata.imageProvider = NSItemProvider(imageUrl)
         return metadata as objcnames.classes.LPLinkMetadata
+    }
+}
+
+/**
+ * Capture and save Image
+ *
+ * capture and save Image use [PHPhotoLibrary]
+ **
+ * also see [CaptureController.captureAsync]
+ *
+ * Example usage:
+ *
+ * ```
+ *  val captureController = rememberCaptureController()
+ *  val uiScope = rememberCoroutineScope()
+ *  val context = LocalContext.current
+ *
+ *  // The content to be captured in to Bitmap
+ *  Column(
+ *      modifier = Modifier.capturable(captureController),
+ *  ) {
+ *      // Composable content
+ *  }
+ *  Button(
+ *      onClick = {
+ *          scope.launch {
+ *              captureController.captureAsyncAndSave(
+ *                  contentResolver = context.contentResolver,
+ *                  fileName = "Ticket",
+ *                  type = ImageType.PNG(100)
+ *               )
+ *          }
+ *  }) { ... }
+ * ```
+ * @param[type]
+ *
+ * Share Type PNG or JPEG [ImageType]
+ *
+ * @param[fileName]
+ *
+ * Do not add an extension with a dot ('.'), the appropriate extension will be automatically applied based on the [ImageType].
+ *
+ *
+ */
+suspend fun CaptureController.captureAsyncAndSave(
+    fileName: String = "capture_shared",
+    type: ImageType = ImageType.PNG(100),
+) = runCatching {
+    val bitmap: ImageBitmap = this.captureAsync().await()
+    val imageData: NSData = bitmap.toNSData(type) ?: return@runCatching
+
+    // Create a temporary file URL
+    val tempDir = platform.Foundation.NSTemporaryDirectory()
+    val tempUrl = NSURL.fileURLWithPath("$tempDir/" + type.makeFileName(fileName))
+
+    // Write the PNG data to the temporary file
+    imageData.writeToURL(tempUrl, true)
+
+    PHPhotoLibrary.requestAuthorization { status ->
+        when (status) {
+            PHAuthorizationStatusAuthorized , PHAuthorizationStatusRestricted-> {
+                PHPhotoLibrary.sharedPhotoLibrary().performChanges(
+                    changeBlock = {
+                        PHAssetChangeRequest.creationRequestForAssetFromImageAtFileURL(tempUrl)
+                    },
+                    completionHandler = { success, error ->
+                        if (success) {
+                            print("Image saved successfully!")
+                        } else {
+                            print("Error saving image: ${error?.localizedDescription() ?: "Unknown error"}")
+                        }
+                    }
+                )
+            }
+
+            PHAuthorizationStatusDenied -> {
+                print("Permission to access photo library denied")
+            }
+
+            PHAuthorizationStatusNotDetermined -> {
+                print("Permission not determined.")
+            }
+        }
     }
 }

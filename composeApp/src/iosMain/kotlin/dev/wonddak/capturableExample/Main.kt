@@ -28,6 +28,8 @@ package dev.wonddak.capturableExample
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.window.ComposeUIViewController
+import dev.wonddak.capturable.ImageType
+import dev.wonddak.capturable.captureAsyncAndSave
 import dev.wonddak.capturable.captureAsyncAndShare
 import kotlinx.coroutines.launch
 import platform.UIKit.UIViewController
@@ -46,6 +48,19 @@ fun mainViewController(): UIViewController = ComposeUIViewController {
                 }
             ) {
                 Text("Share Ticket Image")
+            }
+
+            Button(
+                onClick = {
+                    scope.launch {
+                        captureController.captureAsyncAndSave(
+                            fileName = "Ticket",
+                            type = ImageType.PNG(100)
+                        )
+                    }
+                }
+            ) {
+                Text("Save Ticket")
             }
         }
     )
