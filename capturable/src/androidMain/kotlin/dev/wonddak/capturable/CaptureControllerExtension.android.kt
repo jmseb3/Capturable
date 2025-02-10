@@ -72,6 +72,28 @@ sealed class ShareType(val suffix: String) {
  *
  * also see [CaptureController.captureAsync]
  *
+ * Example usage:
+ *
+ * ```
+ *  val captureController = rememberCaptureController()
+ *  val uiScope = rememberCoroutineScope()
+ *  val context = LocalContext.current
+ *
+ *  // The content to be captured in to Bitmap
+ *  Column(
+ *      modifier = Modifier.capturable(captureController),
+ *  ) {
+ *      // Composable content
+ *  }
+ *  Button(
+ *     onClick = {
+ *         scope.launch {
+ *             captureController.captureAsyncAndShare(
+ *                 context = context
+ *             )
+ *         }
+ *  }) { ... }
+ * ```
  * @param[context] Context
  * @param[shareType]
  *
