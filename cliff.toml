@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.\n
 # template for the changelog body
 # https://keats.github.io/tera/docs/#introduction
 body = """
+{% set repo_url = "https://github.com/jmseb3/Capturable/commit" %}
+
 {% if version %}\
     ## {{ version | trim_start_matches(pat="v") }} - {{ timestamp | date(format="%Y-%m-%d") }}
 {% else %}\
@@ -29,7 +31,7 @@ body = """
     ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits %}
         - {% if commit.scope %}*({{ commit.scope }})* - {% endif %}\
-        {{ commit.message | split(pat="\n") | first | upper_first | trim }} ([{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }}))\
+        {{ commit.message | split(pat="\n") | first | upper_first | trim }} ([{{ commit.id | truncate(length=7, end="") }}]({{ repo_url }}/{{ commit.id }})\
           {% for footer in commit.footers -%}
             , {{ footer.token }}{{ footer.separator }}{{ footer.value }}\
           {% endfor %}\
