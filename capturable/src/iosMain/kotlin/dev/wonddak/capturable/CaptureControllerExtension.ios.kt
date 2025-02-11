@@ -223,7 +223,6 @@ internal class SingleImageProvider(private val imageUrl: NSURL, private val meta
  *      onClick = {
  *          scope.launch {
  *              captureController.captureAsyncAndSave(
- *                  contentResolver = context.contentResolver,
  *                  fileName = "Ticket",
  *                  type = ImageType.PNG(100)
  *               )
