@@ -8,7 +8,14 @@ _Made with ❤️ for Compose Multiplatform Developers_
 Thank to [@PatilShreyas](https://www.github.com/PatilShreyas)
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.github.jmseb3/capturable)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.1.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![License](https://img.shields.io/github/license/jmseb3/capturable)](https://opensource.org/license/mit/)
 
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.7.3-blue)](https://github.com/JetBrains/compose-multiplatform)
+![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
+![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
+![badge-desktop](http://img.shields.io/badge/platform-desktop-DB413D.svg?style=flat)
+![badge-js](http://img.shields.io/badge/platform-js%2Fwasm-FDD835.svg?style=flat)
 ## 💡Introduction 
 
 In the previous View system, drawing Bitmap Image from `View` was very straightforward. But that's not the case with Jetpack Compose since it's different in many aspects from previous system. This library helps easy way to achieve the same results.
@@ -81,7 +88,7 @@ In `lib.versions.toml`  include this dependency version catalog
 
 ```toml
 [versions]
-capturable = "1.0.0"
+capturable = "1.1.0"
 
 [libraries]
 capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
@@ -97,7 +104,7 @@ or In `build.gradle` of app module, include this dependency
 
 ```gradle
 dependencies {
-    implementation("io.github.jmseb3:capturable:1.0.0")
+    implementation("io.github.jmseb3:capturable:1.1.0")
 }
 ```
 
