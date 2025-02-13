@@ -114,7 +114,7 @@ _You can find latest version and changelogs in the [releases](https://github.com
 
 #### 1. Setup the controller
 
-To be able to capture Composable content, you need instance of [`CaptureController`](./docs/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/index.html) by which you can decide when to capture the content. You can get the instance as follow.
+To be able to capture Composable content, you need instance of [`CaptureController`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/index.html) by which you can decide when to capture the content. You can get the instance as follow.
 
 ```kotlin
 @Composable
@@ -123,7 +123,7 @@ fun TicketScreen() {
 }
 ```
 
-_[`rememberCaptureController()`](./docs/capturable/dev.shreyaspatil.capturable.controller/remember-capture-controller.html) is a Composable function._
+_[`rememberCaptureController()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/remember-capture-controller.html) is a Composable function._
 
 #### 2. Add the content
 
@@ -167,7 +167,7 @@ On calling this method, request for capturing the content will be sent and `Imag
 returned asynchronously. _This method is safe to be called from Main thread._
 
 ### Android & iOS
-The Platform have `captureAsyncAndShare` and `captureAsyncAndSave`
+The Platform have [`captureAsyncAndShare`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable/capture-async-and-share.html) and [`captureAsyncAndSave`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable/capture-async-and-save.html)
 
 ## 🙋‍♂️ Contribute 
 
