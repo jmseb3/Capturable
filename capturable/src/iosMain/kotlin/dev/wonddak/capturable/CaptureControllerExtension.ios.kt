@@ -52,7 +52,6 @@ import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.UIKit.UIViewController
 import platform.UIKit.popoverPresentationController
 import platform.darwin.NSObject
-import toNSData
 
 /**
  * share Type of iOS

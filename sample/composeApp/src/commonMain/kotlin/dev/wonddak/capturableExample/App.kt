@@ -58,9 +58,9 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import capturable.composeapp.generated.resources.Res
-import capturable.composeapp.generated.resources.ic_baseline_check_circle_24
-import capturable.composeapp.generated.resources.ic_baseline_qr_code_24
+import capturable.sample.composeapp.generated.resources.Res
+import capturable.sample.composeapp.generated.resources.ic_baseline_check_circle_24
+import capturable.sample.composeapp.generated.resources.ic_baseline_qr_code_24
 import dev.wonddak.capturable.capturable
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.controller.rememberCaptureController

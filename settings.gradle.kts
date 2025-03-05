@@ -27,5 +27,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include(":composeApp")
+include(":sample:composeApp")
+
 include(":capturable")
