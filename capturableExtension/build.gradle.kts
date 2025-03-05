@@ -126,7 +126,7 @@ android {
             isReturnDefaultValues = true
         }
     }
-    namespace = "dev.wonddak.capturable"
+    namespace = "dev.wonddak.capturable.extension"
 }
 
 dependencies {
@@ -137,7 +137,7 @@ dependencies {
 
 
 dokka {
-    moduleName.set("Caputerable")
+    moduleName.set("CaputerableExtension")
 
     dokkaPublications.html {
         outputDirectory.set(project.mkdir("build/dokka"))
