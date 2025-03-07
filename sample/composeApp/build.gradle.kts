@@ -47,6 +47,7 @@ kotlin {
             implementation(project(":capturable"))
             implementation(project(":capturable-extension"))
             implementation(libs.filekit.core)
+            implementation(libs.filekit.dialogs)
         }
 
         androidMain.dependencies {

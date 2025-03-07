@@ -69,8 +69,15 @@ kotlin {
             implementation(compose.uiTest)
         }
 
-        androidMain.dependencies {
+        val mobileMain by creating {
+            dependsOn(commonMain.get())
+        }
 
+        androidMain {
+            dependsOn(mobileMain)
+            dependencies {
+
+            }
         }
 
         androidUnitTest.dependencies {
@@ -78,9 +85,20 @@ kotlin {
             implementation(libs.mockk)
         }
 
-        iosMain.dependencies {
-
+        iosMain {
+            dependsOn(mobileMain)
         }
+        
+        iosX64Main {
+            dependsOn(iosMain.get())
+        }
+        iosArm64Main {
+            dependsOn(iosMain.get())
+        }
+        iosSimulatorArm64Main {
+            dependsOn(iosMain.get())
+        }
+
 
         jvmTest.dependencies {
             implementation(compose.desktop.uiTestJUnit4)
