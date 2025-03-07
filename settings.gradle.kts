@@ -31,3 +31,4 @@ include(":sample:composeApp")
 
 include(":capturable")
 include(":capturableExtension")
+include(":docs")

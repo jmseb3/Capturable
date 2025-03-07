@@ -135,7 +135,7 @@ dependencies {
 
 
 dokka {
-    moduleName.set("Caputerable-Extension")
+    moduleName.set("Extension")
 
     dokkaPublications.html {
         outputDirectory.set(project.mkdir("build/dokka"))

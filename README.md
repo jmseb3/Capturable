@@ -98,6 +98,7 @@ capturable-extension = { module = "io.github.jmseb3:capturable-extension", versi
 ```kotlin
 dependencies {
     implementation(libs.capturable)
+    implementation(libs.capturable.extension)
 }
 ```
 
@@ -146,7 +147,7 @@ fun TicketScreen() {
 
 #### 3. Capture the content
 
-To capture the content, use [`CaptureController#captureAsync()`](./docs/capturable/dev.shreyaspatil.capturable.controller/-capture-controller/capture-async.html) as follows. 
+To capture the content, use [`CaptureController#captureAsync()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/capture-async.html) as follows. 
 
 ```kotlin
 // Example: Capture the content when button is clicked
@@ -167,9 +168,6 @@ Button(onClick = {
 
 On calling this method, request for capturing the content will be sent and `ImageBitmap` will be 
 returned asynchronously. _This method is safe to be called from Main thread._
-
-### Android & iOS
-The Platform have [`captureAsyncAndShare`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable/capture-async-and-share.html) and [`captureAsyncAndSave`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable/capture-async-and-save.html)
 
 ## 🙋‍♂️ Contribute 
 
