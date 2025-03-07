@@ -110,11 +110,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    buildFeatures {
-        buildConfig = false
-        compose = true
-    }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -146,12 +141,6 @@ dokka {
     dokkaSourceSets {
         this.commonMain {
             displayName.set("Common")
-        }
-        named("androidMain") {
-            displayName.set("Android")
-        }
-        named("iosMain") {
-            displayName.set("iOS")
         }
     }
 }

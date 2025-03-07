@@ -54,6 +54,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlinx.coroutines.core)
 
+            implementation(project(":capturable"))
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.dialogs)
+            implementation(libs.filekit.dialogs.compose)
         }
 
         commonTest.dependencies {
@@ -109,12 +113,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
-    buildFeatures {
-        buildConfig = false
-        compose = true
-    }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -137,7 +135,7 @@ dependencies {
 
 
 dokka {
-    moduleName.set("CaputerableExtension")
+    moduleName.set("Caputerable-Extension")
 
     dokkaPublications.html {
         outputDirectory.set(project.mkdir("build/dokka"))
@@ -152,6 +150,15 @@ dokka {
         }
         named("iosMain") {
             displayName.set("iOS")
+        }
+        named("jsMain") {
+            displayName.set("Js")
+        }
+        named("wasmMain") {
+            displayName.set("Wasm")
+        }
+        named("jvmMain") {
+            displayName.set("JVM")
         }
     }
 }
