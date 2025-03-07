@@ -30,9 +30,13 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import dev.wonddak.capturableExample.App
+import io.github.vinceglb.filekit.FileKit
 import java.awt.Dimension
 
 fun main() = application {
+
+    FileKit.init(appId = "Capturable")
+
     Window(
         title = "Capturable Example",
         state = rememberWindowState(width = 400.dp, height = 711.dp),

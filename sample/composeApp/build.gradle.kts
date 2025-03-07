@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.android.application)
@@ -24,6 +25,7 @@ kotlin {
         }
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
@@ -43,6 +45,11 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(project(":capturable"))
+            implementation(project(":capturableExtension"))
+
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.dialogs)
+            implementation(libs.filekit.dialogs.compose)
         }
 
         androidMain.dependencies {

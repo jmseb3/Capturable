@@ -1,7 +1,8 @@
 package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
-import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.download
 
 /**
  * Capture and save Image To Gallery
@@ -45,37 +46,17 @@ import io.github.vinceglb.filekit.PlatformFile
  *
  * Share Type Auto,Pick and Gallery [CapturableSaveType]
  */
-expect suspend fun CaptureController.captureAsyncAndSave(
-    fileName: String = "capture_shared",
-    imageType: CapturableSaveImageType = CapturableSaveImageType.PNG(100),
-    saveType: CapturableSaveType = CapturableSaveType.Auto
-)
-/**
- * When Save Type
- */
-sealed interface CapturableSaveType {
+actual suspend fun CaptureController.captureAsyncAndSave(
+    fileName: String,
+    imageType: CapturableSaveImageType,
+    saveType: CapturableSaveType
+) {
+    val imageBitmap = this.captureAsync().await()
+    val imageBytes = imageBitmap.toByteArray(imageType)
 
-    /**
-     * Automatically uses optimized values for each platform.
-     */
-    data object Auto : CapturableSaveType
-
-    /**
-     * Pick Directory And Save
-     */
-    data object Pick : CapturableSaveType
-
-    /**
-     * Auto Save For Gallery
-     *
-     * [FileKit#saving images to gallery](https://filekit.mintlify.app/core/image-utils#saving-images-to-gallery)
-     *
-     * - Android : Saves to the device’s Pictures directory and makes it visible in the gallery app
-     * - iOS : Saves to the device’s Camera Roll
-     * - JVM : Saves to the user’s Pictures directory
-     * - JS/WASM : Not supported (no-op) >> Auto Convert to "Pick"
-     *
-     */
-    data object Gallery : CapturableSaveType
+    when (saveType) {
+        CapturableSaveType.Auto, CapturableSaveType.Pick, CapturableSaveType.Gallery -> {
+            FileKit.download(imageBytes, imageType.makeFileName(fileName))
+        }
+    }
 }
-

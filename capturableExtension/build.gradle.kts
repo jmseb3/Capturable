@@ -154,7 +154,7 @@ dokka {
         named("jsMain") {
             displayName.set("Js")
         }
-        named("wasmMain") {
+        named("wasmJsMain") {
             displayName.set("Wasm")
         }
         named("jvmMain") {

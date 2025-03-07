@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream
  * ImageBitmap to ByteArray bt type
  * @param[type] image Type
  */
-fun ImageBitmap.toByteArray(type: CapturableSaveImageType): ByteArray {
+actual fun ImageBitmap.toByteArray(type: CapturableSaveImageType): ByteArray {
     val androidBitmap = this.asAndroidBitmap()
     val byteArrayOutputStream = ByteArrayOutputStream()
     when (type) {
