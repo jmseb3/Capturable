@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     dokka(project(":capturable"))
-    dokka(project(":capturableExtension"))
+    dokka(project(":capturable-extension"))
 }
 
 dokka {

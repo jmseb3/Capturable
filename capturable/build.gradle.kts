@@ -53,7 +53,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlinx.coroutines.core)
-
         }
 
         commonTest.dependencies {
@@ -63,11 +62,6 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
-        androidMain.dependencies {
-            //Need For FileProvider
-            implementation("androidx.core:core-ktx:1.12.0")
-        }
-
         androidUnitTest.dependencies {
             implementation(libs.junit.android)
             implementation(libs.mockk)

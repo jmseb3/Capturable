@@ -3,7 +3,7 @@
 ![Capturable](art/header.png)
 
 🚀 Compose utility library for converting Composable content into ImageBitmap 🖼️.  
-_Made with ❤️ for Compose Multiplatform Developers_ 
+_Made with ❤️ for Compose Multiplatform Developers_
 
 Thank to [@PatilShreyas](https://www.github.com/PatilShreyas)
 
@@ -16,13 +16,17 @@ Thank to [@PatilShreyas](https://www.github.com/PatilShreyas)
 ![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
 ![badge-desktop](http://img.shields.io/badge/platform-desktop-DB413D.svg?style=flat)
 ![badge-js](http://img.shields.io/badge/platform-js%2Fwasm-FDD835.svg?style=flat)
-## 💡Introduction 
 
-In the previous View system, drawing Bitmap Image from `View` was very straightforward. But that's not the case with Jetpack Compose since it's different in many aspects from previous system. This library helps easy way to achieve the same results.
+## 💡Introduction
+
+In the previous View system, drawing Bitmap Image from `View` was very straightforward. But that's
+not the case with Jetpack Compose since it's different in many aspects from previous system. This
+library helps easy way to achieve the same results.
 
 ## 🚀 Implementation
 
-You can check [/composeApp](/composeApp) directory which includes example application for demonstration. 
+You can check [/composeApp](/composeApp) directory which includes example application for
+demonstration.
 
 ### Preview
 
@@ -63,20 +67,27 @@ You can check [/composeApp](/composeApp) directory which includes example applic
 <summary>How To Test sample?</summary>
 
 ### Android
-To run the application on android device/emulator:  
- - open project in Android Studio and run imported android run configuration
+
+To run the application on android device/emulator:
+
+- open project in Android Studio and run imported android run configuration
 
 ### Desktop
+
 Run the desktop application: `./gradlew :sample:composeApp:run`
 
 ### iOS
+
 To run the application on iPhone device/simulator:
+
 - Open `iosApp/iosApp.xcproject` in Xcode and run standard configuration
 
 ### JS Browser
+
 Run the browser application: `./gradlew :sample:composeApp:jsBrowserDevelopmentRun --continue`
 
 ### Wasm Browser
+
 Run the browser application: `./gradlew :sample:composeApp:wasmJsBrowserDevelopmentRun --continue`
 </details>
 
@@ -111,13 +122,16 @@ dependencies {
 }
 ```
 
-_You can find latest version and changelogs in the [releases](https://github.com/jmseb3/Capturable/releases)_.
+_You can find latest version and changelogs in
+the [releases](https://github.com/jmseb3/Capturable/releases)_.
 
 ### Usage
 
 #### 1. Setup the controller
 
-To be able to capture Composable content, you need instance of [`CaptureController`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/index.html) by which you can decide when to capture the content. You can get the instance as follow.
+To be able to capture Composable content, you need instance of [
+`CaptureController`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/index.html)
+by which you can decide when to capture the content. You can get the instance as follow.
 
 ```kotlin
 @Composable
@@ -126,11 +140,14 @@ fun TicketScreen() {
 }
 ```
 
-_[`rememberCaptureController()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/remember-capture-controller.html) is a Composable function._
+_[
+`rememberCaptureController()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/remember-capture-controller.html)
+is a Composable function._
 
 #### 2. Add the content
 
-The component which needs to be captured, a `capturable()` Modifier should be applied on that @Composable component as follows.
+The component which needs to be captured, a `capturable()` Modifier should be applied on that
+@Composable component as follows.
 
 ```kotlin
 @Composable
@@ -147,7 +164,9 @@ fun TicketScreen() {
 
 #### 3. Capture the content
 
-To capture the content, use [`CaptureController#captureAsync()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/capture-async.html) as follows. 
+To capture the content, use [
+`CaptureController#captureAsync()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/capture-async.html)
+as follows.
 
 ```kotlin
 // Example: Capture the content when button is clicked
@@ -166,13 +185,27 @@ Button(onClick = {
 }) { ... }
 ```
 
-On calling this method, request for capturing the content will be sent and `ImageBitmap` will be 
+On calling this method, request for capturing the content will be sent and `ImageBitmap` will be
 returned asynchronously. _This method is safe to be called from Main thread._
 
-## 🙋‍♂️ Contribute 
+### Extension
+
+if you need for **captureAsyncAndSave** or **captureAsyncAndShare** use **capturable-extension**
+
+it's depend on [FileKit](https://github.com/vinceglb/FileKit) / Plz
+See [FileKit Setup Guide](https://filekit.mintlify.app/core/setup)
+
+| Platform | captureAsyncAndSave | captureAsyncAndShare |
+|:--------:|:-------------------:|:--------------------:|
+| Android  |          ✅          |          ✅           |
+|   iOS    |          ✅          |          ✅           |
+|   JVM    |          ✅          |          ❎           |
+|    JS    |          ✅          |          ❎           |
+|   WASM   |          ✅          |          ❎           |
+
+## 🙋‍♂️ Contribute
 
 Read [contribution guidelines](CONTRIBUTING.md) for more information regarding contribution.
-
 
 ## 📝 License
 

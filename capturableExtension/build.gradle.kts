@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(project(":capturable"))
+
             implementation(libs.filekit.core)
             implementation(libs.filekit.dialogs)
             implementation(libs.filekit.dialogs.compose)
@@ -67,9 +68,9 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
+
         androidMain.dependencies {
-            //Need For FileProvider
-            implementation("androidx.core:core-ktx:1.12.0")
+
         }
 
         androidUnitTest.dependencies {

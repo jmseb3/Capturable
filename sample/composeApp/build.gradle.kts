@@ -45,11 +45,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(project(":capturable"))
-            implementation(project(":capturableExtension"))
-
+            implementation(project(":capturable-extension"))
             implementation(libs.filekit.core)
-            implementation(libs.filekit.dialogs)
-            implementation(libs.filekit.dialogs.compose)
         }
 
         androidMain.dependencies {
