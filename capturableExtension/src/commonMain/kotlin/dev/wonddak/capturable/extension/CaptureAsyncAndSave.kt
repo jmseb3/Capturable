@@ -1,7 +1,6 @@
 package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
-import io.github.vinceglb.filekit.PlatformFile
 
 /**
  * Capture and save Image To Gallery
