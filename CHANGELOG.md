@@ -4,19 +4,43 @@ All notable changes to this project will be documented in this file.
 
 
 
+## 1.1.1 - 2025-05-07
+
+[2518de4](2518de49b8bd88b4712ba4aafa390568f3bd25b0)...[b54d534](b54d534d57469d7d0fde7f29a642ac8d72a02e4b)
+
+### 🚜 Refactor
+
+- Make sample folder [d7e48f9](https://github.com/jmseb3/Capturable/commit/d7e48f93bb420c62f3ece1501f6c35dab9a78ca9)
+
+### 📚 Documentation
+
+- Fix annotation [2d590b1](https://github.com/jmseb3/Capturable/commit/2d590b1edbe487ea165d79e4b7832a092ad8a114)
+
+
+
+## 1.1.0 - 2025-02-10
+
+[61ec33d](61ec33d999e49632cde23b3633c9539507b91f8a)...[2518de4](2518de49b8bd88b4712ba4aafa390568f3bd25b0)
+
+### 🐛 Bug Fixes
+
+- *(cliff)* - Fix error [8dfa5a0](https://github.com/jmseb3/Capturable/commit/8dfa5a091f8ad0398448a9d33461297e11553a54)
+
+
+
 ## 1.0.1-s2 - 2025-02-10
 
 [f3bfbf6](f3bfbf68945151cad77c0c8bb71f837490e968d4)...[61ec33d](61ec33d999e49632cde23b3633c9539507b91f8a)
 
 ### 🚀 Features
 
-- Add New Extension for ImageBitmap ([3046bfe](https://github.com/jmseb3/Capturable/commit/3046bfe9cf8440817dc657bfc765cc7a33bf45a1)
-- *(android)* - Add captureAsyncAndSave ([5440f75](https://github.com/jmseb3/Capturable/commit/5440f75c0bafd883d84ec234e1f367669f96ead1)
-- *(ios)* - Add captureAsyncAndSave ([61ec33d](https://github.com/jmseb3/Capturable/commit/61ec33d999e49632cde23b3633c9539507b91f8a)
+- Add New Extension for ImageBitmap [3046bfe](https://github.com/jmseb3/Capturable/commit/3046bfe9cf8440817dc657bfc765cc7a33bf45a1)
+- *(android)* - Add captureAsyncAndSave [5440f75](https://github.com/jmseb3/Capturable/commit/5440f75c0bafd883d84ec234e1f367669f96ead1)
+- *(ios)* - Add captureAsyncAndSave [61ec33d](https://github.com/jmseb3/Capturable/commit/61ec33d999e49632cde23b3633c9539507b91f8a)
 
 ### 📚 Documentation
 
-- Add comments to captureAsyncAndShare function logic ([97a0433](https://github.com/jmseb3/Capturable/commit/97a04338e83da5947e418e08b034e489f1634e0b)
+- Add comments to captureAsyncAndShare function logic [97a0433](https://github.com/jmseb3/Capturable/commit/97a04338e83da5947e418e08b034e489f1634e0b)
 
 
 
@@ -26,28 +50,28 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Bug Fixes
 
-- Allow subscribing to `CaptureController` multiple times ([c8e35f5](https://github.com/jmseb3/Capturable/commit/c8e35f59c3270ad4bb7f261dff9f15c1c2cc54bc), https://github.com/PatilShreyas/Capturable/commit/726769371c8d718efc68462775320a4757a4bc14
-- Add Test ([378c84e](https://github.com/jmseb3/Capturable/commit/378c84ec5d295bfb9bb6637ba26eb7e80390e166)
-- Github action branch ([9a93628](https://github.com/jmseb3/Capturable/commit/9a9362883d08707de28be714f90591c41014468e)
-- Github action ([3a76a34](https://github.com/jmseb3/Capturable/commit/3a76a341fd58ce5c1a76483ac1d5355819aaa444)
-- Add androidx Core ([3ed16cc](https://github.com/jmseb3/Capturable/commit/3ed16cc77872dc5bb0d3274a7c0d79e4bab949ff)
-- Github action ([f3bfbf6](https://github.com/jmseb3/Capturable/commit/f3bfbf68945151cad77c0c8bb71f837490e968d4)
+- Allow subscribing to `CaptureController` multiple times [c8e35f5](https://github.com/jmseb3/Capturable/commit/c8e35f59c3270ad4bb7f261dff9f15c1c2cc54bc), https://github.com/PatilShreyas/Capturable/commit/726769371c8d718efc68462775320a4757a4bc14
+- Add Test [378c84e](https://github.com/jmseb3/Capturable/commit/378c84ec5d295bfb9bb6637ba26eb7e80390e166)
+- Github action branch [9a93628](https://github.com/jmseb3/Capturable/commit/9a9362883d08707de28be714f90591c41014468e)
+- Github action [3a76a34](https://github.com/jmseb3/Capturable/commit/3a76a341fd58ce5c1a76483ac1d5355819aaa444)
+- Add androidx Core [3ed16cc](https://github.com/jmseb3/Capturable/commit/3ed16cc77872dc5bb0d3274a7c0d79e4bab949ff)
+- Github action [f3bfbf6](https://github.com/jmseb3/Capturable/commit/f3bfbf68945151cad77c0c8bb71f837490e968d4)
 
 ### 🚜 Refactor
 
-- Change package structure from 'dev.shreyaspatil.*' to 'dev.wonddak.*' ([48febe9](https://github.com/jmseb3/Capturable/commit/48febe93659d40f0c088c064c2921d60489026bb)
+- Change package structure from 'dev.shreyaspatil.*' to 'dev.wonddak.*' [48febe9](https://github.com/jmseb3/Capturable/commit/48febe93659d40f0c088c064c2921d60489026bb)
 
 ### 📚 Documentation
 
-- Fix typo in README ([67a15a7](https://github.com/jmseb3/Capturable/commit/67a15a79a023f41904c8b25d06cda3df071f2d2b)
-- Fix typo in README ([40e8b53](https://github.com/jmseb3/Capturable/commit/40e8b5393ed9bcd958be55273093da47a55a7f4f)
-- Fix dokkaV2 ([f617c26](https://github.com/jmseb3/Capturable/commit/f617c2687a747bbb66d18ce3c8b5ca443d226aad)
-- Fix typo in README ([c5f31a7](https://github.com/jmseb3/Capturable/commit/c5f31a7cc141eaccfa11717bf355212ce71b451f)
+- Fix typo in README [67a15a7](https://github.com/jmseb3/Capturable/commit/67a15a79a023f41904c8b25d06cda3df071f2d2b)
+- Fix typo in README [40e8b53](https://github.com/jmseb3/Capturable/commit/40e8b5393ed9bcd958be55273093da47a55a7f4f)
+- Fix dokkaV2 [f617c26](https://github.com/jmseb3/Capturable/commit/f617c2687a747bbb66d18ce3c8b5ca443d226aad)
+- Fix typo in README [c5f31a7](https://github.com/jmseb3/Capturable/commit/c5f31a7cc141eaccfa11717bf355212ce71b451f)
 
 ### ⚙️ Miscellaneous Tasks
 
-- Update versions in libs.versions.toml ([1074899](https://github.com/jmseb3/Capturable/commit/1074899594625ef299b8bfcdd250af64a6fdf9f8)
-- Add cliff tool ([a59292b](https://github.com/jmseb3/Capturable/commit/a59292ba81518f9ea14c18c0da4806b8fcacd10a)
-- Update spotless versions and apply ([d080b77](https://github.com/jmseb3/Capturable/commit/d080b77c76c98f5a90b2fde90b8dd16ef92b0870)
+- Update versions in libs.versions.toml [1074899](https://github.com/jmseb3/Capturable/commit/1074899594625ef299b8bfcdd250af64a6fdf9f8)
+- Add cliff tool [a59292b](https://github.com/jmseb3/Capturable/commit/a59292ba81518f9ea14c18c0da4806b8fcacd10a)
+- Update spotless versions and apply [d080b77](https://github.com/jmseb3/Capturable/commit/d080b77c76c98f5a90b2fde90b8dd16ef92b0870)
 
 <!-- generated by git-cliff -->
