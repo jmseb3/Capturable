@@ -16,6 +16,10 @@ All notable changes to this project will be documented in this file.
 
 - Fix annotation [2d590b1](https://github.com/jmseb3/Capturable/commit/2d590b1edbe487ea165d79e4b7832a092ad8a114)
 
+### Chore
+
+- *(deps)* - Bump version [5d571db](https://github.com/jmseb3/Capturable/commit/5d571db26641dd851ec211c078447b1f48077476)
+
 
 
 ## 1.1.0 - 2025-02-10
