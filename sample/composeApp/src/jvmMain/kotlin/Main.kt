@@ -45,19 +45,11 @@ fun main() = application {
     ) {
         window.minimumSize = Dimension(300, 533)
         App(
-            otherContent = { scope, captureController ->
-                Button(
-                    onClick = {
-                        scope.launch {
-                            captureController.captureAsyncAndSave(
-                                fileName = "Ticket_JVM",
-                                type = ImageSaveType.PNG(100)
-                            )
-                        }
-                    }
-                ) {
-                    Text("Save Ticket")
-                }
+            saveFile = {captureController ->
+                captureController.captureAsyncAndSave(
+                    fileName = "Ticket_JVM",
+                    type = ImageSaveType.PNG(100)
+                )
             }
         )
     }

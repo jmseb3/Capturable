@@ -73,20 +73,13 @@ fun AndroidMainContent() {
             ) {
                 Text("Share Ticket")
             }
-
-            Button(
-                onClick = {
-                    scope.launch {
-                        captureController.captureAsyncAndSave(
-                            contentResolver = context.contentResolver,
-                            fileName = "Ticket_Android",
-                            type = ImageSaveType.PNG(100)
-                        )
-                    }
-                }
-            ) {
-                Text("Save Ticket")
-            }
+        },
+        saveFile = { captureController ->
+            captureController.captureAsyncAndSave(
+                contentResolver = context.contentResolver,
+                fileName = "Ticket_Android",
+                type = ImageSaveType.PNG(100)
+            )
         }
     )
 }

@@ -23,34 +23,23 @@
 * SOFTWARE.
 *
 */
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import dev.wonddak.capturable.captureAsyncAndSave
 import dev.wonddak.capturable.extension.ImageSaveType
 import dev.wonddak.capturableExample.App
 import kotlinx.browser.document
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val body = document.body ?: return
     ComposeViewport(body) {
         App(
-            otherContent = { scope, captureController ->
-                Button(
-                    onClick = {
-                        scope.launch {
-                            captureController.captureAsyncAndSave(
-                                fileName = "Ticket_WASM",
-                                type = ImageSaveType.PNG(100)
-                            )
-                        }
-                    }
-                ) {
-                    Text("Save Ticket")
-                }
+            saveFile = { captureController ->
+                captureController.captureAsyncAndSave(
+                    fileName = "Ticket_WASM",
+                    type = ImageSaveType.PNG(100)
+                )
             }
         )
     }

@@ -49,19 +49,12 @@ fun mainViewController(): UIViewController = ComposeUIViewController {
             ) {
                 Text("Share Ticket Image")
             }
-
-            Button(
-                onClick = {
-                    scope.launch {
-                        captureController.captureAsyncAndSave(
-                            fileName = "Ticket_IOS",
-                            type = ImageSaveType.PNG(100)
-                        )
-                    }
-                }
-            ) {
-                Text("Save Ticket")
-            }
+        },
+        saveFile = { captureController ->
+            captureController.captureAsyncAndSave(
+                fileName = "Ticket_IOS",
+                type = ImageSaveType.PNG(100)
+            )
         }
     )
 }

@@ -33,7 +33,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -41,6 +40,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -73,10 +75,14 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun App(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
+internal fun App(
+    otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null,
+    saveFile: (suspend (CaptureController) -> Result<*>)? = null
+) {
     CapturableExampleTheme {
         TicketScreen(
-            otherContent = otherContent
+            otherContent = otherContent,
+            saveFile = saveFile
         )
     }
 }
@@ -86,7 +92,10 @@ expect val maxFrame: Float
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
+fun TicketScreen(
+    otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null,
+    saveFile: (suspend (CaptureController) -> Result<*>)? = null,
+) {
     val captureController = rememberCaptureController()
     val uiScope = rememberCoroutineScope()
 
@@ -94,57 +103,78 @@ fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) 
     // So that we can demo it
     var ticketBitmap: ImageBitmap? by remember { mutableStateOf(null) }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .safeDrawingPadding()
-            .padding(24.dp)
-    ) {
-        // The content to be captured ⬇️
-        Ticket(modifier = Modifier.capturable(captureController))
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        Spacer(modifier = Modifier.size(32.dp))
-
-        // Captures ticket bitmap on click
-        Button(
-            onClick = {
-                uiScope.launch {
-                    ticketBitmap = captureController.captureAsync().await()
-                }
-            }
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { innerPadding ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(innerPadding)
         ) {
-            Text("Preview Ticket Image")
-        }
+            // The content to be captured ⬇️
+            Ticket(modifier = Modifier.capturable(captureController))
 
-        otherContent?.invoke(uiScope, captureController)
+            Spacer(modifier = Modifier.size(32.dp))
 
-        // When Ticket's Bitmap image is captured, show preview in dialog
-        ticketBitmap?.let { bitmap ->
-            Dialog(onDismissRequest = { }) {
-                Column(
-                    modifier = Modifier
-                        .background(LightGray)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Preview of Ticket image \uD83D\uDC47")
-                    Spacer(Modifier.size(16.dp))
-                    Image(
-                        bitmap = bitmap,
-                        contentDescription = "Preview of ticket"
-                    )
-                    Spacer(Modifier.size(4.dp))
-                    Button(onClick = { ticketBitmap = null }) {
-                        Text("Close Preview")
+            // Captures ticket bitmap on click
+            Button(
+                onClick = {
+                    uiScope.launch {
+                        ticketBitmap = captureController.captureAsync().await()
+                    }
+                }
+            ) {
+                Text("Preview Ticket Image")
+            }
+
+            Button(
+                onClick = {
+                    uiScope.launch {
+                        saveFile!!.invoke(captureController)
+                            .onSuccess {
+                                snackbarHostState.showSnackbar("저장 성공")
+                            }
+                            .onFailure {
+                                snackbarHostState.showSnackbar("저장 실패")
+                            }
+                    }
+                },
+                enabled = saveFile!= null
+            ) {
+                Text("Save Ticket")
+            }
+            otherContent?.invoke(uiScope, captureController)
+
+            // When Ticket's Bitmap image is captured, show preview in dialog
+            ticketBitmap?.let { bitmap ->
+                Dialog(onDismissRequest = { }) {
+                    Column(
+                        modifier = Modifier
+                            .background(LightGray)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Preview of Ticket image \uD83D\uDC47")
+                        Spacer(Modifier.size(16.dp))
+                        Image(
+                            bitmap = bitmap,
+                            contentDescription = "Preview of ticket"
+                        )
+                        Spacer(Modifier.size(4.dp))
+                        Button(onClick = { ticketBitmap = null }) {
+                            Text("Close Preview")
+                        }
                     }
                 }
             }
-        }
 
-        LaunchedEffect(Unit) {
-            // delay 2 second reason of ios target
-            delay(2000L)
-            ticketBitmap = captureController.captureAsync().await()
+            LaunchedEffect(Unit) {
+                // delay 2 second reason of ios target
+                delay(2000L)
+                ticketBitmap = captureController.captureAsync().await()
+            }
         }
     }
 }
@@ -261,6 +291,10 @@ fun BookingQRCode() {
 @Composable
 fun DefaultPreview() {
     CapturableExampleTheme {
-        TicketScreen()
+        TicketScreen(
+            saveFile = {
+                return@TicketScreen Result.success(Unit)
+            }
+        )
     }
 }
