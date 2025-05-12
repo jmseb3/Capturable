@@ -40,9 +40,15 @@ kotlin {
     js {
         browser()
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "capturable"
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {
@@ -73,8 +79,36 @@ kotlin {
             implementation(libs.mockk)
         }
 
-        iosMain.dependencies {
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
 
+        val sikaImageMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        val iosMain by creating {
+            dependsOn(sikaImageMain)
+            dependsOn(commonMain.get())
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
+
+        val webMain by creating {
+            dependsOn(sikaImageMain)
+            dependsOn(commonMain.get())
+        }
+
+        jsMain {
+            dependsOn(webMain)
+        }
+        wasmJsMain {
+            dependsOn(webMain)
+        }
+
+        jvmMain {
+            dependsOn(sikaImageMain)
         }
 
         jvmTest.dependencies {

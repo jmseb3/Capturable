@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.core.content.FileProvider
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.extension.ImageSaveType
+import dev.wonddak.capturable.extension.toByteArray
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
