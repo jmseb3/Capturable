@@ -134,10 +134,10 @@ fun TicketScreen(
                     uiScope.launch {
                         saveFile!!.invoke(captureController)
                             .onSuccess {
-                                snackbarHostState.showSnackbar("저장 성공")
+                                snackbarHostState.showSnackbar("Save Success")
                             }
                             .onFailure {
-                                snackbarHostState.showSnackbar("저장 실패")
+                                snackbarHostState.showSnackbar("Save Fail")
                             }
                     }
                 },
