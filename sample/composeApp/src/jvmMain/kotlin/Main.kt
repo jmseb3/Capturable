@@ -24,8 +24,6 @@
 *
 */
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -35,7 +33,6 @@ import dev.wonddak.capturable.captureAsyncAndSave
 import dev.wonddak.capturable.extension.ImageSaveType
 import dev.wonddak.capturableExample.App
 import java.awt.Dimension
-import kotlinx.coroutines.launch
 
 fun main() = application {
     Window(
@@ -45,7 +42,7 @@ fun main() = application {
     ) {
         window.minimumSize = Dimension(300, 533)
         App(
-            saveFile = {captureController ->
+            saveFile = { captureController ->
                 captureController.captureAsyncAndSave(
                     fileName = "Ticket_JVM",
                     type = ImageSaveType.PNG(100)

@@ -94,7 +94,7 @@ expect val maxFrame: Float
 @Composable
 fun TicketScreen(
     otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null,
-    saveFile: (suspend (CaptureController) -> Result<*>)? = null,
+    saveFile: (suspend (CaptureController) -> Result<*>)? = null
 ) {
     val captureController = rememberCaptureController()
     val uiScope = rememberCoroutineScope()
@@ -141,7 +141,7 @@ fun TicketScreen(
                             }
                     }
                 },
-                enabled = saveFile!= null
+                enabled = saveFile != null
             ) {
                 Text("Save Ticket")
             }
