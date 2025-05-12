@@ -28,9 +28,9 @@ package dev.wonddak.capturableExample
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.window.ComposeUIViewController
-import dev.wonddak.capturable.ImageType
 import dev.wonddak.capturable.captureAsyncAndSave
 import dev.wonddak.capturable.captureAsyncAndShare
+import dev.wonddak.capturable.extension.ImageSaveType
 import kotlinx.coroutines.launch
 import platform.UIKit.UIViewController
 
@@ -54,8 +54,8 @@ fun mainViewController(): UIViewController = ComposeUIViewController {
                 onClick = {
                     scope.launch {
                         captureController.captureAsyncAndSave(
-                            fileName = "Ticket",
-                            type = ImageType.PNG(100)
+                            fileName = "Ticket_IOS",
+                            type = ImageSaveType.PNG(100)
                         )
                     }
                 }

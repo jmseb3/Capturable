@@ -23,11 +23,16 @@
 * SOFTWARE.
 *
 */
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import dev.wonddak.capturable.captureAsyncAndSave
+import dev.wonddak.capturable.extension.ImageSaveType
 import dev.wonddak.capturableExample.App
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.launch
 import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -36,7 +41,22 @@ fun main() {
         onWasmReady {
             val body = document.body ?: return@onWasmReady
             ComposeViewport(body) {
-                App()
+                App(
+                    otherContent = { scope, captureController ->
+                        Button(
+                            onClick = {
+                                scope.launch {
+                                    captureController.captureAsyncAndSave(
+                                        fileName = "Ticket_JS",
+                                        type = ImageSaveType.PNG(100)
+                                    )
+                                }
+                            }
+                        ) {
+                            Text("Save Ticket")
+                        }
+                    }
+                )
             }
         }
     }

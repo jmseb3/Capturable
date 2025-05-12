@@ -24,13 +24,17 @@
 *
 */
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import dev.wonddak.capturable.extension.ImageSaveType
 import dev.wonddak.capturableExample.App
 import java.awt.Dimension
+import kotlinx.coroutines.launch
 
 fun main() = application {
     Window(

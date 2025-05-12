@@ -28,6 +28,7 @@ package dev.wonddak.capturable
 import androidx.compose.ui.graphics.ImageBitmap
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.extension.ImageSaveType
+import dev.wonddak.capturable.extension.toNSData
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGRectMake

@@ -35,9 +35,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import dev.wonddak.capturable.ImageType
 import dev.wonddak.capturable.captureAsyncAndSave
 import dev.wonddak.capturable.captureAsyncAndShare
+import dev.wonddak.capturable.extension.ImageSaveType
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -79,8 +79,8 @@ fun AndroidMainContent() {
                     scope.launch {
                         captureController.captureAsyncAndSave(
                             contentResolver = context.contentResolver,
-                            fileName = "Ticket",
-                            type = ImageType.PNG(100)
+                            fileName = "Ticket_Android",
+                            type = ImageSaveType.PNG(100)
                         )
                     }
                 }
