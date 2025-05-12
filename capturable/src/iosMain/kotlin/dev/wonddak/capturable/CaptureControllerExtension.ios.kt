@@ -27,23 +27,19 @@ package dev.wonddak.capturable
 
 import androidx.compose.ui.graphics.ImageBitmap
 import dev.wonddak.capturable.controller.CaptureController
+import dev.wonddak.capturable.extension.ImageSaveType
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.ObjCSignatureOverride
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGRectMake
 import platform.Foundation.NSData
-import platform.Foundation.NSItemProvider
 import platform.Foundation.NSURL
 import platform.Foundation.writeToURL
-import platform.LinkPresentation.LPLinkMetadata
 import platform.Photos.PHAssetChangeRequest
 import platform.Photos.PHAuthorizationStatusAuthorized
 import platform.Photos.PHAuthorizationStatusDenied
 import platform.Photos.PHAuthorizationStatusNotDetermined
 import platform.Photos.PHAuthorizationStatusRestricted
 import platform.Photos.PHPhotoLibrary
-import platform.UIKit.UIActivityItemSourceProtocol
-import platform.UIKit.UIActivityType
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
 import platform.UIKit.UIDevice
@@ -51,30 +47,6 @@ import platform.UIKit.UIScreen
 import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.UIKit.UIViewController
 import platform.UIKit.popoverPresentationController
-import platform.darwin.NSObject
-
-/**
- * share Type of iOS
- */
-sealed class ImageType(val suffix: String) {
-
-    /**
-     * share type PNG
-     * @param quality compress quality(0 ~ 100)
-     */
-    data class PNG(val quality: Int) : ImageType("png")
-
-    /**
-     * share type JPEG
-     * @param quality compress quality(0 ~ 100)
-     */
-    data class JPEG(val quality: Int) : ImageType("jpeg")
-
-    /**
-     * @return make file name with suffix
-     */
-    internal fun makeFileName(name: String): String = "$name.$suffix"
-}
 
 /**
  * Capture and share Image
@@ -107,14 +79,9 @@ sealed class ImageType(val suffix: String) {
  * save temp File name
  * default value : "capture_shared"
  *
- * @param[metaTitle]
- *
- * title of UIActivityViewController meta
- * default value : "Share Captured Image"
- *
  * @param[type]
  *
- * Share Type PNG or JPEG [ImageType]
+ * Share Type PNG or JPEG [ImageSaveType]
  *
  * @param[addOptionUIActivityViewController]
  *
@@ -129,8 +96,7 @@ sealed class ImageType(val suffix: String) {
 @OptIn(ExperimentalForeignApi::class)
 suspend fun CaptureController.captureAsyncAndShare(
     fileName: String = "capture_shared",
-    metaTitle: String = "Share Captured Image",
-    type: ImageType = ImageType.PNG(100),
+    type: ImageSaveType = ImageSaveType.PNG(100),
     addOptionUIActivityViewController: (UIActivityViewController) -> Unit = {},
     topViewController: UIViewController? =
         UIApplication.sharedApplication.keyWindow?.rootViewController
@@ -145,10 +111,8 @@ suspend fun CaptureController.captureAsyncAndShare(
     // Write the PNG data to the temporary file
     imageData.writeToURL(tempUrl, true)
 
-    val item = SingleImageProvider(tempUrl, metaTitle)
-
     val shareVC = UIActivityViewController(
-        activityItems = listOf(item),
+        activityItems = listOf(tempUrl),
         applicationActivities = null
     )
 
@@ -170,32 +134,6 @@ suspend fun CaptureController.captureAsyncAndShare(
         animated = true,
         completion = null
     )
-}
-
-internal class SingleImageProvider(private val imageUrl: NSURL, private val metaTitle: String) :
-    NSObject(),
-    UIActivityItemSourceProtocol {
-
-    @ObjCSignatureOverride
-    override fun activityViewController(
-        activityViewController: UIActivityViewController,
-        itemForActivityType: UIActivityType?
-    ): Any? = imageUrl
-
-    override fun activityViewControllerPlaceholderItem(
-        activityViewController: UIActivityViewController
-    ): Any = imageUrl
-
-    @ExperimentalForeignApi
-    override fun activityViewControllerLinkMetadata(
-        activityViewController: UIActivityViewController
-    ): objcnames.classes.LPLinkMetadata? {
-        val metadata = LPLinkMetadata()
-        metadata.title = metaTitle
-        metadata.originalURL = imageUrl
-        metadata.imageProvider = NSItemProvider(imageUrl)
-        return metadata as objcnames.classes.LPLinkMetadata
-    }
 }
 
 /**
@@ -240,7 +178,7 @@ internal class SingleImageProvider(private val imageUrl: NSURL, private val meta
  */
 suspend fun CaptureController.captureAsyncAndSave(
     fileName: String = "capture_shared",
-    type: ImageType = ImageType.PNG(100)
+    type: ImageSaveType = ImageSaveType.PNG(100)
 ) = runCatching {
     val bitmap: ImageBitmap = this.captureAsync().await()
     val imageData: NSData = bitmap.toNSData(type) ?: return@runCatching

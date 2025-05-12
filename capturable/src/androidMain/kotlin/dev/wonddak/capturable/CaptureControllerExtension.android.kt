@@ -36,40 +36,12 @@ import android.provider.MediaStore
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.core.content.FileProvider
 import dev.wonddak.capturable.controller.CaptureController
+import dev.wonddak.capturable.extension.ImageSaveType
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-
-/**
- * Image Type of Android
- */
-sealed class ImageType(val suffix: String) {
-
-    /**
-     * share type PNG
-     * @param quality compress quality(0 ~ 100)
-     */
-    data class PNG(val quality: Int) : ImageType("png")
-
-    /**
-     * share type JPEG
-     * @param quality compress quality(0 ~ 100)
-     */
-    data class JPEG(val quality: Int) : ImageType("jpeg")
-
-    /**
-     * File mimeType
-     */
-    internal val mimeType: String
-        get() = "image/$suffix"
-
-    /**
-     * @return make file name with suffix
-     */
-    internal fun makeFileName(name: String): String = "$name.$suffix"
-}
 
 /**
  * Capture and share Image
@@ -103,7 +75,7 @@ sealed class ImageType(val suffix: String) {
  * @param[context] Context
  * @param[type]
  *
- * Share Type PNG or JPEG [ImageType]
+ * Share Type PNG or JPEG [ImageSaveType]
  *
  * @param[authority]
  *
@@ -120,7 +92,7 @@ sealed class ImageType(val suffix: String) {
  */
 suspend fun CaptureController.captureAsyncAndShare(
     context: Context,
-    type: ImageType = ImageType.PNG(100),
+    type: ImageSaveType = ImageSaveType.PNG(100),
     addOptionChooseIntent: (chooseIntent: Intent) -> Unit = {},
     authority: String = context.packageName + ".fileprovider",
     deleteOnExit: Boolean = true
@@ -220,9 +192,9 @@ suspend fun CaptureController.captureAsyncAndShare(
  *
  */
 suspend fun CaptureController.captureAsyncAndSave(
-    contentResolver: ContentResolver,
-    type: ImageType,
     fileName: String,
+    type: ImageSaveType,
+    contentResolver: ContentResolver,
     addContentValues: (contentValues: ContentValues) -> Unit = {}
 ) = runCatching {
     val bitmap: ImageBitmap = this.captureAsync().await()
