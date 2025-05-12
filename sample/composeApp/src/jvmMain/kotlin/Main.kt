@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import dev.wonddak.capturable.captureAsyncAndSave
 import dev.wonddak.capturable.extension.ImageSaveType
 import dev.wonddak.capturableExample.App
 import java.awt.Dimension
@@ -43,7 +44,22 @@ fun main() = application {
         onCloseRequest = ::exitApplication
     ) {
         window.minimumSize = Dimension(300, 533)
-        App()
+        App(
+            otherContent = { scope, captureController ->
+                Button(
+                    onClick = {
+                        scope.launch {
+                            captureController.captureAsyncAndSave(
+                                fileName = "Ticket_JVM",
+                                type = ImageSaveType.PNG(100)
+                            )
+                        }
+                    }
+                ) {
+                    Text("Save Ticket")
+                }
+            }
+        )
     }
 }
 
