@@ -115,15 +115,7 @@ kotlin {
         jvmMain {
             dependsOn(nonWebMain)
         }
-        iosX64Main {
-            dependsOn(iosMain.get())
-        }
-        iosArm64Main {
-            dependsOn(iosMain.get())
-        }
-        iosSimulatorArm64Main {
-            dependsOn(iosMain.get())
-        }
+
         jsMain {
             dependsOn(webMain)
         }
