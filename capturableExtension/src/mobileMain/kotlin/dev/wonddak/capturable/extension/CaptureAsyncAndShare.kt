@@ -1,6 +1,13 @@
 package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.ImageFormat
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.cacheDir
+import io.github.vinceglb.filekit.compressImage
+import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
+import io.github.vinceglb.filekit.write
 
 /**
  * Capture and share Image
@@ -44,7 +51,41 @@ import dev.wonddak.capturable.controller.CaptureController
  *
  * Share Type PNG or JPEG [CapturableSaveImageType]
  */
-expect suspend fun CaptureController.captureAsyncAndShare(
+suspend fun CaptureController.captureAsyncAndShare(
     fileName: String = "capture_shared",
     imageType: CapturableSaveImageType = CapturableSaveImageType.PNG(100)
-)
+) {
+    val imageBitmap = this.captureAsync().await()
+    val imageBytes = imageBitmap.encodeToByteArray(
+        format = when (imageType) {
+            is CapturableSaveImageType.JPEG -> {
+                ImageFormat.JPEG
+            }
+
+            is CapturableSaveImageType.PNG -> {
+                ImageFormat.PNG
+            }
+        },
+        quality = imageType.quality
+    )
+
+    val compressedBytes = when (imageType) {
+        is CapturableSaveImageType.JPEG -> {
+            FileKit.compressImage(
+                bytes = imageBytes,
+                quality = imageType.quality,
+                imageFormat = ImageFormat.JPEG
+            )
+        }
+
+        is CapturableSaveImageType.PNG -> {
+            FileKit.compressImage(
+                bytes = imageBytes,
+                quality = imageType.quality,
+                imageFormat = ImageFormat.PNG
+            )
+        }
+    }
+    val file = PlatformFile(FileKit.cacheDir, imageType.makeFileName(fileName))
+    file.write(bytes = compressedBytes)
+}

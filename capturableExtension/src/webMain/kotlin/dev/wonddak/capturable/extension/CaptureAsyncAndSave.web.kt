@@ -2,8 +2,9 @@ package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
 import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.ImageFormat
+import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
 import io.github.vinceglb.filekit.download
-
 /**
  * Capture and save Image To Gallery
  *
@@ -52,7 +53,18 @@ actual suspend fun CaptureController.captureAsyncAndSave(
     saveType: CapturableSaveType
 ) {
     val imageBitmap = this.captureAsync().await()
-    val imageBytes = imageBitmap.toByteArray(imageType)
+    val imageBytes = imageBitmap.encodeToByteArray(
+        format = when (imageType) {
+            is CapturableSaveImageType.JPEG -> {
+                ImageFormat.JPEG
+            }
+
+            is CapturableSaveImageType.PNG -> {
+                ImageFormat.PNG
+            }
+        },
+        quality = imageType.quality
+    )
 
     when (saveType) {
         CapturableSaveType.Auto, CapturableSaveType.Pick, CapturableSaveType.Gallery -> {

@@ -9,6 +9,7 @@ plugins {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
     jvmToolchain(17)
     androidTarget {}
 
@@ -52,11 +53,15 @@ kotlin {
 
         androidMain.dependencies {
             implementation(compose.uiTooling)
-            implementation("androidx.activity:activity-compose:1.9.2")
+            implementation("androidx.activity:activity-compose:1.10.1")
         }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+        }
+
+        iosMain.dependencies {
+
         }
 
         jsMain.dependencies {

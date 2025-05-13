@@ -2,6 +2,7 @@ import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
@@ -15,6 +16,8 @@ plugins {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     androidTarget {
         compilations.all {
             compileTaskProvider {
@@ -32,17 +35,25 @@ kotlin {
 
     jvm()
 
-    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
+    @OptIn(ExperimentalWasmDsl::class)
+    listOf(
+        js(),
+        wasmJs(),
+    ).forEach {
+        it.outputModuleName = "Capturable"
+        it.browser()
     }
 
-    js {
-        browser()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "Capturable"
+            isStatic = true
+        }
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
 
     sourceSets {
         commonMain.dependencies {
@@ -69,12 +80,24 @@ kotlin {
             implementation(compose.uiTest)
         }
 
+        //For Android,iOS
         val mobileMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        //For JS,WASM
+        val webMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        //For Android,iOS,JVM
+        val nonWebMain by creating {
             dependsOn(commonMain.get())
         }
 
         androidMain {
             dependsOn(mobileMain)
+            dependsOn(nonWebMain)
             dependencies {
 
             }
@@ -87,8 +110,11 @@ kotlin {
 
         iosMain {
             dependsOn(mobileMain)
+            dependsOn(nonWebMain)
         }
-        
+        jvmMain {
+            dependsOn(nonWebMain)
+        }
         iosX64Main {
             dependsOn(iosMain.get())
         }
@@ -98,7 +124,12 @@ kotlin {
         iosSimulatorArm64Main {
             dependsOn(iosMain.get())
         }
-
+        jsMain {
+            dependsOn(webMain)
+        }
+        wasmJsMain {
+            dependsOn(webMain)
+        }
 
         jvmTest.dependencies {
             implementation(compose.desktop.uiTestJUnit4)
@@ -129,8 +160,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     packaging {
         resources {

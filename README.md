@@ -99,7 +99,7 @@ In `lib.versions.toml`  include this dependency version catalog
 
 ```toml
 [versions]
-capturable = "1.1.0"
+capturable = "2.0.0-beta01"
 
 [libraries]
 capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
@@ -117,8 +117,8 @@ or In `build.gradle` of app module, include this dependency
 
 ```gradle
 dependencies {
-    implementation("io.github.jmseb3:capturable:1.1.0")
-    implementation("io.github.jmseb3:capturable-extension:1.1.0")
+    implementation("io.github.jmseb3:capturable:2.0.0-beta01")
+    implementation("io.github.jmseb3:capturable-extension:2.0.0-beta01")
 }
 ```
 

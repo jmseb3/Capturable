@@ -1,12 +1,13 @@
 package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
-import io.github.vinceglb.filekit.CompressFormat
 import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.ImageFormat
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.cacheDir
 import io.github.vinceglb.filekit.compressImage
 import io.github.vinceglb.filekit.delete
+import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
 import io.github.vinceglb.filekit.dialogs.openFileSaver
 import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.saveImageToGallery
@@ -60,14 +61,25 @@ actual suspend fun CaptureController.captureAsyncAndSave(
     saveType: CapturableSaveType
 ) {
     val imageBitmap = this.captureAsync().await()
-    val imageBytes = imageBitmap.toByteArray(imageType)
+    val imageBytes = imageBitmap.encodeToByteArray(
+        format = when (imageType) {
+            is CapturableSaveImageType.JPEG -> {
+                ImageFormat.JPEG
+            }
+
+            is CapturableSaveImageType.PNG -> {
+                ImageFormat.PNG
+            }
+        },
+        quality = imageType.quality
+    )
 
     val compressedBytes = when (imageType) {
         is CapturableSaveImageType.JPEG -> {
             FileKit.compressImage(
                 bytes = imageBytes,
                 quality = imageType.quality,
-                compressFormat = CompressFormat.JPEG
+                imageFormat = ImageFormat.JPEG
             )
         }
 
@@ -75,12 +87,12 @@ actual suspend fun CaptureController.captureAsyncAndSave(
             FileKit.compressImage(
                 bytes = imageBytes,
                 quality = imageType.quality,
-                compressFormat = CompressFormat.PNG
+                imageFormat = ImageFormat.PNG
             )
         }
     }
     when (saveType) {
-        CapturableSaveType.Auto, CapturableSaveType.Gallery -> {
+        CapturableSaveType.Gallery -> {
             val file = PlatformFile(FileKit.cacheDir, imageType.makeFileName(fileName))
 
             file.write(bytes = compressedBytes)
@@ -91,13 +103,14 @@ actual suspend fun CaptureController.captureAsyncAndSave(
             file.delete(mustExist = false)
         }
 
-        CapturableSaveType.Pick -> {
-            FileKit.openFileSaver(suggestedName = fileName, extension = imageType.suffix)?.let { file ->
-                if (file.exists()) {
-                    file.delete(mustExist = false)
+        CapturableSaveType.Auto, CapturableSaveType.Pick -> {
+            FileKit.openFileSaver(suggestedName = fileName, extension = imageType.suffix)
+                ?.let { file ->
+                    if (file.exists()) {
+                        file.delete(mustExist = false)
+                    }
+                    file.write(bytes = compressedBytes)
                 }
-                file.write(bytes = compressedBytes)
-            }
         }
     }
 }
