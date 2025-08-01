@@ -50,18 +50,26 @@ kotlin {
             implementation(libs.filekit.core)
             implementation(libs.filekit.dialogs)
         }
-
-        androidMain.dependencies {
-            implementation(compose.uiTooling)
-            implementation("androidx.activity:activity-compose:1.10.1")
+        //For Android,iOS
+        val mobileMain by creating {
+            dependsOn(commonMain.get())
         }
+        
+        androidMain {
+            dependsOn(mobileMain)
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation("androidx.activity:activity-compose:1.10.1")
+            }
+        }
+
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
 
-        iosMain.dependencies {
-
+        iosMain {
+            dependsOn(mobileMain)
         }
 
         jsMain.dependencies {

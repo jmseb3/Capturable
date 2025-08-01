@@ -31,9 +31,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import dev.wonddak.capturable.extension.CapturableSaveImageType
+import dev.wonddak.capturable.extension.captureAsyncAndSave
+import dev.wonddak.capturable.extension.captureAsyncAndShare
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.dialogs.init
+import kotlin.printStackTrace
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -56,5 +63,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AndroidMainContent() {
-    App()
+    App(
+        otherContent = { scope, controller ->
+            ShareButton(scope, controller)
+        }
+    )
 }
