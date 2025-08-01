@@ -7,6 +7,7 @@ import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.cacheDir
 import io.github.vinceglb.filekit.compressImage
 import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
+import io.github.vinceglb.filekit.dialogs.shareFile
 import io.github.vinceglb.filekit.write
 
 /**
@@ -88,4 +89,5 @@ suspend fun CaptureController.captureAsyncAndShare(
     }
     val file = PlatformFile(FileKit.cacheDir, imageType.makeFileName(fileName))
     file.write(bytes = compressedBytes)
+    FileKit.shareFile(file)
 }
