@@ -42,8 +42,9 @@ class MainActivity : ComponentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        FileKit.init(this)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             permissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
