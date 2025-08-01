@@ -106,9 +106,6 @@ actual suspend fun CaptureController.captureAsyncAndSave(
         CapturableSaveType.Auto, CapturableSaveType.Pick -> {
             FileKit.openFileSaver(suggestedName = fileName, extension = imageType.suffix)
                 ?.let { file ->
-                    if (file.exists()) {
-                        file.delete(mustExist = false)
-                    }
                     file.write(bytes = compressedBytes)
                 }
         }
