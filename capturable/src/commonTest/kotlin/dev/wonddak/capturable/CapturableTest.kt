@@ -26,24 +26,23 @@
 package dev.wonddak.capturable
 
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.runComposeUiTest
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.controller.rememberCaptureController
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
-import org.junit.Rule
-import org.junit.Test
+
 
 class CapturableTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
-
+    @OptIn(ExperimentalTestApi::class)
     @Test
-    fun testCapture_withModifier() {
+    fun testCapture_withModifier() = runComposeUiTest {
         val controller = CompletableDeferred<CaptureController>()
-        composeTestRule.setContent {
+
+        setContent {
             val captureController = rememberCaptureController()
             TestContent(captureController)
             LaunchedEffect(Unit) {
@@ -52,10 +51,10 @@ class CapturableTest {
         }
 
         // When: Content is captured
-        val bitmap = runBlocking { controller.await().captureAsync().await() }
+        val bitmap =  controller.await().captureAsync().await()
 
-        val expectedHeight = with(composeTestRule.density) { contentHeight.toPx() }.roundToInt()
-        val expectedWidth = with(composeTestRule.density) { contentWidth.toPx() }.roundToInt()
+        val expectedHeight = with(density) { contentHeight.toPx() }.roundToInt()
+        val expectedWidth = with(density) { contentWidth.toPx() }.roundToInt()
 
         val actualHeight = bitmap.height
         val actualWidth = bitmap.width
