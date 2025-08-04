@@ -16,7 +16,7 @@ plugins {
 }
 
 kotlin {
-    applyDefaultHierarchyTemplate()
+
 
     androidTarget {
         compilations.all {
@@ -36,24 +36,20 @@ kotlin {
     jvm()
 
     @OptIn(ExperimentalWasmDsl::class)
-    listOf(
-        js(),
-        wasmJs(),
-    ).forEach {
-        it.outputModuleName = "Capturable"
-        it.browser()
+    wasmJs {
+        browser()
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Capturable"
-            isStatic = true
-        }
+    js {
+        browser()
     }
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    // Apply the default hierarchy again. It'll create, for example, the iosMain source set:
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
         commonMain.dependencies {
@@ -187,20 +183,14 @@ dokka {
         this.commonMain {
             displayName.set("Common")
         }
-        named("androidMain") {
-            displayName.set("Android")
+        named("mobileMain") {
+            displayName.set("Mobile(Android,iOS)")
         }
-        named("iosMain") {
-            displayName.set("iOS")
+        named("nonWebMain") {
+            displayName.set("nonWeb(Android,iOS,JVM)")
         }
-        named("jsMain") {
-            displayName.set("Js")
-        }
-        named("wasmJsMain") {
-            displayName.set("Wasm")
-        }
-        named("jvmMain") {
-            displayName.set("JVM")
+        named("webMain") {
+            displayName.set("Web(WASM,JS)")
         }
     }
 }

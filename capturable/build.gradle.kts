@@ -2,6 +2,7 @@ import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
@@ -65,10 +66,6 @@ kotlin {
         androidUnitTest.dependencies {
             implementation(libs.junit.android)
             implementation(libs.mockk)
-        }
-
-        iosMain.dependencies {
-
         }
 
         jvmTest.dependencies {
