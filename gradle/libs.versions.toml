@@ -13,7 +13,7 @@ mockk = "1.13.13"
 testCore = "1.6.1"
 uiTestManifest = "1.7.2"
 
-filekit = "0.10.0"
+filekit = "0.11.0"
 
 [libraries]
 test-core = { module = "androidx.test:core", version.ref = "testCore" }
