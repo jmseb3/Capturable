@@ -34,10 +34,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import dev.wonddak.capturable.ImageType
-import dev.wonddak.capturable.captureAsyncAndSave
-import dev.wonddak.capturable.captureAsyncAndShare
+import dev.wonddak.capturable.extension.CapturableSaveImageType
+import dev.wonddak.capturable.extension.captureAsyncAndSave
+import dev.wonddak.capturable.extension.captureAsyncAndShare
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.init
+import kotlin.printStackTrace
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -45,9 +47,11 @@ class MainActivity : ComponentActivity() {
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        FileKit.init(this)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             permissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
@@ -59,34 +63,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AndroidMainContent() {
-    val context = LocalContext.current
     App(
-        otherContent = { scope, captureController ->
-            Button(
-                onClick = {
-                    scope.launch {
-                        captureController.captureAsyncAndShare(
-                            context = context
-                        )
-                    }
-                }
-            ) {
-                Text("Share Ticket")
-            }
-
-            Button(
-                onClick = {
-                    scope.launch {
-                        captureController.captureAsyncAndSave(
-                            contentResolver = context.contentResolver,
-                            fileName = "Ticket",
-                            type = ImageType.PNG(100)
-                        )
-                    }
-                }
-            ) {
-                Text("Save Ticket")
-            }
+        otherContent = { scope, controller ->
+            ShareButton(scope, controller)
         }
     )
 }

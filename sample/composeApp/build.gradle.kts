@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,6 +9,7 @@ plugins {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
     jvmToolchain(17)
     androidTarget {}
 
@@ -24,6 +26,7 @@ kotlin {
         }
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
@@ -43,15 +46,30 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(project(":capturable"))
+            implementation(project(":capturable-extension"))
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.dialogs)
+        }
+        //For Android,iOS
+        val mobileMain by creating {
+            dependsOn(commonMain.get())
+        }
+        
+        androidMain {
+            dependsOn(mobileMain)
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation("androidx.activity:activity-compose:1.10.1")
+            }
         }
 
-        androidMain.dependencies {
-            implementation(compose.uiTooling)
-            implementation("androidx.activity:activity-compose:1.9.2")
-        }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+        }
+
+        iosMain {
+            dependsOn(mobileMain)
         }
 
         jsMain.dependencies {

@@ -1,17 +1,19 @@
 [versions]
 
 agp = "8.8.2"
-kotlin = "2.1.20"
+kotlin = "2.2.0"
 dokka = "2.0.0"
 spotless = "7.0.2"
 mavenPublish = "0.30.0"
-compose = "1.8.0"
+compose = "1.9.0"
 
 junit = "4.13.2"
 coroutines = "1.10.2"
 mockk = "1.13.13"
 testCore = "1.6.1"
 uiTestManifest = "1.7.2"
+
+filekit = "0.11.0"
 
 [libraries]
 test-core = { module = "androidx.test:core", version.ref = "testCore" }
@@ -21,6 +23,9 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 ui-test-junit4-android = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "uiTestManifest" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiTestManifest" }
+filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
+filekit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
+filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
 
 [plugins]
 

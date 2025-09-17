@@ -27,6 +27,7 @@ package dev.wonddak.capturableExample
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,9 +39,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,8 +70,12 @@ import capturable.sample.composeapp.generated.resources.ic_baseline_qr_code_24
 import dev.wonddak.capturable.capturable
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.controller.rememberCaptureController
+import dev.wonddak.capturable.extension.CapturableSaveImageType
+import dev.wonddak.capturable.extension.CapturableSaveType
+import dev.wonddak.capturable.extension.captureAsyncAndSave
 import dev.wonddak.capturableExample.ui.theme.CapturableExampleTheme
 import dev.wonddak.capturableExample.ui.theme.LightGray
+import io.github.vinceglb.filekit.name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -94,66 +104,130 @@ fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) 
     // So that we can demo it
     var ticketBitmap: ImageBitmap? by remember { mutableStateOf(null) }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .safeDrawingPadding()
-            .padding(24.dp)
-    ) {
-        // The content to be captured ⬇️
-        Ticket(modifier = Modifier.capturable(captureController))
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        Spacer(modifier = Modifier.size(32.dp))
-
-        // Captures ticket bitmap on click
-        Button(
-            onClick = {
-                uiScope.launch {
-                    ticketBitmap = captureController.captureAsync().await()
-                }
-            }
+    Scaffold(
+        containerColor = Color.White,
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { innerPadding ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(innerPadding)
+                .padding(12.dp)
         ) {
-            Text("Preview Ticket Image")
-        }
+            Column(
+                modifier = Modifier.fillMaxWidth(maxFrame)
+            ) {
+                // The content to be captured ⬇️
+                Ticket(modifier = Modifier.capturable(captureController).border(1.dp, Color.Black))
 
-        otherContent?.invoke(uiScope, captureController)
+                Spacer(modifier = Modifier.size(32.dp))
 
-        // When Ticket's Bitmap image is captured, show preview in dialog
-        ticketBitmap?.let { bitmap ->
-            Dialog(onDismissRequest = { }) {
-                Column(
-                    modifier = Modifier
-                        .background(LightGray)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                // Captures ticket bitmap on click
+                Button(
+                    onClick = {
+                        uiScope.launch {
+                            ticketBitmap = captureController.captureAsync().await()
+                        }
+                    }
                 ) {
-                    Text("Preview of Ticket image \uD83D\uDC47")
-                    Spacer(Modifier.size(16.dp))
-                    Image(
-                        bitmap = bitmap,
-                        contentDescription = "Preview of ticket"
-                    )
-                    Spacer(Modifier.size(4.dp))
-                    Button(onClick = { ticketBitmap = null }) {
-                        Text("Close Preview")
+                    Text("Preview Ticket Image")
+                }
+
+                // Cpautre And Save Ticket bitmap
+                Column(
+                    modifier = Modifier.padding(5.dp)
+                        .border(1.dp, Color.Black)
+                ) {
+                    var selectedSaveType: CapturableSaveType by remember {
+                        mutableStateOf(CapturableSaveType.Auto)
+                    }
+                    Button(
+                        onClick = {
+                            uiScope.launch {
+                                runCatching {
+                                    captureController.captureAsyncAndSave(
+                                        fileName = "Ticket",
+                                        imageType = CapturableSaveImageType.PNG(100),
+                                        saveType = selectedSaveType
+                                    )
+                                }.onSuccess {
+                                    snackbarHostState.currentSnackbarData?.dismiss()
+                                    snackbarHostState.showSnackbar("Save Complete $selectedSaveType")
+                                }.onFailure {
+                                    it.printStackTrace()
+                                }
+                            }
+                        }
+                    ) {
+                        Text("Save Ticket")
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(7.dp)
+                    ) {
+                        listOf(
+                            CapturableSaveType.Auto,
+                            CapturableSaveType.Pick,
+                            CapturableSaveType.Gallery,
+                        ).forEach { saveType ->
+                            val selected = saveType == selectedSaveType
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Checkbox(
+                                    checked = selected,
+                                    onCheckedChange = {
+                                        if (it) {
+                                            selectedSaveType = saveType
+                                        }
+                                    }
+                                )
+                                Text(
+                                    text = saveType.toString(),
+                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                )
+                            }
+                        }
+                    }
+                }
+
+
+                otherContent?.invoke(uiScope, captureController)
+            }
+            // When Ticket's Bitmap image is captured, show preview in dialog
+            ticketBitmap?.let { bitmap ->
+                Dialog(onDismissRequest = { }) {
+                    Column(
+                        modifier = Modifier
+                            .background(LightGray)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Preview of Ticket image \uD83D\uDC47")
+                        Spacer(Modifier.size(16.dp))
+                        Image(
+                            bitmap = bitmap,
+                            contentDescription = "Preview of ticket"
+                        )
+                        Spacer(Modifier.size(4.dp))
+                        Button(onClick = { ticketBitmap = null }) {
+                            Text("Close Preview")
+                        }
                     }
                 }
             }
         }
-
-        LaunchedEffect(Unit) {
-            // delay 2 second reason of ios target
-            delay(2000L)
-            ticketBitmap = captureController.captureAsync().await()
-        }
     }
+
 }
 
 @Composable
 fun Ticket(modifier: Modifier) {
     Card(
-        modifier = modifier
-            .fillMaxWidth(maxFrame),
+        modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )

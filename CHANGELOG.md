@@ -4,9 +4,56 @@ All notable changes to this project will be documented in this file.
 
 
 
+## 2.0.0 - 2025-09-17
+
+[410660a](410660a56d46c64c9716a175f035b20a86e4bdba)...[60df5ee](60df5ee8f17cc087958941787702410163280a81)
+
+### ⚙️ Miscellaneous Tasks
+
+- Update compose 1.9.0-beta01 to 1.9.0 [89bb24b](https://github.com/jmseb3/Capturable/commit/89bb24b33185c2d85120d5b23a2ae8f1bccfaa16)
+- Update fileKit 0.10.0 to 0.11.0 [a77a99a](https://github.com/jmseb3/Capturable/commit/a77a99a7fe124e60b4d81a9f3539c43790c3cbf2)
+
+
+
+## 2.0.0-beta01 - 2025-08-04
+
+[b54d534](b54d534d57469d7d0fde7f29a642ac8d72a02e4b)...[410660a](410660a56d46c64c9716a175f035b20a86e4bdba)
+
+### 🚀 Features
+
+- Apply filekit-beta04 [53da342](https://github.com/jmseb3/Capturable/commit/53da3429f69bda10dc7754738da8f986a0ea7a38)
+- Add uiTest on commonTest [a9200e0](https://github.com/jmseb3/Capturable/commit/a9200e0651b1916c7077fa53fbe6a638bbcf3231), https://www.jetbrains.com/help/kotlin-multiplatform-dev/whats-new-compose-190.html#runcomposeuitest-with-suspend-lambda
+- Add Sample For Mobile captureAndShare [5a251d2](https://github.com/jmseb3/Capturable/commit/5a251d2bdf6437cc78153fce1311720be56815e2)
+
+### 🐛 Bug Fixes
+
+- Fix Sample For FileKit [751603a](https://github.com/jmseb3/Capturable/commit/751603a246ee417c40de8c1a5fc0c9928bb43d7f)
+- Fix captureAsyncAndSave for nonWeb [4686069](https://github.com/jmseb3/Capturable/commit/4686069b37f96698c703f426c4b4e74aa251512e)
+- Fix captureAsyncAndShare [ba49fbb](https://github.com/jmseb3/Capturable/commit/ba49fbba0e913d9dfce7c2b5fe989afe108a5661)
+
+### 🚜 Refactor
+
+- Remove dependsOn [ee071bc](https://github.com/jmseb3/Capturable/commit/ee071bcc8f9fba893c8fa88ddcde1141923ea20c)
+- Simplify KMP targets and source sets [d63fb80](https://github.com/jmseb3/Capturable/commit/d63fb80f71fef381169e3eda77d0db5c5df9b33b)
+
+### ⚙️ Miscellaneous Tasks
+
+- Update fileKit to 0.10.0 [b3fe61d](https://github.com/jmseb3/Capturable/commit/b3fe61d0bfba480b673259caec124b9eaaba2115)
+- Update compose 1.8.0 to 1.9.0-beta01 [fb2574b](https://github.com/jmseb3/Capturable/commit/fb2574be10974458eca8db5ea80a80a573b24522)
+
+
+
 ## 1.1.1 - 2025-05-07
 
 [2518de4](2518de49b8bd88b4712ba4aafa390568f3bd25b0)...[b54d534](b54d534d57469d7d0fde7f29a642ac8d72a02e4b)
+
+### 🚀 Features
+
+- Add extension module [b638ff9](https://github.com/jmseb3/Capturable/commit/b638ff9b111117b57b84308e8ea51854b1e4f353)
+- Make extension base [3b4d3ee](https://github.com/jmseb3/Capturable/commit/3b4d3ee200903d7819a876e8eefa745f4bf0bc3f)
+- CaptureAsyncAndSave extension [6a1c4ef](https://github.com/jmseb3/Capturable/commit/6a1c4ef6616ca6ba62eb201c8bbf9c1d9af1ed57)
+- Add captureAsyncAndShare extension base [40aef16](https://github.com/jmseb3/Capturable/commit/40aef1668c645a00e7488905cddc7f46ad19fb26)
+- Add captureAsyncAndShare extension [675411b](https://github.com/jmseb3/Capturable/commit/675411b248ab93cfa8e2df47fec3af79513d7b55)
 
 ### 🚜 Refactor
 
@@ -15,6 +62,11 @@ All notable changes to this project will be documented in this file.
 ### 📚 Documentation
 
 - Fix annotation [2d590b1](https://github.com/jmseb3/Capturable/commit/2d590b1edbe487ea165d79e4b7832a092ad8a114)
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dokka)* - Apply dokka for multi module [620dbb2](https://github.com/jmseb3/Capturable/commit/620dbb25fafdb544e1c38eb1ed6ebc671cf7d7ff)
+- *(gradle)* - Fix Module [16c8dd4](https://github.com/jmseb3/Capturable/commit/16c8dd4840833c9206e486e18e479c46aeefd657)
 
 ### Chore
 

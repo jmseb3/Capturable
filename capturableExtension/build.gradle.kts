@@ -16,6 +16,8 @@ plugins {
 }
 
 kotlin {
+
+
     androidTarget {
         compilations.all {
             compileTaskProvider {
@@ -33,7 +35,7 @@ kotlin {
 
     jvm()
 
-    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
     }
@@ -41,9 +43,13 @@ kotlin {
     js {
         browser()
     }
+
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+
+    // Apply the default hierarchy again. It'll create, for example, the iosMain source set:
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
         commonMain.dependencies {
@@ -54,6 +60,12 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlinx.coroutines.core)
+
+            implementation(project(":capturable"))
+
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.dialogs)
+            implementation(libs.filekit.dialogs.compose)
         }
 
         commonTest.dependencies {
@@ -63,9 +75,48 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
+
+        //For Android,iOS
+        val mobileMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        //For JS,WASM
+        val webMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        //For Android,iOS,JVM
+        val nonWebMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        androidMain {
+            dependsOn(mobileMain)
+            dependsOn(nonWebMain)
+            dependencies {
+
+            }
+        }
+
         androidUnitTest.dependencies {
             implementation(libs.junit.android)
             implementation(libs.mockk)
+        }
+
+        iosMain {
+            dependsOn(mobileMain)
+            dependsOn(nonWebMain)
+        }
+        jvmMain {
+            dependsOn(nonWebMain)
+        }
+
+        jsMain {
+            dependsOn(webMain)
+        }
+        wasmJsMain {
+            dependsOn(webMain)
         }
 
         jvmTest.dependencies {
@@ -100,7 +151,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -112,7 +162,7 @@ android {
             isReturnDefaultValues = true
         }
     }
-    namespace = "dev.wonddak.capturable"
+    namespace = "dev.wonddak.capturable.extension"
 }
 
 dependencies {
@@ -123,7 +173,7 @@ dependencies {
 
 
 dokka {
-    moduleName.set("Caputerable")
+    moduleName.set("Extension")
 
     dokkaPublications.html {
         outputDirectory.set(project.mkdir("build/dokka"))
@@ -132,6 +182,15 @@ dokka {
     dokkaSourceSets {
         this.commonMain {
             displayName.set("Common")
+        }
+        named("mobileMain") {
+            displayName.set("Mobile(Android,iOS)")
+        }
+        named("nonWebMain") {
+            displayName.set("nonWeb(Android,iOS,JVM)")
+        }
+        named("webMain") {
+            displayName.set("Web(WASM,JS)")
         }
     }
 }

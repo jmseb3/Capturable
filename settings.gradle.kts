@@ -30,3 +30,7 @@ dependencyResolutionManagement {
 include(":sample:composeApp")
 
 include(":capturable")
+include(":capturable-extension")
+include(":docs")
+
+project(":capturable-extension").projectDir = file("./capturableExtension")
