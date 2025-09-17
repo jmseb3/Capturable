@@ -8,10 +8,10 @@ _Made with ❤️ for Compose Multiplatform Developers_
 Thank to [@PatilShreyas](https://www.github.com/PatilShreyas)
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.github.jmseb3/capturable)
-[![Kotlin](https://img.shields.io/badge/kotlin-v2.1.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.1.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![License](https://img.shields.io/github/license/jmseb3/capturable)](https://opensource.org/license/mit/)
 
-[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.7.3-blue)](https://github.com/JetBrains/compose-multiplatform)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.8.0-blue)](https://github.com/JetBrains/compose-multiplatform)
 ![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 ![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
 ![badge-desktop](http://img.shields.io/badge/platform-desktop-DB413D.svg?style=flat)
