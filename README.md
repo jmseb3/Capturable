@@ -190,7 +190,7 @@ returned asynchronously. _This method is safe to be called from Main thread._
 
 ### Extension
 
-if you need for **captureAsyncAndSave** or **captureAsyncAndShare** use **capturable-extension**
+if you need for **captureAsyncAndSave** or **captureAsyncAndShare** use **capturableExtension**
 
 it's depend on [FileKit](https://github.com/vinceglb/FileKit) / Plz
 See [FileKit Setup Guide](https://filekit.mintlify.app/core/setup)
