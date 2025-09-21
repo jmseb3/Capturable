@@ -103,7 +103,7 @@ capturable = "2.0.0"
 
 [libraries]
 capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
-capturable-extension = { module = "io.github.jmseb3:capturable-extension", version.ref = "capturable" }
+capturable-extension = { module = "io.github.jmseb3:capturableExtension", version.ref = "capturable" }
 ```
 
 ```kotlin
@@ -118,7 +118,7 @@ or In `build.gradle` of app module, include this dependency
 ```gradle
 dependencies {
     implementation("io.github.jmseb3:capturable:2.0.0")
-    implementation("io.github.jmseb3:capturable-extension:2.0.0")
+    implementation("io.github.jmseb3:capturableExtension:2.0.0")
 }
 ```
 
