@@ -1,0 +1,8 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:Caputerable
+dev.wonddak.capturable
+dev.wonddak.capturable.controller
+module:Extension
+dev.wonddak.capturable.extension
