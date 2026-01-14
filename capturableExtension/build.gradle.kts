@@ -2,10 +2,8 @@ import com.android.build.api.dsl.androidLibrary
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -21,7 +19,7 @@ kotlin {
     androidLibrary {
         namespace = "dev.wonddak.capturable.extension"
         compileSdk = 36
-        minSdk = 21
+        minSdk = 23
         androidResources.enable = true
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
