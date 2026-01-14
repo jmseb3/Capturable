@@ -99,7 +99,7 @@ In `lib.versions.toml`  include this dependency version catalog
 
 ```toml
 [versions]
-capturable = "2.0.0"
+capturable = "2.0.1"
 
 [libraries]
 capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
