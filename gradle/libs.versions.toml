@@ -2,7 +2,7 @@
 
 agp = "8.13.0"
 kotlin = "2.2.21"
-dokka = "2.2.21"
+dokka = "2.1.0"
 spotless = "7.0.2"
 mavenPublish = "0.34.0"
 compose = "1.9.0"

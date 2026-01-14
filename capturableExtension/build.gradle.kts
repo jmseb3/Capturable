@@ -81,11 +81,6 @@ kotlin {
             dependsOn(commonMain.get())
         }
 
-        //For JS,WASM
-        val webMain by creating {
-            dependsOn(commonMain.get())
-        }
-
         //For Android,iOS,JVM
         val nonWebMain by creating {
             dependsOn(commonMain.get())
@@ -110,13 +105,6 @@ kotlin {
         }
         jvmMain {
             dependsOn(nonWebMain)
-        }
-
-        jsMain {
-            dependsOn(webMain)
-        }
-        wasmJsMain {
-            dependsOn(webMain)
         }
 
         jvmTest.dependencies {
