@@ -34,7 +34,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.coroutines.CompletableDeferred
 
-
 class CapturableTest {
 
     @OptIn(ExperimentalTestApi::class)
@@ -51,7 +50,7 @@ class CapturableTest {
         }
 
         // When: Content is captured
-        val bitmap =  controller.await().captureAsync().await()
+        val bitmap = controller.await().captureAsync().await()
 
         val expectedHeight = with(density) { contentHeight.toPx() }.roundToInt()
         val expectedWidth = with(density) { contentWidth.toPx() }.roundToInt()
