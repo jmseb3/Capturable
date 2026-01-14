@@ -1,11 +1,12 @@
 [versions]
 
-agp = "8.8.2"
-kotlin = "2.2.0"
-dokka = "2.0.0"
+agp = "8.13.0"
+kotlin = "2.3.0"
+dokka = "2.1.0"
 spotless = "7.0.2"
-mavenPublish = "0.30.0"
-compose = "1.9.0"
+mavenPublish = "0.35.0"
+compose = "1.10.0"
+material3 = "1.9.0"
 
 junit = "4.13.2"
 coroutines = "1.10.2"
@@ -13,9 +14,20 @@ mockk = "1.13.13"
 testCore = "1.6.1"
 uiTestManifest = "1.7.2"
 
-filekit = "0.11.0"
+filekit = "0.12.0"
 
 [libraries]
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose" }
+compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose" }
+compose-html-core = { module = "org.jetbrains.compose.html:html-core", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose" }
+compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose" }
+compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "compose" }
+compose-ui-test-junit4 = { module = "org.jetbrains.compose.ui:ui-test-junit4", version.ref = "compose" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+
 test-core = { module = "androidx.test:core", version.ref = "testCore" }
 junit-android = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
@@ -30,9 +42,11 @@ filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose
 [plugins]
 
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

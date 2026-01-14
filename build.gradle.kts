@@ -3,8 +3,10 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application).apply(false)
-    alias(libs.plugins.android.library).apply(false)
+    alias(libs.plugins.android.kotlin.multiplatform.library).apply(false)
     alias(libs.plugins.multiplatform).apply(false)
+    alias(libs.plugins.kotlin.android).apply(false)
+    alias(libs.plugins.kotlin.jvm).apply(false)
     alias(libs.plugins.compose).apply(false)
     alias(libs.plugins.compose.compiler).apply(false)
     alias(libs.plugins.maven.publish).apply(false)
@@ -18,7 +20,7 @@ subprojects {
     configure<SpotlessExtension> {
         kotlin {
             target("**/*.kt")
-            targetExclude("$buildDir/**/*.kt")
+            targetExclude("${layout.buildDirectory.dir("**/*.kt")}")
             targetExclude("bin/**/*.kt")
 
             ktlint().editorConfigOverride(mapOf("android" to "true"))
