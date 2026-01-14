@@ -27,7 +27,10 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include(":sample:composeApp")
+include(":sample:sharedUI")
+include(":sample:androidApp")
+include(":sample:desktopApp")
+include(":sample:webApp")
 
 include(":capturable")
 include(":capturable-extension")
