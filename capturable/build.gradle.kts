@@ -1,7 +1,6 @@
 import com.android.build.api.dsl.androidLibrary
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -39,12 +38,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.ui)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            api(libs.compose.ui)
+            api(libs.compose.runtime)
+            api(libs.compose.foundation)
+            api(libs.compose.resources)
+            api(libs.compose.ui.tooling.preview)
+            api(libs.compose.material3)
             implementation(libs.kotlinx.coroutines.core)
         }
 
@@ -52,8 +51,7 @@ kotlin {
             implementation(kotlin("test"))
 
             implementation(libs.kotlinx.coroutines.test)
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            implementation(libs.compose.ui.test)
         }
         androidUnitTest.dependencies {
             implementation(libs.junit.android)
@@ -61,12 +59,15 @@ kotlin {
         }
 
         jvmTest.dependencies {
-            implementation(compose.desktop.uiTestJUnit4)
+            implementation(libs.compose.ui.test.junit4)
             implementation(compose.desktop.currentOs)
         }
     }
 }
 
+dependencies {
+    androidRuntimeClasspath(libs.compose.ui.tooling)
+}
 
 dokka {
     moduleName.set("Caputerable")

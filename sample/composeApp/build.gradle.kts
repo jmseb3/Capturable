@@ -39,11 +39,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.resources)
+            implementation(libs.compose.ui.tooling.preview)
 
             implementation(project(":capturable"))
             implementation(project(":capturable-extension"))
@@ -58,7 +58,7 @@ kotlin {
         androidMain {
             dependsOn(mobileMain)
             dependencies {
-                implementation(compose.uiTooling)
+                implementation(libs.compose.ui.tooling)
                 implementation("androidx.activity:activity-compose:1.10.1")
             }
         }
@@ -73,7 +73,7 @@ kotlin {
         }
 
         jsMain.dependencies {
-            implementation(compose.html.core)
+            implementation(libs.compose.html.core)
         }
 
     }
@@ -81,12 +81,12 @@ kotlin {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.wonddak.capturableExample"
-        minSdk = 21
-        targetSdk = 35
+        minSdk = 23
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

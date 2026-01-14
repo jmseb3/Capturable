@@ -18,7 +18,7 @@ subprojects {
     configure<SpotlessExtension> {
         kotlin {
             target("**/*.kt")
-            targetExclude("$buildDir/**/*.kt")
+            targetExclude("${layout.buildDirectory.dir("**/*.kt")}")
             targetExclude("bin/**/*.kt")
 
             ktlint().editorConfigOverride(mapOf("android" to "true"))
