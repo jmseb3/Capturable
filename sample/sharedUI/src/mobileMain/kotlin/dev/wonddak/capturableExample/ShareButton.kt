@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun ShareButton(
+internal fun ShareButton(
     scope: CoroutineScope,
     controller: CaptureController
 ) {

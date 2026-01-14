@@ -31,9 +31,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.Composable
 import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.manualFileKitCoreInitialization
+import io.github.vinceglb.filekit.dialogs.init
 
 class MainActivity : ComponentActivity() {
 
@@ -44,21 +43,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        FileKit.manualFileKitCoreInitialization(this)
+        FileKit.init(this)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             permissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         setContent {
-            AndroidMainContent()
+            MobilApp()
         }
     }
-}
-
-@Composable
-fun AndroidMainContent() {
-    App(
-        otherContent = { scope, controller ->
-            ShareButton(scope, controller)
-        }
-    )
 }

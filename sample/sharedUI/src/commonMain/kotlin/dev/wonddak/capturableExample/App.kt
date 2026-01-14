@@ -67,7 +67,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import capturable.sample.sharedui.generated.resources.ic_baseline_check_circle_24
 import capturable.sample.sharedui.generated.resources.ic_baseline_qr_code_24
-import capturable.sample.sharedui.generated.resources.ic_baseline_qr_code_24
 import capturable.sample.sharedui.generated.resources.Res
 import dev.wonddak.capturable.capturable
 import dev.wonddak.capturable.controller.CaptureController

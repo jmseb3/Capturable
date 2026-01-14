@@ -31,5 +31,7 @@ kotlin {
 
 dependencies {
     implementation(project(":sample:sharedUI"))
+    implementation(libs.filekit.core)
+    implementation(libs.filekit.dialogs)
     implementation("androidx.activity:activity-compose:1.10.1")
 }

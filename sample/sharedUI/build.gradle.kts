@@ -1,5 +1,7 @@
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -20,16 +22,9 @@ kotlin {
 
     jvm()
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
@@ -60,7 +55,12 @@ kotlin {
         val mobileMain by creating {
             dependsOn(commonMain.get())
         }
-        
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.compose.ui.test)
+        }
+
         androidMain {
             dependsOn(mobileMain)
             dependencies {
@@ -68,11 +68,27 @@ kotlin {
             }
         }
 
+        iosMain {
+            dependsOn(mobileMain)
+        }
+
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
 
     }
+
+    targets
+        .withType<KotlinNativeTarget>()
+        .matching { it.konanTarget.family.isAppleFamily }
+        .configureEach {
+            binaries {
+                framework {
+                    baseName = "SharedUI"
+                    isStatic = true
+                }
+            }
+        }
 }
 
 

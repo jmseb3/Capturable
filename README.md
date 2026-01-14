@@ -74,7 +74,7 @@ To run the application on android device/emulator:
 
 ### Desktop
 
-Run the desktop application: `./gradlew :sample:composeApp:run`
+Run the desktop application: `./gradlew :sample:desktopApp:run`
 
 ### iOS
 
@@ -84,11 +84,11 @@ To run the application on iPhone device/simulator:
 
 ### JS Browser
 
-Run the browser application: `./gradlew :sample:composeApp:jsBrowserDevelopmentRun --continue`
+Run the browser application: `./gradlew :sample:webApp:jsBrowserDevelopmentRun --continue`
 
 ### Wasm Browser
 
-Run the browser application: `./gradlew :sample:composeApp:wasmJsBrowserDevelopmentRun --continue`
+Run the browser application: `./gradlew :sample:webApp:wasmJsBrowserDevelopmentRun --continue`
 </details>
 
 ---
