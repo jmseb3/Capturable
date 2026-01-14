@@ -1,10 +1,10 @@
 [versions]
 
 agp = "8.13.0"
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 dokka = "2.1.0"
 spotless = "7.0.2"
-mavenPublish = "0.34.0"
+mavenPublish = "0.35.0"
 compose = "1.9.0"
 
 junit = "4.13.2"
@@ -13,7 +13,7 @@ mockk = "1.13.13"
 testCore = "1.6.1"
 uiTestManifest = "1.7.2"
 
-filekit = "0.11.0"
+filekit = "0.12.0"
 
 [libraries]
 test-core = { module = "androidx.test:core", version.ref = "testCore" }
