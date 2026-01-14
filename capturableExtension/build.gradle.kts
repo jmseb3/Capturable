@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.androidLibrary
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.compose.ExperimentalComposeLibrary
@@ -7,8 +8,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
-    alias(libs.plugins.android.library)
     alias(libs.plugins.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.dokka)
@@ -17,22 +18,13 @@ plugins {
 
 kotlin {
 
-
-    androidTarget {
-        compilations.all {
-            compileTaskProvider {
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_1_8)
-                    freeCompilerArgs.add("-Xjdk-release=${JavaVersion.VERSION_1_8}")
-                }
-            }
-        }
-        publishLibraryVariants("release")
-
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+    androidLibrary {
+        namespace = "dev.wonddak.capturable.extension"
+        compileSdk = 36
+        minSdk = 21
+        androidResources.enable = true
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
-
     jvm()
 
     @OptIn(ExperimentalWasmDsl::class)
@@ -113,52 +105,6 @@ kotlin {
         }
     }
 }
-
-android {
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 21
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles(
-            "consumer-rules.pro"
-        )
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
-    testOptions {
-        unitTests {
-            isReturnDefaultValues = true
-        }
-    }
-    namespace = "dev.wonddak.capturable.extension"
-}
-
-dependencies {
-    androidTestImplementation(libs.ui.test.junit4.android)
-    debugImplementation(libs.ui.test.manifest)
-    debugImplementation(libs.test.core)
-}
-
 
 dokka {
     moduleName.set("Extension")
