@@ -30,6 +30,7 @@ import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.ImageFormat
 import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
 import io.github.vinceglb.filekit.download
+
 /**
  * Capture and save Image To Gallery
  *
@@ -78,18 +79,7 @@ actual suspend fun CaptureController.captureAsyncAndSave(
     saveType: CapturableSaveType
 ) {
     val imageBitmap = this.captureAsync().await()
-    val imageBytes = imageBitmap.encodeToByteArray(
-        format = when (imageType) {
-            is CapturableSaveImageType.JPEG -> {
-                ImageFormat.JPEG
-            }
-
-            is CapturableSaveImageType.PNG -> {
-                ImageFormat.PNG
-            }
-        },
-        quality = imageType.quality
-    )
+    val imageBytes = imageBitmap.encodeToByteArray(imageType)
 
     when (saveType) {
         CapturableSaveType.Auto, CapturableSaveType.Pick, CapturableSaveType.Gallery -> {

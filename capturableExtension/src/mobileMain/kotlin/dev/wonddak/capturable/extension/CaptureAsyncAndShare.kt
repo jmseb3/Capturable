@@ -82,37 +82,8 @@ suspend fun CaptureController.captureAsyncAndShare(
     imageType: CapturableSaveImageType = CapturableSaveImageType.PNG(100)
 ) {
     val imageBitmap = this.captureAsync().await()
-    val imageBytes = imageBitmap.encodeToByteArray(
-        format = when (imageType) {
-            is CapturableSaveImageType.JPEG -> {
-                ImageFormat.JPEG
-            }
-
-            is CapturableSaveImageType.PNG -> {
-                ImageFormat.PNG
-            }
-        },
-        quality = imageType.quality
-    )
-
-    val compressedBytes = when (imageType) {
-        is CapturableSaveImageType.JPEG -> {
-            FileKit.compressImage(
-                bytes = imageBytes,
-                quality = imageType.quality,
-                imageFormat = ImageFormat.JPEG
-            )
-        }
-
-        is CapturableSaveImageType.PNG -> {
-            FileKit.compressImage(
-                bytes = imageBytes,
-                quality = imageType.quality,
-                imageFormat = ImageFormat.PNG
-            )
-        }
-    }
+    val imageBytes = imageBitmap.encodeToByteArray(imageType)
     val file = PlatformFile(FileKit.cacheDir, imageType.makeFileName(fileName))
-    file.write(bytes = compressedBytes)
+    file.write(bytes = imageBytes)
     FileKit.shareFile(file)
 }

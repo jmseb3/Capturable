@@ -40,6 +40,12 @@ sealed class CapturableSaveImageType(open val quality: Int, val suffix: String) 
     data class JPEG(override val quality: Int) : CapturableSaveImageType(quality, "jpeg")
 
     /**
+     * share type WEBP
+     * @param quality compress quality(0 ~ 100)
+     */
+    data class WEBP(override val quality: Int) : CapturableSaveImageType(quality, "webp")
+
+    /**
      * File mimeType
      */
     internal val mimeType: String

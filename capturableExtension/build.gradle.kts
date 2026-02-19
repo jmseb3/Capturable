@@ -63,6 +63,11 @@ kotlin {
             implementation(libs.compose.ui.test)
         }
 
+        //
+        val nonAndroidMain by creating {
+            dependsOn(commonMain.get())
+        }
+
         //For Android,iOS
         val mobileMain by creating {
             dependsOn(commonMain.get())
@@ -89,9 +94,16 @@ kotlin {
         iosMain {
             dependsOn(mobileMain)
             dependsOn(nonWebMain)
+            dependsOn(nonAndroidMain)
         }
+
+        webMain {
+            dependsOn(nonAndroidMain)
+        }
+
         jvmMain {
             dependsOn(nonWebMain)
+            dependsOn(nonAndroidMain)
         }
 
         jvmTest.dependencies {

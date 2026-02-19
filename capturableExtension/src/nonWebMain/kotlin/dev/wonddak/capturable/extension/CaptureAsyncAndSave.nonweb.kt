@@ -85,41 +85,13 @@ actual suspend fun CaptureController.captureAsyncAndSave(
     saveType: CapturableSaveType
 ) {
     val imageBitmap = this.captureAsync().await()
-    val imageBytes = imageBitmap.encodeToByteArray(
-        format = when (imageType) {
-            is CapturableSaveImageType.JPEG -> {
-                ImageFormat.JPEG
-            }
+    val imageBytes = imageBitmap.encodeToByteArray(imageType)
 
-            is CapturableSaveImageType.PNG -> {
-                ImageFormat.PNG
-            }
-        },
-        quality = imageType.quality
-    )
-
-    val compressedBytes = when (imageType) {
-        is CapturableSaveImageType.JPEG -> {
-            FileKit.compressImage(
-                bytes = imageBytes,
-                quality = imageType.quality,
-                imageFormat = ImageFormat.JPEG
-            )
-        }
-
-        is CapturableSaveImageType.PNG -> {
-            FileKit.compressImage(
-                bytes = imageBytes,
-                quality = imageType.quality,
-                imageFormat = ImageFormat.PNG
-            )
-        }
-    }
     when (saveType) {
         CapturableSaveType.Gallery -> {
             val file = PlatformFile(FileKit.cacheDir, imageType.makeFileName(fileName))
 
-            file.write(bytes = compressedBytes)
+            file.write(bytes = imageBytes)
             // saveImageToGallery not return path
             FileKit.saveImageToGallery(file = file)
 
@@ -128,10 +100,7 @@ actual suspend fun CaptureController.captureAsyncAndSave(
         }
 
         CapturableSaveType.Auto, CapturableSaveType.Pick -> {
-            FileKit.openFileSaver(suggestedName = fileName, extension = imageType.suffix)
-                ?.let { file ->
-                    file.write(bytes = compressedBytes)
-                }
+            FileKit.openFileSaver(suggestedName = fileName, extension = imageType.suffix)?.write(bytes = imageBytes)
         }
     }
 }
