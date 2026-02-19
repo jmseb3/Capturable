@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun ShareButton(
+    imageSaveState: ImageSaveState,
     scope: CoroutineScope,
     controller: CaptureController
 ) {
@@ -22,8 +23,8 @@ internal fun ShareButton(
             scope.launch {
                 runCatching {
                     controller.captureAsyncAndShare(
-                        fileName = "Ticket",
-                        imageType = CapturableSaveImageType.PNG(100),
+                        fileName = imageSaveState.fileName,
+                        imageType = imageSaveState.imageType,
                     )
                 }.onSuccess {
 
@@ -41,6 +42,7 @@ internal fun ShareButton(
 @Composable
 private fun ShareButtonPreview() {
     ShareButton(
+        imageSaveState = ImageSaveState(),
         scope = rememberCoroutineScope(),
         controller = rememberCaptureController()
     )
