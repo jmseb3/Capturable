@@ -2,19 +2,18 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.application)
 }
 
 android {
-    namespace = "dev.wonddak.capturableExample"
+    namespace = "dev.wonddak.capturableExample.androidApp"
     compileSdk = 36
 
     defaultConfig {
         minSdk = 23
         targetSdk = 36
 
-        applicationId = "dev.wonddak.capturableExample"
+        applicationId = "dev.wonddak.capturableExample.androidApp"
         versionCode = 1
         versionName = "1.0.0"
     }
@@ -33,5 +32,5 @@ dependencies {
     implementation(project(":sample:sharedUI"))
     implementation(libs.filekit.core)
     implementation(libs.filekit.dialogs)
-    implementation("androidx.activity:activity-compose:1.10.1")
+    implementation(libs.activity.compose)
 }

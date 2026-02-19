@@ -1,11 +1,12 @@
 [versions]
 
-agp = "8.13.0"
+activityCompose = "1.12.4"
+agp = "9.0.0"
 kotlin = "2.3.0"
 dokka = "2.1.0"
 spotless = "7.0.2"
 mavenPublish = "0.35.0"
-compose = "1.10.0"
+compose = "1.10.1"
 material3 = "1.9.0"
 
 junit = "4.13.2"
@@ -17,6 +18,7 @@ uiTestManifest = "1.7.2"
 filekit = "0.12.0"
 
 [libraries]
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose" }
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose" }
@@ -45,7 +47,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
