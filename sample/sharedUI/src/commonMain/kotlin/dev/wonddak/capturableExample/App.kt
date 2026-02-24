@@ -34,20 +34,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -82,22 +83,45 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun App(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
-    CapturableExampleTheme {
-        TicketScreen(
-            otherContent = otherContent
+fun App(otherContent: (@Composable (ImageSaveState, CoroutineScope, CaptureController) -> Unit)? = null) {
+    var imageState by remember {
+        mutableStateOf(
+            ImageSaveState()
         )
+    }
+    val captureController = rememberCaptureController()
+    val uiScope = rememberCoroutineScope()
+
+    CapturableExampleTheme {
+        Column {
+            TicketScreen(
+                captureController = captureController,
+                uiScope = uiScope,
+                imageSaveState = imageState,
+                updateImageSaveState = {
+                    imageState = it
+                },
+                otherContent = {
+                    Text(imageState.toString())
+                    otherContent?.invoke(imageState, uiScope, captureController)
+                }
+            )
+        }
     }
 }
 
 // Ticket Max Width Percent
 expect val maxFrame: Float
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) -> Unit)? = null) {
-    val captureController = rememberCaptureController()
-    val uiScope = rememberCoroutineScope()
+fun TicketScreen(
+    captureController: CaptureController = rememberCaptureController(),
+    uiScope: CoroutineScope = rememberCoroutineScope(),
+    imageSaveState: ImageSaveState = ImageSaveState(),
+    updateImageSaveState: (ImageSaveState) -> Unit = {},
+    otherContent: (@Composable () -> Unit)? = null
+) {
 
     // This will hold captured bitmap
     // So that we can demo it
@@ -140,21 +164,18 @@ fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) 
                     modifier = Modifier.padding(5.dp)
                         .border(1.dp, Color.Black)
                 ) {
-                    var selectedSaveType: CapturableSaveType by remember {
-                        mutableStateOf(CapturableSaveType.Auto)
-                    }
                     Button(
                         onClick = {
                             uiScope.launch {
                                 runCatching {
                                     captureController.captureAsyncAndSave(
-                                        fileName = "Ticket",
-                                        imageType = CapturableSaveImageType.PNG(100),
-                                        saveType = selectedSaveType
+                                        fileName = imageSaveState.fileName,
+                                        imageType = imageSaveState.imageType,
+                                        saveType = imageSaveState.saveType
                                     )
                                 }.onSuccess {
                                     snackbarHostState.currentSnackbarData?.dismiss()
-                                    snackbarHostState.showSnackbar("Save Complete $selectedSaveType")
+                                    snackbarHostState.showSnackbar("Save Complete ${imageSaveState.saveType}")
                                 }.onFailure {
                                     it.printStackTrace()
                                 }
@@ -171,7 +192,7 @@ fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) 
                             CapturableSaveType.Pick,
                             CapturableSaveType.Gallery,
                         ).forEach { saveType ->
-                            val selected = saveType == selectedSaveType
+                            val selected = (saveType == imageSaveState.saveType)
                             Row(
                                 modifier = Modifier.weight(1f),
                                 verticalAlignment = Alignment.CenterVertically
@@ -180,7 +201,11 @@ fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) 
                                     checked = selected,
                                     onCheckedChange = {
                                         if (it) {
-                                            selectedSaveType = saveType
+                                            updateImageSaveState(
+                                                imageSaveState.copy(
+                                                    saveType = saveType
+                                                )
+                                            )
                                         }
                                     }
                                 )
@@ -192,9 +217,46 @@ fun TicketScreen(otherContent: (@Composable (CoroutineScope, CaptureController) 
                         }
                     }
                 }
+                Column(
+                    modifier = Modifier.padding(5.dp)
+                        .border(1.dp, Color.Black)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(7.dp)
+                    ) {
+                        listOf(
+                            CapturableSaveImageType.PNG(100),
+                            CapturableSaveImageType.JPEG(100),
+                            CapturableSaveImageType.WEBP(100),
+                        ).forEach { imageType ->
+                            val selected = (imageType == imageSaveState.imageType)
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Checkbox(
+                                    checked = selected,
+                                    onCheckedChange = {
+                                        if (it) {
+                                            updateImageSaveState(
+                                                imageSaveState.copy(
+                                                    imageType = imageType,
+                                                )
+                                            )
+                                        }
+                                    }
+                                )
+                                Text(
+                                    text = imageType::class.simpleName.toString(),
+                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                )
+                            }
+                        }
+                    }
+                }
 
 
-                otherContent?.invoke(uiScope, captureController)
+                otherContent?.invoke()
             }
             // When Ticket's Bitmap image is captured, show preview in dialog
             ticketBitmap?.let { bitmap ->

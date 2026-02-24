@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 @Composable
 fun MobilApp() {
     App(
-        otherContent = { scope, controller ->
-            ShareButton(scope, controller)
+        otherContent = { imageSaveState, scope, controller ->
+            ShareButton(imageSaveState, scope, controller)
         }
     )
 }

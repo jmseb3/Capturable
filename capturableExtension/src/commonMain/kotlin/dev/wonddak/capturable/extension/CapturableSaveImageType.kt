@@ -25,6 +25,13 @@
 */
 package dev.wonddak.capturable.extension
 
+/**
+ * Defines the image format for saving or sharing a captured composable.
+ * This sealed class provides options for PNG, JPEG, and WEBP formats, each with a configurable quality setting.
+ *
+ * @param quality The compression quality of the image, ranging from 0 (lowest) to 100 (highest).
+ * @param suffix The file extension for the image type (e.g., "png", "jpeg").
+ */
 sealed class CapturableSaveImageType(open val quality: Int, val suffix: String) {
 
     /**
@@ -38,6 +45,12 @@ sealed class CapturableSaveImageType(open val quality: Int, val suffix: String) 
      * @param quality compress quality(0 ~ 100)
      */
     data class JPEG(override val quality: Int) : CapturableSaveImageType(quality, "jpeg")
+
+    /**
+     * share type WEBP
+     * @param quality compress quality(0 ~ 100)
+     */
+    data class WEBP(override val quality: Int) : CapturableSaveImageType(quality, "webp")
 
     /**
      * File mimeType
