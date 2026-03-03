@@ -61,5 +61,5 @@ sealed class CapturableSaveImageType(open val quality: Int, val suffix: String) 
     /**
      * @return make file name with suffix
      */
-    internal fun makeFileName(name: String): String = "$name.$suffix"
+    fun makeFileName(name: String): String = "$name.$suffix"
 }

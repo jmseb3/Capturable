@@ -23,21 +23,19 @@
 * SOFTWARE.
 *
 */
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import dev.wonddak.capturableExample.App
+import dev.wonddak.capturableExample.ImageSaveState
+import dev.wonddak.capturableExample.WebApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun main() = ComposeViewport { App() }
+fun main() = ComposeViewport {
+    WebApp()
+}
 
-//@OptIn(ExperimentalComposeUiApi::class)
-//fun main() {
-//    window.onload = {
-//        onWasmReady {
-//            val body = document.body ?: return@onWasmReady
-//            ComposeViewport(body) {
-//                App()
-//            }
-//        }
-//    }
-//}

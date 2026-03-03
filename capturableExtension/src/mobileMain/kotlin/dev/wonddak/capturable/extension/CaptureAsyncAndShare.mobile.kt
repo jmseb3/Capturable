@@ -27,11 +27,8 @@ package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
 import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.ImageFormat
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.cacheDir
-import io.github.vinceglb.filekit.compressImage
-import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
 import io.github.vinceglb.filekit.dialogs.shareFile
 import io.github.vinceglb.filekit.write
 
