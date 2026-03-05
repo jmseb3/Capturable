@@ -51,25 +51,15 @@ kotlin {
             api(libs.filekit.core)
             implementation(libs.filekit.dialogs)
         }
-        //For Android,iOS
-        val mobileMain by creating {
-            dependsOn(commonMain.get())
-        }
-
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.compose.ui.test)
         }
 
         androidMain {
-            dependsOn(mobileMain)
             dependencies {
                 implementation(libs.compose.ui.tooling)
             }
-        }
-
-        iosMain {
-            dependsOn(mobileMain)
         }
 
         jvmMain.dependencies {

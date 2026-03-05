@@ -7,7 +7,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.controller.rememberCaptureController
-import dev.wonddak.capturable.extension.CapturableSaveImageType
 import dev.wonddak.capturable.extension.captureAsyncAndShare
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

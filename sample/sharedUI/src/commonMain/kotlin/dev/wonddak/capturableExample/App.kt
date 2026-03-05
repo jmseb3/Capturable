@@ -86,7 +86,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun App(otherContent: (@Composable (ImageSaveState, CoroutineScope, CaptureController) -> Unit)? = null) {
+fun App() {
     var imageState by remember {
         mutableStateOf(
             ImageSaveState()
@@ -106,7 +106,6 @@ fun App(otherContent: (@Composable (ImageSaveState, CoroutineScope, CaptureContr
                 },
                 otherContent = {
                     Text(imageState.toString())
-                    otherContent?.invoke(imageState, uiScope, captureController)
                 }
             )
         }
@@ -260,6 +259,7 @@ fun TicketScreen(
                     }
                 }
 
+                ShareButton(imageSaveState, uiScope, captureController)
 
                 otherContent?.invoke()
             }
