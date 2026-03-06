@@ -30,7 +30,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Validate release version
         id: version
@@ -94,13 +96,41 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
 
-      - name: Create and push tag
+      - name: Configure Git user
         run: |
           git config --global user.email "jmseb3@naver.com"
           git config --global user.name "$GITHUB_ACTOR"
 
-          git tag -a $TAG -m "Release $TAG"
-          git push origin $TAG
+      - name: Create tag
+        run: |
+          git tag -a "$TAG" -m "Release $TAG"
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
+      - name: Generate changelog
+        run: |
+          git cliff -o CHANGELOG.md
+
+      - name: Commit and push changelog
+        shell: bash
+        run: |
+          if git diff --quiet -- CHANGELOG.md; then
+            echo "No CHANGELOG update detected."
+            exit 0
+          fi
+
+          git add CHANGELOG.md
+          git commit -m "docs: update changelog for ${{ steps.version.outputs.tag }}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Push tag
+        run: |
+          git push origin "$TAG"
         env:
           TAG: ${{ steps.version.outputs.tag }}
 
