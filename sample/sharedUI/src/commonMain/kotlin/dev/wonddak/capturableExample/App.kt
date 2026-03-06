@@ -35,6 +35,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -147,116 +149,121 @@ fun TicketScreen(
                 Ticket(modifier = Modifier.capturable(captureController).border(1.dp, Color.Black))
 
                 Spacer(modifier = Modifier.size(32.dp))
-
-                // Captures ticket bitmap on click
-                Button(
-                    onClick = {
-                        uiScope.launch {
-                            ticketBitmap = captureController.captureAsync().await()
-                        }
-                    }
-                ) {
-                    Text("Preview Ticket Image")
-                }
-
-                // Capture And Save Ticket bitmap
                 Column(
-                    modifier = Modifier.padding(5.dp)
-                        .border(1.dp, Color.Black)
+                    modifier = Modifier.verticalScroll(
+                        rememberScrollState()
+                    )
                 ) {
+                    // Captures ticket bitmap on click
                     Button(
                         onClick = {
                             uiScope.launch {
-                                runCatching {
-                                    captureController.captureAsyncAndSave(
-                                        fileName = imageSaveState.fileName,
-                                        imageType = imageSaveState.imageType,
-                                        saveType = imageSaveState.saveType
+                                ticketBitmap = captureController.captureAsync().await()
+                            }
+                        }
+                    ) {
+                        Text("Preview Ticket Image")
+                    }
+
+                    // Capture And Save Ticket bitmap
+                    Column(
+                        modifier = Modifier.padding(5.dp)
+                            .border(1.dp, Color.Black)
+                    ) {
+                        Button(
+                            onClick = {
+                                uiScope.launch {
+                                    runCatching {
+                                        captureController.captureAsyncAndSave(
+                                            fileName = imageSaveState.fileName,
+                                            imageType = imageSaveState.imageType,
+                                            saveType = imageSaveState.saveType
+                                        )
+                                    }.onSuccess {
+                                        snackbarHostState.currentSnackbarData?.dismiss()
+                                        snackbarHostState.showSnackbar("Save Complete ${imageSaveState.saveType}")
+                                    }.onFailure {
+                                        it.printStackTrace()
+                                    }
+                                }
+                            }
+                        ) {
+                            Text("Save Ticket")
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(7.dp)
+                        ) {
+                            listOf(
+                                CapturableSaveType.Auto,
+                                CapturableSaveType.Pick,
+                                CapturableSaveType.Gallery,
+                            ).forEach { saveType ->
+                                val selected = (saveType == imageSaveState.saveType)
+                                Row(
+                                    modifier = Modifier.weight(1f),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Checkbox(
+                                        checked = selected,
+                                        onCheckedChange = {
+                                            if (it) {
+                                                updateImageSaveState(
+                                                    imageSaveState.copy(
+                                                        saveType = saveType
+                                                    )
+                                                )
+                                            }
+                                        }
                                     )
-                                }.onSuccess {
-                                    snackbarHostState.currentSnackbarData?.dismiss()
-                                    snackbarHostState.showSnackbar("Save Complete ${imageSaveState.saveType}")
-                                }.onFailure {
-                                    it.printStackTrace()
+                                    Text(
+                                        text = saveType.toString(),
+                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                    )
                                 }
                             }
                         }
-                    ) {
-                        Text("Save Ticket")
                     }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(7.dp)
+                    Column(
+                        modifier = Modifier.padding(5.dp)
+                            .border(1.dp, Color.Black)
                     ) {
-                        listOf(
-                            CapturableSaveType.Auto,
-                            CapturableSaveType.Pick,
-                            CapturableSaveType.Gallery,
-                        ).forEach { saveType ->
-                            val selected = (saveType == imageSaveState.saveType)
-                            Row(
-                                modifier = Modifier.weight(1f),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Checkbox(
-                                    checked = selected,
-                                    onCheckedChange = {
-                                        if (it) {
-                                            updateImageSaveState(
-                                                imageSaveState.copy(
-                                                    saveType = saveType
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(7.dp)
+                        ) {
+                            listOf(
+                                CapturableSaveImageType.PNG(100),
+                                CapturableSaveImageType.JPEG(100),
+                                CapturableSaveImageType.WEBP(100),
+                            ).forEach { imageType ->
+                                val selected = (imageType == imageSaveState.imageType)
+                                Row(
+                                    modifier = Modifier.weight(1f),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Checkbox(
+                                        checked = selected,
+                                        onCheckedChange = {
+                                            if (it) {
+                                                updateImageSaveState(
+                                                    imageSaveState.copy(
+                                                        imageType = imageType,
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
-                                )
-                                Text(
-                                    text = saveType.toString(),
-                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
-                                )
+                                    )
+                                    Text(
+                                        text = imageType::class.simpleName.toString(),
+                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                    )
+                                }
                             }
                         }
                     }
-                }
-                Column(
-                    modifier = Modifier.padding(5.dp)
-                        .border(1.dp, Color.Black)
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(7.dp)
-                    ) {
-                        listOf(
-                            CapturableSaveImageType.PNG(100),
-                            CapturableSaveImageType.JPEG(100),
-                            CapturableSaveImageType.WEBP(100),
-                        ).forEach { imageType ->
-                            val selected = (imageType == imageSaveState.imageType)
-                            Row(
-                                modifier = Modifier.weight(1f),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Checkbox(
-                                    checked = selected,
-                                    onCheckedChange = {
-                                        if (it) {
-                                            updateImageSaveState(
-                                                imageSaveState.copy(
-                                                    imageType = imageType,
-                                                )
-                                            )
-                                        }
-                                    }
-                                )
-                                Text(
-                                    text = imageType::class.simpleName.toString(),
-                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
-                                )
-                            }
-                        }
-                    }
-                }
 
 
-                otherContent?.invoke()
+                    otherContent?.invoke()
+                }
             }
             // When Ticket's Bitmap image is captured, show preview in dialog
             ticketBitmap?.let { bitmap ->
