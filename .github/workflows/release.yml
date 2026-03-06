@@ -3,23 +3,81 @@ on:
   workflow_dispatch:
     inputs:
       versionName:
-        description: 'Version Name(vX.Y.Z)'
+        description: 'Release version (e.g. 2.0.2 or v2.0.2)'
         required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Validate release version
+        id: version
+        shell: bash
+        run: |
+          RAW_VERSION="${{ github.event.inputs.versionName }}"
+          VERSION="${RAW_VERSION#v}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version: $RAW_VERSION"
+            echo "Expected semantic version like 2.0.2 or v2.0.2"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check module versions match input
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          CORE_VERSION="$(grep '^VERSION_NAME=' capturable/gradle.properties | cut -d= -f2)"
+          EXT_VERSION="$(grep '^VERSION_NAME=' capturableExtension/gradle.properties | cut -d= -f2)"
+
+          if [[ "$CORE_VERSION" != "$VERSION" ]]; then
+            echo "capturable VERSION_NAME($CORE_VERSION) != input version($VERSION)"
+            exit 1
+          fi
+
+          if [[ "$EXT_VERSION" != "$VERSION" ]]; then
+            echo "capturableExtension VERSION_NAME($EXT_VERSION) != input version($VERSION)"
+            exit 1
+          fi
+
+      - name: Check tag does not already exist
+        shell: bash
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag already exists locally: $TAG"
+            exit 1
+          fi
+
+          if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
+            echo "Tag already exists on origin: $TAG"
+            exit 1
+          fi
 
       - name: Grant Permission to Execute Gradle
         run: chmod +x gradlew
@@ -30,7 +88,7 @@ jobs:
           ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache
           echo "Released✅"
         env:
-          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
+          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ steps.version.outputs.version }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -44,15 +102,13 @@ jobs:
           git tag -a $TAG -m "Release $TAG"
           git push origin $TAG
         env:
-          TAG: v${{ github.event.inputs.versionName }}
+          TAG: ${{ steps.version.outputs.tag }}
 
       - name: Create Release on GitHub
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ github.event.inputs.versionName }}
-          release_name: Capturable v${{ github.event.inputs.versionName }}
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Capturable ${{ steps.version.outputs.tag }}
           draft: true
           prerelease: false
+          generate_release_notes: true
