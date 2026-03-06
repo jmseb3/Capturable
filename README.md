@@ -2,33 +2,133 @@
 
 ![Capturable](art/header.png)
 
-🚀 Compose utility library for converting Composable content into ImageBitmap 🖼️.  
-_Made with ❤️ for Compose Multiplatform Developers_
+Compose Multiplatform utility library for capturing Composable content as `ImageBitmap`.
 
-Thank to [@PatilShreyas](https://www.github.com/PatilShreyas)
+Thanks to [@PatilShreyas](https://www.github.com/PatilShreyas) for the original inspiration.
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.github.jmseb3/capturable)
-[![Kotlin](https://img.shields.io/badge/kotlin-v2.3.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.3.10-blue.svg?logo=kotlin)](https://kotlinlang.org)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.10.2-blue)](https://github.com/JetBrains/compose-multiplatform)
 [![License](https://img.shields.io/github/license/jmseb3/capturable)](https://opensource.org/license/mit/)
-
-[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.10.0-blue)](https://github.com/JetBrains/compose-multiplatform)
 ![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 ![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
 ![badge-desktop](http://img.shields.io/badge/platform-desktop-DB413D.svg?style=flat)
 ![badge-js](http://img.shields.io/badge/platform-js%2Fwasm-FDD835.svg?style=flat)
 
-## 💡Introduction
+## Introduction
 
-In the previous View system, drawing Bitmap Image from `View` was very straightforward. But that's
-not the case with Jetpack Compose since it's different in many aspects from previous system. This
-library helps easy way to achieve the same results.
+Capturable makes it easy to capture Compose UI content into bitmap images across platforms.
 
-## 🚀 Implementation
+## Modules
 
-You can check [/composeApp](/composeApp) directory which includes example application for
-demonstration.
+- `io.github.jmseb3:capturable`: core capture API (`CaptureController`, `Modifier.capturable`)
+- `io.github.jmseb3:capturableExtension`: optional save/share helpers built on top of FileKit
 
-### Preview
+## Installation
+
+### Version catalog (`libs.versions.toml`)
+
+```toml
+[versions]
+capturable = "2.0.2"
+
+[libraries]
+capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
+capturable-extension = { module = "io.github.jmseb3:capturableExtension", version.ref = "capturable" }
+```
+
+```kotlin
+dependencies {
+    implementation(libs.capturable)
+    implementation(libs.capturable.extension)
+}
+```
+
+### Direct dependency
+
+```kotlin
+dependencies {
+    implementation("io.github.jmseb3:capturable:2.0.2")
+    implementation("io.github.jmseb3:capturableExtension:2.0.2")
+}
+```
+
+Latest versions and changelog: [Releases](https://github.com/jmseb3/Capturable/releases)
+
+## Quick Start
+
+### 1. Create a controller
+
+```kotlin
+@Composable
+fun TicketScreen() {
+    val captureController = rememberCaptureController()
+}
+```
+
+### 2. Mark target content as capturable
+
+```kotlin
+@Composable
+fun TicketScreen() {
+    val captureController = rememberCaptureController()
+
+    Column(modifier = Modifier.capturable(captureController)) {
+        MovieTicketContent(...)
+    }
+}
+```
+
+### 3. Capture asynchronously
+
+```kotlin
+val scope = rememberCoroutineScope()
+
+Button(onClick = {
+    scope.launch {
+        runCatching { captureController.captureAsync().await() }
+            .onSuccess { bitmap -> /* use bitmap */ }
+            .onFailure { error -> error.printStackTrace() }
+    }
+}) { ... }
+```
+
+## Extension (Save/Share)
+
+If you need `captureAsyncAndSave` or `captureAsyncAndShare`, use `capturableExtension`.
+
+It depends on [FileKit](https://github.com/vinceglb/FileKit). Follow the [FileKit setup guide](https://filekit.mintlify.app/core/setup).
+
+Android initialization example:
+
+```kotlin
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FileKit.init(this)
+    }
+}
+```
+
+| Platform | captureAsyncAndSave | captureAsyncAndShare |
+|:--------:|:-------------------:|:--------------------:|
+| Android  |          ✅          |          ✅           |
+| iOS      |          ✅          |          ✅           |
+| JVM      |          ✅          |          ❎           |
+| JS       |          ✅          |          ❎           |
+| WASM     |          ✅          |          ❎           |
+
+## Sample App
+
+Example app source lives in [`sample/`](sample).
+
+- Desktop: `./gradlew :sample:desktopApp:run`
+- JS browser: `./gradlew :sample:webApp:jsBrowserDevelopmentRun --continue`
+- WASM browser: `./gradlew :sample:webApp:wasmJsBrowserDevelopmentRun --continue`
+- Android: run `sample:androidApp` from Android Studio
+- iOS: open `sample/iosApp/iosApp.xcodeproj` in Xcode and run
+
+## Preview
 
 <details>
 <summary>Android</summary>
@@ -37,7 +137,7 @@ demonstration.
 
 <details>
 <summary>iOS</summary>
-<img src="https://github.com/user-attachments/assets/25aa49ae-3019-496c-8515-fb4d6f19c2a0" alt="Android Screenshot" width="500"/>
+<img src="https://github.com/user-attachments/assets/25aa49ae-3019-496c-8515-fb4d6f19c2a0" alt="iOS Screenshot" width="500"/>
 </details>
 
 <details>
@@ -61,153 +161,11 @@ demonstration.
 
 </details>
 
----
+## Contribute
 
-<details>
-<summary>How To Test sample?</summary>
+Read [contribution guidelines](CONTRIBUTING.md) for details.
 
-### Android
-
-To run the application on android device/emulator:
-
-- open project in Android Studio and run imported android run configuration
-
-### Desktop
-
-Run the desktop application: `./gradlew :sample:desktopApp:run`
-
-### iOS
-
-To run the application on iPhone device/simulator:
-
-- Open `iosApp/iosApp.xcproject` in Xcode and run standard configuration
-
-### JS Browser
-
-Run the browser application: `./gradlew :sample:webApp:jsBrowserDevelopmentRun --continue`
-
-### Wasm Browser
-
-Run the browser application: `./gradlew :sample:webApp:wasmJsBrowserDevelopmentRun --continue`
-</details>
-
----
-
-### Gradle setup
-
-In `lib.versions.toml`  include this dependency version catalog
-
-```toml
-[versions]
-capturable = "2.0.1"
-
-[libraries]
-capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
-capturable-extension = { module = "io.github.jmseb3:capturableExtension", version.ref = "capturable" }
-```
-
-```kotlin
-dependencies {
-    implementation(libs.capturable)
-    implementation(libs.capturable.extension)
-}
-```
-
-or In `build.gradle` of app module, include this dependency
-
-```gradle
-dependencies {
-    implementation("io.github.jmseb3:capturable:2.0.1")
-    implementation("io.github.jmseb3:capturableExtension:2.0.1")
-}
-```
-
-_You can find latest version and changelogs in
-the [releases](https://github.com/jmseb3/Capturable/releases)_.
-
-### Usage
-
-#### 1. Setup the controller
-
-To be able to capture Composable content, you need instance of [
-`CaptureController`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/index.html)
-by which you can decide when to capture the content. You can get the instance as follow.
-
-```kotlin
-@Composable
-fun TicketScreen() {
-    val captureController = rememberCaptureController()
-}
-```
-
-_[
-`rememberCaptureController()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/remember-capture-controller.html)
-is a Composable function._
-
-#### 2. Add the content
-
-The component which needs to be captured, a `capturable()` Modifier should be applied on that
-@Composable component as follows.
-
-```kotlin
-@Composable
-fun TicketScreen() {
-    val captureController = rememberCaptureController()
-
-    // Composable content to be captured.
-    // Here, everything inside below Column will be get captured
-    Column(modifier = Modifier.capturable(captureController)) {
-        MovieTicketContent(...)
-    }
-}
-```
-
-#### 3. Capture the content
-
-To capture the content, use [
-`CaptureController#captureAsync()`](https://jmseb3.github.io/Capturable/-caputerable/dev.wonddak.capturable.controller/-capture-controller/capture-async.html)
-as follows.
-
-```kotlin
-// Example: Capture the content when button is clicked
-val scope = rememberCoroutineScope()
-Button(onClick = {
-    // Capture content
-    scope.launch {
-        val bitmapAsync = captureController.captureAsync()
-        try {
-            val bitmap = bitmapAsync.await()
-            // Do something with `bitmap`.
-        } catch (error: Throwable) {
-            // Error occurred, do something.
-        }
-    }
-}) { ... }
-```
-
-On calling this method, request for capturing the content will be sent and `ImageBitmap` will be
-returned asynchronously. _This method is safe to be called from Main thread._
-
-### Extension
-
-if you need for **captureAsyncAndSave** or **captureAsyncAndShare** use **capturableExtension**
-
-it's depend on [FileKit](https://github.com/vinceglb/FileKit) / Plz
-See [FileKit Setup Guide](https://filekit.mintlify.app/core/setup)
-
-| Platform | captureAsyncAndSave | captureAsyncAndShare |
-|:--------:|:-------------------:|:--------------------:|
-| Android  |          ✅          |          ✅           |
-|   iOS    |          ✅          |          ✅           |
-|   JVM    |          ✅          |          ❎           |
-|    JS    |          ✅          |          ❎           |
-|   WASM   |          ✅          |          ❎           |
-
-## 🙋‍♂️ Contribute
-
-Read [contribution guidelines](CONTRIBUTING.md) for more information regarding contribution.
-
-## 📝 License
+## License
 
 ```
 MIT License
