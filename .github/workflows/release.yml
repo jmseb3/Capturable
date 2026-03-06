@@ -107,14 +107,12 @@ jobs:
         env:
           TAG: ${{ steps.version.outputs.tag }}
 
-      - name: Install git-cliff
-        uses: taiki-e/install-action@v2
+      - name: Generate changelog with git-cliff action
+        uses: orhun/git-cliff-action@v4
         with:
-          tool: git-cliff
-
-      - name: Generate changelog
-        run: |
-          git cliff -o CHANGELOG.md
+          config: cliff.toml
+          args: -o CHANGELOG.md
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit and push changelog
         shell: bash
