@@ -23,66 +23,50 @@
 * SOFTWARE.
 *
 */
+@file:Suppress("UnsafeCastFromDynamic")
+
 package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
 import io.github.vinceglb.filekit.download
+import kotlin.js.Promise
+import kotlinx.browser.window
+import kotlinx.coroutines.await
 
-/**
- * Capture and save Image To Gallery
- *
- * also see [CaptureController.captureAsync]
- *
- * Example usage:
- *
- * ```
- *  val captureController = rememberCaptureController()
- *  val uiScope = rememberCoroutineScope()
- *
- *  // The content to be captured in to Bitmap
- *  Column(
- *      modifier = Modifier.capturable(captureController),
- *  ) {
- *      // Composable content
- *  }
- *  Button(
- *      onClick = {
- *          scope.launch {
- *              captureController.captureAsyncAndSave(
- *                  fileName = "Ticket",
- *                  imageType = CapturableSaveImageType.PNG(100),
- *                  saveType = CapturableSaveType.Auto
- *               )
- *          }
- *  }) { ... }
- * ```
-
- *
- * @param[fileName]
- *
- * Do not add an extension with a dot ('.'), the appropriate extension will be automatically applied based on the [ImageType].
- *
- * @param[imageType]
- *
- * Share Type PNG or JPEG [CapturableSaveImageType]
- *
- * @param[saveType]
- *
- * Share Type Auto,Pick and Gallery [CapturableSaveType]
- */
-actual suspend fun CaptureController.captureAsyncAndSave(
+actual suspend fun CaptureController.captureAsyncAndShare(
     fileName: String,
-    imageType: CapturableSaveImageType,
-    saveType: CapturableSaveType
+    imageType: CapturableSaveImageType
 ) {
     val imageBitmap = this.captureAsync().await()
     val imageBytes = imageBitmap.encodeToByteArray(imageType)
+    val fullFileName = imageType.makeFileName(fileName)
+    val file = createShareFile(imageBytes, fullFileName, imageType.mimeType)
+    val navigator = window.navigator.asDynamic()
+    val shareData = js("{}")
 
-    when (saveType) {
-        CapturableSaveType.Auto, CapturableSaveType.Pick, CapturableSaveType.Gallery -> {
-            FileKit.download(imageBytes, imageType.makeFileName(fileName))
+    shareData.files = arrayOf(file)
+    shareData.title = fileName
+
+    val canShareFiles = navigator.share != undefined &&
+        (
+            navigator.canShare == undefined ||
+                navigator.canShare(js("{ files: [file] }")) as Boolean
+            )
+
+    if (canShareFiles) {
+        runCatching {
+            (navigator.share(shareData) as Promise<dynamic>).await()
+        }.onSuccess {
+            return
         }
     }
+
+    FileKit.download(imageBytes, fullFileName)
+}
+
+private fun createShareFile(imageBytes: ByteArray, fileName: String, mimeType: String): dynamic {
+    val blob = js("new Blob([imageBytes], { type: mimeType })")
+    return js("new File([blob], fileName, { type: mimeType })")
 }

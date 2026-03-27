@@ -25,30 +25,16 @@
 */
 package dev.wonddak.capturable.extension
 
-import android.graphics.Bitmap
-import android.os.Build
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
-import java.io.ByteArrayOutputStream
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import dev.wonddak.capturable.controller.CaptureController
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
+import io.github.vinceglb.filekit.download
 
-
-actual suspend fun ImageBitmap.encodeToByteArray(
-    format: CapturableSaveImageType,
-): ByteArray = withContext(Dispatchers.IO) {
-    val bitmap = this@encodeToByteArray.asAndroidBitmap()
-    val compressFormat = when (format) {
-        is CapturableSaveImageType.JPEG -> Bitmap.CompressFormat.JPEG
-        is CapturableSaveImageType.PNG -> Bitmap.CompressFormat.PNG
-        is CapturableSaveImageType.WEBP -> if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-            Bitmap.CompressFormat.WEBP_LOSSLESS
-        } else {
-            Bitmap.CompressFormat.WEBP
-        }
-    }
-    ByteArrayOutputStream().use { bytes ->
-        bitmap.compress(compressFormat, format.quality, bytes)
-        bytes.toByteArray()
-    }
+actual suspend fun CaptureController.captureAsyncAndShare(
+    fileName: String,
+    imageType: CapturableSaveImageType
+) {
+    val imageBitmap = this.captureAsync().await()
+    val imageBytes = imageBitmap.encodeToByteArray(imageType)
+    FileKit.download(imageBytes, imageType.makeFileName(fileName))
 }

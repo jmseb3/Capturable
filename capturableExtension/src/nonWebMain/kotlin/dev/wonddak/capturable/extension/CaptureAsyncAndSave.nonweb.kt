@@ -27,10 +27,8 @@ package dev.wonddak.capturable.extension
 
 import dev.wonddak.capturable.controller.CaptureController
 import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.ImageFormat
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.cacheDir
-import io.github.vinceglb.filekit.compressImage
 import io.github.vinceglb.filekit.delete
 import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
 import io.github.vinceglb.filekit.dialogs.openFileSaver
@@ -100,7 +98,10 @@ actual suspend fun CaptureController.captureAsyncAndSave(
         }
 
         CapturableSaveType.Auto, CapturableSaveType.Pick -> {
-            FileKit.openFileSaver(suggestedName = fileName, extension = imageType.suffix)?.write(bytes = imageBytes)
+            FileKit.openFileSaver(
+                suggestedName = fileName,
+                extension = imageType.suffix
+            )?.write(bytes = imageBytes)
         }
     }
 }
