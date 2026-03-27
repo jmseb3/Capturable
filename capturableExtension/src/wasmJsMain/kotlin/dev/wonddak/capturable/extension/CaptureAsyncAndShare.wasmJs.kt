@@ -30,6 +30,7 @@ import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
 import io.github.vinceglb.filekit.download
 
+@ExperimentalCapturableShareApi
 actual suspend fun CaptureController.captureAsyncAndShare(
     fileName: String,
     imageType: CapturableSaveImageType

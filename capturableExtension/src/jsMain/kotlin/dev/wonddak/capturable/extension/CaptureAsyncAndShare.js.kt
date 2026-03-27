@@ -35,6 +35,7 @@ import kotlin.js.Promise
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 
+@ExperimentalCapturableShareApi
 actual suspend fun CaptureController.captureAsyncAndShare(
     fileName: String,
     imageType: CapturableSaveImageType

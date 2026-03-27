@@ -114,9 +114,12 @@ class MainActivity : ComponentActivity() {
 |:--------:|:-------------------:|:--------------------:|
 | Android  |          ✅          |          ✅           |
 | iOS      |          ✅          |          ✅           |
-| JVM      |          ✅          |          ❎           |
-| JS       |          ✅          |          ❎           |
-| WASM     |          ✅          |          ❎           |
+| JVM      |          ✅          |   ✅ (Experimental)   |
+| JS       |          ✅          |   ✅ (Experimental)   |
+| WASM     |          ✅          |   ✅ (Experimental)   |
+
+`captureAsyncAndShare` on Web and JVM is currently experimental. On Web it may fall back to a
+download, and on JVM it currently copies the captured image to the system clipboard.
 
 ## Sample App
 
