@@ -23,21 +23,15 @@
 * SOFTWARE.
 *
 */
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.ComposeViewport
-import dev.wonddak.capturableExample.CapturableExampleApp
+package dev.wonddak.capturableExample
 
-@OptIn(ExperimentalComposeUiApi::class)
-fun main() = ComposeViewport { CapturableExampleApp() }
+import androidx.compose.runtime.Composable
 
-// @OptIn(ExperimentalComposeUiApi::class)
-// fun main() {
-//    window.onload = {
-//        onWasmReady {
-//            val body = document.body ?: return@onWasmReady
-//            ComposeViewport(body) {
-//                App()
-//            }
-//        }
-//    }
-// }
+@Composable
+fun CapturableExampleApp() {
+    App(
+        otherContent = { imageSaveState, scope, controller ->
+            ShareButton(imageSaveState, scope, controller)
+        }
+    )
+}

@@ -46,11 +46,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,9 +66,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import capturable.sample.sharedui.generated.resources.Res
 import capturable.sample.sharedui.generated.resources.ic_baseline_check_circle_24
 import capturable.sample.sharedui.generated.resources.ic_baseline_qr_code_24
-import capturable.sample.sharedui.generated.resources.Res
 import dev.wonddak.capturable.capturable
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.controller.rememberCaptureController
@@ -85,7 +83,9 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun App(otherContent: (@Composable (ImageSaveState, CoroutineScope, CaptureController) -> Unit)? = null) {
+fun App(
+    otherContent: (@Composable (ImageSaveState, CoroutineScope, CaptureController) -> Unit)? = null
+) {
     var imageState by remember {
         mutableStateOf(
             ImageSaveState()
@@ -124,7 +124,6 @@ fun TicketScreen(
     updateImageSaveState: (ImageSaveState) -> Unit = {},
     otherContent: (@Composable () -> Unit)? = null
 ) {
-
     // This will hold captured bitmap
     // So that we can demo it
     var ticketBitmap: ImageBitmap? by remember { mutableStateOf(null) }
@@ -181,7 +180,9 @@ fun TicketScreen(
                                         )
                                     }.onSuccess {
                                         snackbarHostState.currentSnackbarData?.dismiss()
-                                        snackbarHostState.showSnackbar("Save Complete ${imageSaveState.saveType}")
+                                        snackbarHostState.showSnackbar(
+                                            "Save Complete ${imageSaveState.saveType}"
+                                        )
                                     }.onFailure {
                                         it.printStackTrace()
                                     }
@@ -196,7 +197,7 @@ fun TicketScreen(
                             listOf(
                                 CapturableSaveType.Auto,
                                 CapturableSaveType.Pick,
-                                CapturableSaveType.Gallery,
+                                CapturableSaveType.Gallery
                             ).forEach { saveType ->
                                 val selected = (saveType == imageSaveState.saveType)
                                 Row(
@@ -217,7 +218,11 @@ fun TicketScreen(
                                     )
                                     Text(
                                         text = saveType.toString(),
-                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                        fontWeight = if (selected) {
+                                            FontWeight.Bold
+                                        } else {
+                                            FontWeight.Normal
+                                        }
                                     )
                                 }
                             }
@@ -233,7 +238,7 @@ fun TicketScreen(
                             listOf(
                                 CapturableSaveImageType.PNG(100),
                                 CapturableSaveImageType.JPEG(100),
-                                CapturableSaveImageType.WEBP(100),
+                                CapturableSaveImageType.WEBP(100)
                             ).forEach { imageType ->
                                 val selected = (imageType == imageSaveState.imageType)
                                 Row(
@@ -246,7 +251,7 @@ fun TicketScreen(
                                             if (it) {
                                                 updateImageSaveState(
                                                     imageSaveState.copy(
-                                                        imageType = imageType,
+                                                        imageType = imageType
                                                     )
                                                 )
                                             }
@@ -254,13 +259,16 @@ fun TicketScreen(
                                     )
                                     Text(
                                         text = imageType::class.simpleName.toString(),
-                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                        fontWeight = if (selected) {
+                                            FontWeight.Bold
+                                        } else {
+                                            FontWeight.Normal
+                                        }
                                     )
                                 }
                             }
                         }
                     }
-
 
                     otherContent?.invoke()
                 }
@@ -289,7 +297,6 @@ fun TicketScreen(
             }
         }
     }
-
 }
 
 @Composable

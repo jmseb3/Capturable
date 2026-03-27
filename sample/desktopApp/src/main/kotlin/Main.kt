@@ -29,12 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import dev.wonddak.capturableExample.App
+import dev.wonddak.capturableExample.CapturableExampleApp
 import io.github.vinceglb.filekit.FileKit
 import java.awt.Dimension
 
 fun main() = application {
-
     FileKit.init(appId = "Capturable")
 
     Window(
@@ -43,12 +42,12 @@ fun main() = application {
         onCloseRequest = ::exitApplication
     ) {
         window.minimumSize = Dimension(300, 533)
-        App()
+        CapturableExampleApp()
     }
 }
 
 @Preview
 @Composable
 fun AppPreview() {
-    App()
+    CapturableExampleApp()
 }
