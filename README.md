@@ -30,7 +30,7 @@ Capturable makes it easy to capture Compose UI content into bitmap images across
 
 ```toml
 [versions]
-capturable = "2.0.2"
+capturable = "2.1.0"
 
 [libraries]
 capturable = { module = "io.github.jmseb3:capturable", version.ref = "capturable" }
@@ -48,8 +48,8 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("io.github.jmseb3:capturable:2.0.2")
-    implementation("io.github.jmseb3:capturableExtension:2.0.2")
+    implementation("io.github.jmseb3:capturable:2.1.0")
+    implementation("io.github.jmseb3:capturableExtension:2.1.0")
 }
 ```
 
@@ -120,6 +120,14 @@ class MainActivity : ComponentActivity() {
 
 `captureAsyncAndShare` on Web and JVM is currently experimental. On Web it may fall back to a
 download, and on JVM it currently copies the captured image to the system clipboard.
+
+### From 2.1.0
+Now Support captureAsyncAndShare for JVM And Web
+
+Web - Use By Share API
+JVM
+    - Mac - try NSSharingServicePicker if Error copy to clipboard
+    - Other copy to clipboard
 
 ## Sample App
 
