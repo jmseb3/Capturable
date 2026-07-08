@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 
 
+## 2.1.0 - 2026-07-08
+
+[05cc0f7](05cc0f7e06518fc6cb9c4eebd3c490c45a273fb2)...[ce280b3](ce280b3d53d2395da06625d9c5f4cd56fe633273)
+
+### 🚀 Features
+
+- Add experimental `captureAsyncAndShare` support for Web and JVM targets [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+- Add macOS native share picker support with clipboard fallback for JVM desktop [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+- Add Web Share API support with download fallback for JS/WASM targets [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+
+### 📚 Documentation
+
+- Update README and add macOS share example image for the 2.1.0 release [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump published module versions to 2.1.0 and refresh Web/JVM sample validation setup [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+
+
+
 ## 2.0.2 - 2026-03-06
 
 [e74e10b](e74e10bd5a08b0b9be816493894d1ef757207737)...[05cc0f7](05cc0f7e06518fc6cb9c4eebd3c490c45a273fb2)
