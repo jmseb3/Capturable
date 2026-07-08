@@ -25,16 +25,17 @@
 */
 package dev.wonddak.capturable.extension
 
-import androidx.compose.ui.graphics.ImageBitmap
+import dev.wonddak.capturable.controller.CaptureController
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.compose.util.encodeToByteArray
+import io.github.vinceglb.filekit.download
 
-/**
- * Encodes the [ImageBitmap] into a [ByteArray] using the specified image format.
- *
- * This is an `expect` function, meaning the actual implementation is platform-specific.
- * It's a suspending function because the encoding process can be resource-intensive
- * and should be performed off the main thread.
- *
- * @param format The desired output [CapturableSaveImageType] for the image,
- * @return A [ByteArray] containing the encoded image data.
- */
-expect suspend fun ImageBitmap.encodeToByteArray(format: CapturableSaveImageType): ByteArray
+@ExperimentalCapturableShareApi
+actual suspend fun CaptureController.captureAsyncAndShare(
+    fileName: String,
+    imageType: CapturableSaveImageType
+) {
+    val imageBitmap = this.captureAsync().await()
+    val imageBytes = imageBitmap.encodeToByteArray(imageType)
+    FileKit.download(imageBytes, imageType.makeFileName(fileName))
+}

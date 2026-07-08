@@ -25,13 +25,13 @@
 */
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
-import dev.wonddak.capturableExample.App
+import dev.wonddak.capturableExample.CapturableExampleApp
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun main() = ComposeViewport { App() }
+fun main() = ComposeViewport { CapturableExampleApp() }
 
-//@OptIn(ExperimentalComposeUiApi::class)
-//fun main() {
+// @OptIn(ExperimentalComposeUiApi::class)
+// fun main() {
 //    window.onload = {
 //        onWasmReady {
 //            val body = document.body ?: return@onWasmReady
@@ -40,4 +40,4 @@ fun main() = ComposeViewport { App() }
 //            }
 //        }
 //    }
-//}
+// }

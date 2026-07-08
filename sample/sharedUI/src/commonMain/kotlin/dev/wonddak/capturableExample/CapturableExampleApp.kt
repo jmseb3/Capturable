@@ -23,18 +23,15 @@
 * SOFTWARE.
 *
 */
-package dev.wonddak.capturable.extension
+package dev.wonddak.capturableExample
 
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.runtime.Composable
 
-/**
- * Encodes the [ImageBitmap] into a [ByteArray] using the specified image format.
- *
- * This is an `expect` function, meaning the actual implementation is platform-specific.
- * It's a suspending function because the encoding process can be resource-intensive
- * and should be performed off the main thread.
- *
- * @param format The desired output [CapturableSaveImageType] for the image,
- * @return A [ByteArray] containing the encoded image data.
- */
-expect suspend fun ImageBitmap.encodeToByteArray(format: CapturableSaveImageType): ByteArray
+@Composable
+fun CapturableExampleApp() {
+    App(
+        otherContent = { imageSaveState, scope, controller ->
+            ShareButton(imageSaveState, scope, controller)
+        }
+    )
+}

@@ -31,7 +31,6 @@ kotlin {
     js {
         browser()
     }
-    iosX64()
     iosArm64()
     iosSimulatorArm64()
 
@@ -69,7 +68,7 @@ dependencies {
 }
 
 dokka {
-    moduleName.set("Caputerable")
+    moduleName.set("Capturable")
 
     dokkaPublications.html {
         outputDirectory.set(project.mkdir("build/dokka"))

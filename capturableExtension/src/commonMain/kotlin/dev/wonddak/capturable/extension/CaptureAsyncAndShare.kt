@@ -25,16 +25,22 @@
 */
 package dev.wonddak.capturable.extension
 
-import androidx.compose.ui.graphics.ImageBitmap
+import dev.wonddak.capturable.controller.CaptureController
 
 /**
- * Encodes the [ImageBitmap] into a [ByteArray] using the specified image format.
+ * Captures the current composable and hands the resulting image to the platform's share flow.
  *
- * This is an `expect` function, meaning the actual implementation is platform-specific.
- * It's a suspending function because the encoding process can be resource-intensive
- * and should be performed off the main thread.
+ * Platform notes:
+ * - Android / iOS: opens the native share sheet.
+ * - Web: experimental support. Uses the Web Share API when available, otherwise falls back to a
+ *   file download.
+ * - JVM desktop: experimental support. On macOS it uses the native share picker when available,
+ *   otherwise it copies the captured image to the system clipboard.
  *
- * @param format The desired output [CapturableSaveImageType] for the image,
- * @return A [ByteArray] containing the encoded image data.
+ * @param fileName Do not include the extension. The suffix is derived from [imageType].
+ * @param imageType Share type PNG or JPEG [CapturableSaveImageType]
  */
-expect suspend fun ImageBitmap.encodeToByteArray(format: CapturableSaveImageType): ByteArray
+expect suspend fun CaptureController.captureAsyncAndShare(
+    fileName: String = "capture_shared",
+    imageType: CapturableSaveImageType = CapturableSaveImageType.PNG(100)
+)
