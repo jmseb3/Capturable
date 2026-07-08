@@ -22,7 +22,12 @@ subprojects {
             targetExclude("${layout.buildDirectory.dir("**/*.kt")}")
             targetExclude("bin/**/*.kt")
 
-            ktlint().editorConfigOverride(mapOf("android" to "true"))
+            ktlint().editorConfigOverride(
+                mapOf(
+                    "android" to "true",
+                    "ktlint_standard_filename" to "disabled"
+                )
+            )
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
     }
