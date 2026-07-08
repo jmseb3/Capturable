@@ -76,8 +76,8 @@ import io.github.vinceglb.filekit.write
  * Share Type PNG or JPEG [CapturableSaveImageType]
  */
 actual suspend fun CaptureController.captureAsyncAndShare(
-    fileName: String = "capture_shared",
-    imageType: CapturableSaveImageType = CapturableSaveImageType.PNG(100)
+    fileName: String,
+    imageType: CapturableSaveImageType
 ) {
     val imageBitmap = this.captureAsync().await()
     val imageBytes = imageBitmap.encodeToByteArray(imageType)
