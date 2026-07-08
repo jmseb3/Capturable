@@ -37,6 +37,4 @@ import androidx.compose.ui.graphics.ImageBitmap
  * @param format The desired output [CapturableSaveImageType] for the image,
  * @return A [ByteArray] containing the encoded image data.
  */
-expect suspend fun ImageBitmap.encodeToByteArray(
-    format: CapturableSaveImageType
-): ByteArray
+expect suspend fun ImageBitmap.encodeToByteArray(format: CapturableSaveImageType): ByteArray

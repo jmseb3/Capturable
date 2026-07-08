@@ -28,7 +28,6 @@ package dev.wonddak.capturable.extension
 import androidx.compose.ui.graphics.ImageBitmap
 import dev.wonddak.capturable.controller.CaptureController
 import dev.wonddak.capturable.extension.platform.macos.shareByMacShare
-import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.utils.Platform
 import io.github.vinceglb.filekit.utils.PlatformUtil
 import java.awt.Image
@@ -37,9 +36,7 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.Transferable
 import java.awt.datatransfer.UnsupportedFlavorException
 import java.io.ByteArrayInputStream
-import java.nio.file.Files
 import javax.imageio.ImageIO
-import kotlinx.io.files.Path
 
 @ExperimentalCapturableShareApi
 actual suspend fun CaptureController.captureAsyncAndShare(
@@ -49,25 +46,22 @@ actual suspend fun CaptureController.captureAsyncAndShare(
     val imageBitmap = this.captureAsync().await()
     if (PlatformUtil.current == Platform.MacOS) {
         runCatching {
-            //Do Share by mac-share
+            // Do Share by mac-share
             shareByMacShare(
                 imageBitmap = imageBitmap,
                 fileName = fileName,
                 imageType = imageType
             )
         }.onFailure {
-            //if Error do copyToClipboard
+            // if Error do copyToClipboard
             copyToClipboard(imageBitmap, imageType)
         }
     } else {
-        copyToClipboard(imageBitmap,imageType)
+        copyToClipboard(imageBitmap, imageType)
     }
 }
 
-private suspend fun copyToClipboard(
-    imageBitmap: ImageBitmap,
-    imageType: CapturableSaveImageType,
-) {
+private suspend fun copyToClipboard(imageBitmap: ImageBitmap, imageType: CapturableSaveImageType) {
     val clipboardImageType = imageType.forClipboard()
     val imageBytes = imageBitmap.encodeToByteArray(clipboardImageType)
     val clipboardImage = imageBytes.decodeClipboardImage()
@@ -79,10 +73,9 @@ private fun CapturableSaveImageType.forClipboard(): CapturableSaveImageType = wh
     else -> this
 }
 
-private fun ByteArray.decodeClipboardImage(): Image =
-    ByteArrayInputStream(this)
-        .use(ImageIO::read)
-        ?: error("Failed to decode the captured image for the system clipboard.")
+private fun ByteArray.decodeClipboardImage(): Image = ByteArrayInputStream(this)
+    .use(ImageIO::read)
+    ?: error("Failed to decode the captured image for the system clipboard.")
 
 private fun copySharedImageToClipboard(image: Image) {
     val clipboard = Toolkit.getDefaultToolkit().systemClipboard
@@ -90,8 +83,7 @@ private fun copySharedImageToClipboard(image: Image) {
 }
 
 private class SharedImageTransferable(private val image: Image) : Transferable {
-    override fun getTransferDataFlavors(): Array<DataFlavor> =
-        arrayOf(DataFlavor.imageFlavor)
+    override fun getTransferDataFlavors(): Array<DataFlavor> = arrayOf(DataFlavor.imageFlavor)
 
     override fun isDataFlavorSupported(flavor: DataFlavor): Boolean =
         flavor == DataFlavor.imageFlavor

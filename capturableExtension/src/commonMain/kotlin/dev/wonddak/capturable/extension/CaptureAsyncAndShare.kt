@@ -34,7 +34,8 @@ import dev.wonddak.capturable.controller.CaptureController
  * - Android / iOS: opens the native share sheet.
  * - Web: experimental support. Uses the Web Share API when available, otherwise falls back to a
  *   file download.
- * - JVM desktop: experimental support. Copies the captured image to the system clipboard.
+ * - JVM desktop: experimental support. On macOS it uses the native share picker when available,
+ *   otherwise it copies the captured image to the system clipboard.
  *
  * @param fileName Do not include the extension. The suffix is derived from [imageType].
  * @param imageType Share type PNG or JPEG [CapturableSaveImageType]
