@@ -68,7 +68,7 @@ dependencies {
 }
 
 dokka {
-    moduleName.set("Caputerable")
+    moduleName.set("Capturable")
 
     dokkaPublications.html {
         outputDirectory.set(project.mkdir("build/dokka"))
