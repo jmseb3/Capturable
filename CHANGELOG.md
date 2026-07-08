@@ -6,21 +6,20 @@ All notable changes to this project will be documented in this file.
 
 ## 2.1.0 - 2026-07-08
 
-[05cc0f7](05cc0f7e06518fc6cb9c4eebd3c490c45a273fb2)...[ce280b3](ce280b3d53d2395da06625d9c5f4cd56fe633273)
+[05cc0f7](05cc0f7e06518fc6cb9c4eebd3c490c45a273fb2)...[a4916dd](a4916ddebaadc54ce6740257cd0808a53ee8ef46)
 
-### 🚀 Features
+### 🐛 Bug Fixes
 
-- Add experimental `captureAsyncAndShare` support for Web and JVM targets [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
-- Add macOS native share picker support with clipboard fallback for JVM desktop [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
-- Add Web Share API support with download fallback for JS/WASM targets [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+- 모바일 공유 actual 기본 인자 제거 [3e325d9](https://github.com/jmseb3/Capturable/commit/3e325d9b8dedfee0f2ed50ba78777670a4062d1f)
 
 ### 📚 Documentation
 
-- Update README and add macOS share example image for the 2.1.0 release [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+- Update changelog for v2.0.2 [f88191a](https://github.com/jmseb3/Capturable/commit/f88191aba463836193abee8ffcf36745b8647bee)
+- 2.1.0 changelog 추가 [14ce6fa](https://github.com/jmseb3/Capturable/commit/14ce6fa744a35cf041a22b536daae16941657cfe)
 
-### ⚙️ Miscellaneous Tasks
+### 🧪 Testing
 
-- Bump published module versions to 2.1.0 and refresh Web/JVM sample validation setup [ce280b3](https://github.com/jmseb3/Capturable/commit/ce280b3d53d2395da06625d9c5f4cd56fe633273)
+- 캡처 UI 테스트를 JVM 대상으로 한정 [a4916dd](https://github.com/jmseb3/Capturable/commit/a4916ddebaadc54ce6740257cd0808a53ee8ef46)
 
 
 
