@@ -7,8 +7,8 @@ Compose Multiplatform utility library for capturing Composable content as `Image
 Thanks to [@PatilShreyas](https://www.github.com/PatilShreyas) for the original inspiration.
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.github.jmseb3/capturable)
-[![Kotlin](https://img.shields.io/badge/kotlin-v2.3.10-blue.svg?logo=kotlin)](https://kotlinlang.org)
-[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.10.2-blue)](https://github.com/JetBrains/compose-multiplatform)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.4.0-blue.svg?logo=kotlin)](https://kotlinlang.org)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.11.1-blue)](https://github.com/JetBrains/compose-multiplatform)
 [![License](https://img.shields.io/github/license/jmseb3/capturable)](https://opensource.org/license/mit/)
 ![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 ![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
@@ -118,16 +118,16 @@ class MainActivity : ComponentActivity() {
 | JS       |          ✅          |   ✅ (Experimental)   |
 | WASM     |          ✅          |   ✅ (Experimental)   |
 
-`captureAsyncAndShare` on Web and JVM is currently experimental. On Web it may fall back to a
-download, and on JVM it currently copies the captured image to the system clipboard.
+`captureAsyncAndShare` on Web and JVM is currently experimental. On Web it uses the Web Share API
+when available and falls back to a download. On JVM, macOS uses the native share picker when
+available and otherwise copies the captured image to the system clipboard.
 
 ### From 2.1.0
-Now Support captureAsyncAndShare for JVM And Web
+`captureAsyncAndShare` now supports Web and JVM targets.
 
-Web - Use By Share API
-JVM
-    - Mac - try NSSharingServicePicker if Error copy to clipboard
-    - Other copy to clipboard
+- Web: uses the Web Share API when available, otherwise downloads the captured image.
+- JVM macOS: tries `NSSharingServicePicker`, then falls back to the clipboard.
+- JVM other platforms: copies the captured image to the clipboard.
 
 ## Sample App
 
@@ -136,6 +136,7 @@ Example app source lives in [`sample/`](sample).
 - Desktop: `./gradlew :sample:desktopApp:run`
 - JS browser: `./gradlew :sample:webApp:jsBrowserDevelopmentRun --continue`
 - WASM browser: `./gradlew :sample:webApp:wasmJsBrowserDevelopmentRun --continue`
+- Release check for Web/JVM: `./gradlew --no-daemon :capturable:compileKotlinJvm :capturable:compileKotlinJs :capturable:compileKotlinWasmJs :capturable-extension:compileKotlinJvm :capturable-extension:compileKotlinJs :capturable-extension:compileKotlinWasmJs :sample:sharedUI:compileKotlinJvm :sample:sharedUI:compileKotlinJs :sample:sharedUI:compileKotlinWasmJs :sample:desktopApp:compileKotlin :sample:webApp:compileKotlinJs :sample:webApp:compileKotlinWasmJs`
 - Android: run `sample:androidApp` from Android Studio
 - iOS: open `sample/iosApp/iosApp.xcodeproj` in Xcode and run
 
