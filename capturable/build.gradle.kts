@@ -57,6 +57,7 @@ kotlin {
         }
 
         jvmTest.dependencies {
+            implementation(kotlin("test-junit"))
             implementation(libs.compose.ui.test.junit4)
             implementation(compose.desktop.currentOs)
         }
